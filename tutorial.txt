@@ -1,0 +1,6 @@
+// For Matching changes from computer to server
+- Make Commit
+	git commit -m "explain motive"
+- Send Order
+	git push origin branch_name
+
