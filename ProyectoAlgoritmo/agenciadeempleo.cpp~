@@ -1,0 +1,21 @@
+// Proyecto del curso Algoritmo
+
+#include <iostream>
+using namespace std;
+
+int main(){
+    int opc=0;
+
+    cin>>opc;
+    cout<<"test: "<<opc<<endl;
+
+    // getch();
+    cin.ignore(); // Ignore the 'enter' entry left from cin>> comand
+    cin.get();
+
+    /* Change when linux or windows */
+    // system("clear");
+    // system("cls");
+
+    return 0;
+}
