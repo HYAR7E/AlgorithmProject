@@ -1,11 +1,13 @@
 #ifndef STRUCT_FILE
 #define STRUCT_FILE
 struct Person{
+    int id;
     string name;
     string lastname;
     short age;
     string telf; // Phone number
     string password;
+    short accounttype; // 0: Guest  1: Worker  2: Enterprise
 };
 struct Worker{
     Person wData;
@@ -24,6 +26,11 @@ struct Request{
     short rAmount; // Number of people requested
     short minAge;
     short maxAge;
+};
+struct Applications{ // Apply for working
+    Person aPerson;
+    Request aRequest;
+    string aMessaege;
 };
 
 #endif

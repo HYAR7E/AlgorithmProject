@@ -5,27 +5,38 @@
 void clear(int n=5, char m='\n');
 void pause();
 void printMMLog(int ,int );
-void printErrorLog();
 bool isString(string txt);
 bool isNumber(string num);
-int printMenu();
+void printMenu(int _actype);
 
 // Functions explanation
 void clear(int n, char m){ // n=30
     cout<<string(n,m);
 }
+void pause(){
+    cin.ignore(30,'\n'); // Ignore newline in stream
+    cin.get(); // Actually waits for an input character
+}
 void printMMLog(int _case,int _res){
     if(_case==1){
+        switch(_res){
+            case -2: cout<<"El usuario no existe."; break;
+            case -1: cout<<"La informacion introducida no es valida."; break;
+            case 0: cout<<"Contrasena incorrecta."; break;
+            case 1: cout<<"Inicio de sesion exitoso."; break;
+        }
     }
     if(_case==2){
         switch(_res){
-            case -3: cout<<"Tercer error, intente registrarse nuevamente."<<endl; break;
-            case -2: cout<<"No tiene edad suficiente para usar nuestra plataforma"<<endl; break;
-            case -1: cout<<"La informacion introducida no es valida"<<endl; break;
-            case 0: cout<<"Usuario ya registrado"<<endl; break;
-            case 1: cout<<"Cuenta creada exitosamente"<<endl; break;
+            case -3: cout<<"Tercer error, intente registrarse nuevamente."; break;
+            case -2: cout<<"No tiene edad suficiente para usar nuestra plataforma."; break;
+            case -1: cout<<"La informacion introducida no es valida."; break;
+            case 0: cout<<"Usuario ya registrado."; break;
+            case 1: cout<<"Cuenta creada exitosamente."; break;
         }
     }
+    cout<<endl;
+    pause();
 }
 bool isString(string txt){
     char word;
@@ -58,7 +69,7 @@ bool isNumber(string num){
 }
 
 #include "../Header/menudata.h"
-int printMenu(){
+void printMenu(int _actype){
     clear();
     int opc=0;
     do{
@@ -66,10 +77,10 @@ int printMenu(){
         cout<<"2. Agregar Empresa"<<endl;
         cout<<"3. Nueva Oferta"<<endl;
         cout<<"4. Ver anuncios de trabajo"<<endl;
-        cout<<"4. Ver trabajadores"<<endl;
+        cout<<"5. Ver trabajadores"<<endl;
         cout<<"Opc: "; cin>>opc;
-    }while(opc<1||opc>4);
-    return opc;
+    }while(opc<1||opc>5);
+    cout<<opc;
 }
 #endif
 
