@@ -40,7 +40,7 @@ int _register(){
     short _age;
 
     // Ask personal data
-    cout<<"Edad: "; cin>>_age;
+    _age = getValidIntInput("Edad: ", "Introduzca una edad valida");
     if( _age<16||_age>65 ) return -2; // Verify age range
 
     cout<<"Nombre: "; cin>>_name;
@@ -66,7 +66,7 @@ int _register(){
 
     // Add to array
     srand(time(NULL)); // Initialize random seed
-    int _id = rand()%8999 + 1000; // Generate random number from 1000 - 9999
+    int _id = ( rand()%8999 ) + 1000; // Generate random number from 1000 - 9999
     Person _new = {_id, _name, _lastname, _age, _telf, _password, 0}; // Create person
     accounts[_iac] = _new; // Add person to accounts array
     _iac++; // Iterate account array variable

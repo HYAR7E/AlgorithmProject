@@ -3,11 +3,13 @@
 #define UTILITARIES_FILE
 // Functions declaration
 void clear(int n=5, char m='\n');
-void pause();
-void printMMLog(int ,int );
-bool isString(string txt);
-bool isNumber(string num);
-void printMenu(int _actype);
+void pause(); // Getch imitation but available regardless of SO
+void printMMLog(int ,int ); // Main menu log
+bool isString(string txt); // Is it a string value?
+bool isNumber(string num); // Is is a number value?
+int convertToInt(string num);
+int getValidIntInput(string _xAsk, string _xError); // Avoid program error when introducing string values into int variable input
+void printMenu(int _actype); // Menu function, changes depend of account type
 
 // Functions explanation
 void clear(int n, char m){ // n=30
@@ -67,6 +69,24 @@ bool isNumber(string num){
     }
     return true;
 }
+int convertToInt(string num){
+    if( !isNumber(num) ) return 0;
+    stringstream _num(num); // Convert to int
+    int _n = 0;
+    _num>>_n; // Pass int value
+    return _n;
+}
+int getValidIntInput(string _xAsk, string _xError){
+    string x_n = "";
+    int i_n = 0;
+    cout<<_xAsk; cin>>x_n;
+    while( !isNumber(x_n) ){ // If it's invalid input show error message
+        cout<<_xError<<endl;
+        cout<<_xAsk; cin>>x_n;
+    }
+    i_n = convertToInt(x_n);
+    return i_n;
+}
 
 #include "../Header/menudata.h"
 void printMenu(int _actype){
@@ -78,9 +98,9 @@ void printMenu(int _actype){
         cout<<"3. Nueva Oferta"<<endl;
         cout<<"4. Ver anuncios de trabajo"<<endl;
         cout<<"5. Ver trabajadores"<<endl;
-        cout<<"Opc: "; cin>>opc;
+        opc = getValidIntInput("Opc: ", "Introduzca una opcion valida");
     }while(opc<1||opc>5);
-    cout<<opc;
+    cout<<"Alright"<<endl;
 }
 #endif
 
