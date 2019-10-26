@@ -1,16 +1,15 @@
-// Proyecto del curso Algoritmo
+// Proyecto del curso Algoritmo - Agencia de empleo
 /*
-    Proyect Especifications
+    PROYECT ESPECIFICATIONS
         Struct data Profession is added as keywords like enginner, nurse, assassin, etc.
 
     *Main Menu
         *Register
         *Login
         *Exit
-
     Guest menu
         Choose accoun type
-        Change data
+        Add contact info
     Worker menu
         Publish cv (add to workers)
         Look announcements
@@ -23,50 +22,45 @@
     Admin menu
         Look databases
         New activities
+        Delete accounts
         return main menu / exit
-*//*
-Especificaciones del proyecto
-         Estructura de datos Profesión se agrega con palabras clave como ingeniero, enfermero, asesino, etc.
+    Enterprise sheet
+        Show
+            Information and contact
+            Job vacancies
+        Options
+            Apply
+    Worker sheet
+        Show
+            Information and contact
+        Send job offer
 
-    *Menú principal
-        *Registro
-        *Iniciar sesión
-        *Salida
 
-    Menú de invitado
-        Elegir tipo de cuenta (trabajador/empresa/administrador)
-        Cambiar datos
-    Menú trabajador
-        Publicar CV
-        Mira anuncios
-        Solicitar trabajo (mostrar anuncios)
-        volver al menú principal / salir
-    Menú de empresa
-        Publicar oferta de trabajo
-        Ver solicitantes al trabajo
-        Aceptar/rechazar solicitante
-            Abrir chat
-        volver al menú principal / salir
-    Menú de administrador
-        Mira bases de datos
-        Eliminar cuentas
-        volver al menú principal / salir
+    TO DO
 
-    Hoja de empresa
-        Mostrar
-            Información y contacto
-            Trabajos vacantes
-        Opción
-            Postular
-    Hoja de trabajador
-        Mostrar
-            Información y contacto
-        Enviar oferta de trabajo
+    Check if id person is already taken
+    Add value to control account type
+    Show menu depending of account type
+
+    DONE CHANGES
+        Separate functions into User, Logic and Server layer
+        Added function to get date number (Y,M,D,h,m,s)
+        Added function to calc valid date
+        Changed Person.age to Person.borndate wich allows calculate age anytime
+        Person.dni changed to string type for easier comparison
+        Added check for valid F_Register->dni
+        Added check for valid age in F_Register
+        Added check min/max string length in function F_isString
+        Removed name input of _login function (unnecessary)
+        ERROR FIXED:
+            ERROR: We can't declarate null contactinfo in _register function
+            SOLUTION: We don't want to declare contactinfo yet so we initialize it as an empty string cuz its first element is string type variable. In f_program.cpp _register()
 */
 
 #include <iostream> // Basic language library
 #include <stdlib.h> // Rand number generation
 #include <sstream> // Convert string to int
+#include <typeinfo> // Get variable type
 using namespace std; // Allow to avoid std:: prefix
 
 // Structs file

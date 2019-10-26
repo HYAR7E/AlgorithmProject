@@ -1,21 +1,30 @@
 #ifndef STRUCT_FILE
 #define STRUCT_FILE
+struct ContactInfo{
+    string email;
+    string telf1;
+    string telf2;
+    string address;
+};
 struct Person{
     int id;
     string name;
     string lastname;
-    short age;
-    string telf; // Phone number
+    /* Variable type (?) */string borndate; // Allows calculate age DD/MM/AAAA
+    /* Variable type (?) */string dni;
     string password;
     short accounttype; // 0: Guest  1: Worker  2: Enterprise
+    ContactInfo contact; // email, telf1, telf2, address, personContact
 };
 struct Worker{
     Person wData;
     string wProfession;
+    string description;
 };
 struct Enterprise{
-    string eName;
     Person eDirector;
+    string eName;
+    string description;
 };
 struct Request{
     Enterprise rEnterprise;

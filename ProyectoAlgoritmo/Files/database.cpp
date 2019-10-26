@@ -2,16 +2,18 @@
 #define DATABASE
 
 // Arrays
-Person accounts[30]={};
+Person accounts[30]={0};
 int _iac = 0; // Iterator for accounts
-Worker workers[30]={};
+Worker workers[30]={0};
 int _iwk = 0; // Iterator for workers
-Enterprise enterprises[30]={};
+Enterprise enterprises[30]={0};
 int _iet = 0; // Iterator for enterprises
 
 // Global variables
 int _accountID = -1; // Actual sesion account id
 int accountType = 0; // 0: Guest  1: Worker  2: Enterprise
 
+// Static variables
+char st_dateseparator = '/';
 
 #endif

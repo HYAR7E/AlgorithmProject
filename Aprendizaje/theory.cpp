@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string.h>
+#include <typeinfo> // Get variable type
 using namespace std;
 int main(){
 
@@ -11,7 +12,11 @@ int main(){
     string name;
     getline(cin, name, '\n'); // use de cin method, store value in 'name' variable, end when '\n' is read
 
-    // Aa
+    // Get variable type
+    int edad = 20;
+    char sexo = 'M';
+    cout << typeid(edad).name() << endl; // type: i -> int
+    cout << typeid(sexo).name() << endl; // type: c -> char
 
 
     return 0;
