@@ -1,4 +1,5 @@
 #include<iostream>
+#include<sstream>
 #include<time.h>
 using namespace std;
 int getCurrentTime(char _f){
@@ -24,12 +25,11 @@ int getCurrentTime(char _f){
     }
     return f;
 }
-
 /*** STRUCTS ***/
 struct foo{
-    foo() : bar(3), var(5) {};   // Constructor
+    // foo() : bar(3), var(5) {};   // Constructor
     // or
-    foo(int _ba=3, int _var=5){
+    foo(int _bar=3, int _var=5){
         bar=_bar; var=_var;
     }
     /**/
@@ -40,34 +40,57 @@ struct foo{
     }
 }y; // y.getBar() == 9
 
+int avg(int *array, int length){
+    cout<<"Last element: "<<array[length-1]<<endl;
+    cout<<"Memory position: "<<array<<endl;
+    return array[0];
+};
+void sum(foo *f){
+    cout<<"foo.var: "<<f->var<<endl;
+};
 int main(){
 
+    /*** Sending arrays to as function parameter ***/
+    int notes[4] = {15,16,17,18};
+    int notes_length = 4;
+    cout<<"avg(notes,notes_length): "<<avg(notes,notes_length)<<endl;
+    // Explanation: sending just 'notes' without any index sends the memory direction, and the function receive it as the value with '*array', then use it as if the value itself was sended
+    // In other words to receive a memory direction and play it as the value u have to receive it like (int *direction)
+    sum(&y);
+
+    /*** Pointer to struct ***/
+    foo *pointer = NULL;
+    pointer = &y;
+    // pointer->struct_element or
+    cout<<"pointer: "<<pointer->getBar(2)<<endl;
+    // (*pointer).struct_element
+    cout<<"pointer: "<<(*pointer).getBar()<<endl;
 
     /*** Declare an struct variable empty ***/
     // To initialize the value of a struct as empty we should declare empty its first element
     struct numeros{
         int n;
         char l;
-    }
+    };
     numeros nuevonumero = {0};
     struct letras{
         char l;
         string k;
-    }
-    numeros nuevaletra = {''};
+    };
+    letras nuevaletra = {'0'}; // A constant char can't be declared empty so we initialize it with the value '0'
     struct palabras{
         string l;
         int age;
         char nothing;
-    }
-    numeros nuevapalabra = {""};
+    };
+    palabras nuevapalabra = {""}; // In case of 
 
 
     /*** If allows only one sentence when no curly braces ***/
     int i=1;
-    int r=5;
+    int ra=5;
     if(i==0)
-        if(r>10) cout<<"SI"<<endl;
+        if(ra>10) cout<<"SI"<<endl;
         else cout<<"NO"<<endl;
     else cout<<"!= 0"<<endl;
 
@@ -98,7 +121,6 @@ int main(){
     int age = 19;
     int dni[8] = {1,5,7,4,2,6,3,8}; // declare array variable to test
 
-
     r = &age; // r gets memory direction of age
     p = dni; // p gets memory direction of first element of dni such as &dni[0]
 
@@ -120,5 +142,14 @@ int main(){
     cout<<"dni[6]: "<<*p<<endl;
     p += 1;
     cout<<"dni[7]: "<<*p<<endl;
-*/
+
+    /*** String to int convertion ***/
+    string x_age = "18"; // Only the first integer value found will be converted
+        // if there is no number value at the beginning it return 0
+        // "a15"->0 && "1b3c"->1 && "123abc"->123
+    stringstream _converter(x_age); // Create stringstream object with x_age value
+    int i_age; // Create a int variable
+    _converter>>i_age; // Pass the value to a int variable
+    cout<<"Converted integer value: "<<i_age<<endl;
+
 }

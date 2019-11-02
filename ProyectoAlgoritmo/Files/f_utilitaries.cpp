@@ -2,20 +2,18 @@
 #ifndef UTILITARIES_FILE
 #define UTILITARIES_FILE
 
-/*** FUNCTIONS DECLARATION **/
+/*** FUNCTIONS PROTOTYPE **/
 
 // Capa Usuario
-void clear(int n=5, char m='\n');
-void pause(); // Getch imitation but available regardless of SO
-void printMMLog(int ,int ); // Main menu log
-void printMenu(int _actype); // Menu function, changes depend of account type
+void clear(int n=st_clearlines, char m='\n'); // For our program code to be compilable in other operating systems we should create our own functions of cleaning and pausing cuz these come from libraries which often depends on it
+void pause(); // Getch's imitation but available independent of OS
 
 // Capa Logica
 bool isString(string txt, int minlength=-1, int maxlength=-1); // Is it a string value?
 bool isNumber(string num); // Is it a number value?
 int convertToInt(string num); // Convert a string value to int value
 int getValidIntInput(string x_Ask, string x_Error); // Avoid program error when introducing string values into int variable input
-int getCurrentTime(char _f); // Gets current time _f: Y,M,D,h,m,s
+int getCurrentTime(char f); // Gets current time _f: Y,M,D,h,m,s
 bool isDate(string date); // Is it a date value?
 bool isValidDate(string date, bool _checkage=false); // Is it a correct date value?
 
@@ -23,53 +21,19 @@ bool isValidDate(string date, bool _checkage=false); // Is it a correct date val
 void serverConection(){}
 
 
-/*** FUNCTIONS EXPLANATION ***/
+/*** FUNCTIONS DECLARATION ***/
 
-void clear(int n, char m){ // n=30
+void clear(int n, char m){ // n=30 m='\'
     cout<<string(n,m);
 }
 void pause(){
-    cin.ignore(30,'\n'); // Ignore newline in stream
+    // Right after a input is readed there left newlines in stream which could cause the pause to be skipped instantly, so we ignore those  inputs left
+    cin.ignore(st_clearlines,'\n'); // Ignore newline in stream
     cin.get(); // Actually waits for an input character
-}
-void printMMLog(int _case,int _res){
-    if(_case==1){
-        switch(_res){
-            case -2: cout<<"El usuario no existe."; break;
-            case -1: cout<<"La informacion introducida no es valida."; break;
-            case 0: cout<<"Contrasena incorrecta."; break;
-            case 1: cout<<"Inicio de sesion exitoso."; break;
-        }
-    }
-    if(_case==2){
-        switch(_res){
-            case -3: cout<<"Tercer error, intente registrarse nuevamente."; break;
-            case -2: cout<<"No tiene edad suficiente para usar nuestra plataforma."; break;
-            case -1: cout<<"La informacion introducida no es valida."; break;
-            case 0: cout<<"Usuario ya registrado."; break;
-            case 1: cout<<"Cuenta creada exitosamente."; break;
-        }
-    }
-    cout<<endl;
-    pause();
-}
-#include "../Header/menudata.h"
-void printMenu(int _actype){
-    clear();
-    int opc=0;
-    do{
-        cout<<"1. Agregar Trabajador"<<endl;
-        cout<<"2. Agregar Empresa"<<endl;
-        cout<<"3. Nueva Oferta"<<endl;
-        cout<<"4. Ver anuncios de trabajo"<<endl;
-        cout<<"5. Ver trabajadores"<<endl;
-        opc = getValidIntInput("Opc: ", "Introduzca una opcion valida");
-    }while(opc<1||opc>5);
-    cout<<"Alright"<<endl;
 }
 
 bool isString(string txt, int minlength, int maxlength){
-    if( minlength!=-1) if( txt.length() >= minlength ) return false;
+    if( minlength!=-1) if( txt.length() <= minlength ) return false;
     if( maxlength!=-1) if( txt.length() >= maxlength ) return false;
 
     char letter;
@@ -100,11 +64,11 @@ bool isNumber(string num){
     }
     return true;
 }
-int convertToInt(string num){
-    if( !isNumber(num) ) return 0;
-    stringstream _num(num); // Convert to int
-    int _n = 0;
-    _num>>_n; // Pass int value
+int convertToInt(string x_num){
+    if( !isNumber(x_num) ) return 0;
+    stringstream _num(x_num); // Create stringstream object with x_num value
+    int _n = 0; // Declarate int variable
+    _num>>_n; // Pass value of _num (stringstream object) to int variable
     return _n;
 }
 int getValidIntInput(string x_Ask, string x_Error){
@@ -149,7 +113,7 @@ bool isDate(string date){ // date = "11/22/3333"
     if( date[5] != st_dateseparator ) return false;
     return true;
 }
-bool isValidDate(string date, bool _checkage){ // date = "11/22/3333"
+bool isValidDate(string date, bool checkage){ // date = "11/22/3333"
     if( !isDate(date) ) return false;
     int day, month, year;
     day = convertToInt( date.substr(0,2) );
@@ -157,7 +121,7 @@ bool isValidDate(string date, bool _checkage){ // date = "11/22/3333"
     year = convertToInt( date.substr(6,4) );
     // Check year
     int now_year = getCurrentTime('Y');
-    if( _checkage ) if( year < (now_year-65) || year > (now_year-18) ) return false; // Max age 65 and min age 18
+    if( checkage ) if( year < (now_year-65) || year > (now_year-18) ) return false; // Max age 65 and min age 18
     // Check month
     if( month < 1 || month > 12 ) return false;
     // Calc max day
