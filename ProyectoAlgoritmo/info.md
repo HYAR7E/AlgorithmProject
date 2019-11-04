@@ -1,5 +1,5 @@
-## ALGORITHM PROYECT - work agency
-# by HYAR7E
+# ALGORITHM PROYECT - work agency
+## by HYAR7E
 
     PROYECT ESPECIFICATIONS
         Struct data Profession is added as keywords like enginner, nurse, assassin, etc.
@@ -11,18 +11,27 @@
         Choose accoun type
         Add contact info
     Worker menu
-        Publish cv (add to workers)
-        Look announcements
-        Apply for work (show announcements paginated)
+        Publish cv (add to workers) {check cv empty, min 15 rows}
+        Look announcements {show table}
+            Apply for work (show announcements paginated) {select by element index in table}
+        Look enterprises
+            Open chat
+        Chats
+        Applies status
         return main menu / exit
     Enterprise menu
+        Change data {declare enterprise struct elements}
         Publish job offer (add to enterprise and request)
         Check out applicants
+        Chats
         return main menu / exit
     Admin menu
-        Look databases
-        New activities
-        Delete accounts
+        Look announcements
+        Look worker
+        Look enterprise
+        Ban worker
+        Ban enterprise
+        Delete announcement
         return main menu / exit
 
     Enterprise sheet
@@ -40,9 +49,11 @@
     # Function's specifications
         In function, parameter variables should be declared with '_' prefix
         In function, when a variable is created to fill a formulary or a structure element, it should be declared with '_' prefix
-        In function, when we want to emphasize the parameter variable type use '${type_name[0]_' prefix as 'i_age' or 'x_name'
+        In function, parameter variable type can be emphasize by using '${type_name[0]}_' prefix as 'i_age' or 'x_name'
         In utilitaries functions, variables should be declared with no prefix
         In utilitaries functions, variables created to be compared should be declared with '_' prefix
+        In program functions, account menus functions should have the 'ac${account_type}_' prefix as ac0_changeInformation
+        In program functions, user menu functions should be declared with '_' prefix
     # Variable's specifications
         Global variables should be declared with no prefix in database.cpp (user)
         Global structures array should be declared with no prefix in database.cpp
@@ -51,10 +62,17 @@
         When there is two or more variables with same name and different type, should be declared with '${type_name[0]}_' prefix
             In case of string type variable the prefix should be 'x_'
             Exm: string x_age; int i_age; char c_age; double d_age; bool b_age;
+    # Operation explanation
+        User layer is dedicated to interact with the user, get inputs and show outputs
+            This layer sends data to process in Logical layer
+            To communicate with Server layer have to pass through Logical layer
+        Logical layer is dedicated to process all the data from User layer and Server layer
+            This layer returns data to User layer and Server layer
+        Server layer is dedicated to communicate with the database
 
 
-    CHANGES MADE v0.3
-        Separate functions into User, Logic and Server layer
+    CHANGES MADE v0.3 (login/register utilitarie functions)
+        Separate functions into User, Logical and Server layer
         Added function to get date number (Y,M,D,h,m,s)
         Added function to calc valid date
         Changed Person.age to Person.borndate wich allows calculate age anytime
@@ -67,7 +85,7 @@
             ERROR: We can't declarate null contactinfo in _register function
             SOLUTION: We don't want to declare contactinfo yet so we initialize it as an empty string cuz its first element is string type. In f_program.cpp _register()
 
-    CHANGES MADE v0.4
+    CHANGES MADE v0.4 (global variables, control and usage of program)
         Storage static global variables into database.cpp
         Add global variable to control current account
         Static initial person(user) struct value accountype = -1
@@ -80,6 +98,25 @@
         Changed create user struct in register to use 'set' function of Person struct
         MOVE COMENTARIES ABOUT CHANGES MADE INTO A INFO FILE
 
+    CHANGES MADE v0.5 (Bugs fixed, user pointer, all menus declared)
+        Implemented function printMenu for scalability when adding more functions
+        Added function to show all menus from account types
+        Noticed that having a global variable 'user' is not secure at all cuz it is reachable from anywhere in the whole code
+        Separate user/logical menu functions from other functions
+        Global variable 'user' shall be a pointer to 'accounts' array element cuz we will made some changes when choosing account type and changing information
+        Changed global variable user to be pointer and modified functions that use it
+        Changed function getPersonStruct to *getPersonStructDirection
+        Added logout in printMenu function
+        Fixed bugs in _register and _login functions
+        Added Request element description in structs.cpp
+        Created new files 'f_menu.cpp','fu_guest.cpp','fu_worker.cpp','fu_enterprise.cpp','fu_admin.cpp'
+        Changed file name 'f_program.cpp' to 'f_reglog.cpp'
 
+    CHANGES MADE v0.6 ( Add worker && enterprise functions )
+    CHANGES MADE v0.7 ( Add communication functions )
+    CHANGES MADE v0.8 ( Add database conection and related functions )
+    CHANGES MADE v0.9 ( Migrate to database functions )
+    CHANGES MADE v0.9 ( Admin functions && Add GUI && hard look for errors )
+    RELEASE v1.0 (delete debug commentaries)
 
 

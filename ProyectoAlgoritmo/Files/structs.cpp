@@ -14,7 +14,7 @@ struct Person{
     /* Variable type (?) */string dni;
     string password;
     // Elements with default values
-    short accounttype; // 0: Guest  1: Worker  2: Enterprise -1: undefined || default: 0
+    int accounttype; // 0: Guest  1: Worker  2: Enterprise 3: Admin -1: undefined || default: 0
     ContactInfo contact; // email, telf1, telf2, address, personContact || default: ""
     bool online; // true: online  false: offline || default: false
     bool set(int _id, string _name, string _lastname, string _borndate, string _dni, string _password){ // Constructor or setter
@@ -44,14 +44,15 @@ struct Enterprise{
 struct Request{
     Enterprise rEnterprise;
     string rProfession;
-    short rSalary; // Amount in dollars
-    short rWorkDuration; // Time in months
-    short rDuration; // Time in months
-    short rAmount; // Number of people requested
-    short minAge;
-    short maxAge;
+    int rSalary; // Amount in dollars
+    int rWorkDuration; // Time in months
+    int rDuration; // Time in months
+    int rAmount; // Number of people requested
+    int minAge;
+    int maxAge;
+    string description; // Description of the work
 };
-struct Applications{ // Apply for working
+struct Applicants{ // Applicants for working
     Person aPerson;
     Request aRequest;
     string aMessaege;

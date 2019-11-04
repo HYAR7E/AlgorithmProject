@@ -1,25 +1,22 @@
-// Program functions
-#ifndef PROGRAM_FILE
-#define PROGRAM_FILE
+// Register-Login functions
+#ifndef REGLOG_FILE
+#define REGLOG_FILE
 /*** FUNCTIONS PROTOTYPE ***/
 
 // Capa Usuario
 int _login();
-int _register(); // Register a new user with account type unespecified
-void printMMLog(int ,int ); // Main menu log
-void printMenu(int _actype); // Menu function, changes depend of account type
-int addNewWorker();
-int addNewEnterprise();
-int addNewOffer();
-
+int _register(); // Register is named with '_' prefix cuz 'register' is a keyword
 
 // Capa Logica
-bool _userExists(string _dni, string _pw=""); // Check if exist a user with the given data
-int _getUserId(string _dni, string _pw); // We can't mix the functions getUserId with userExist for security good practices
-Person getPersonStruct(int _userid); // Get user structure variable
+bool userExists(string _dni, string _pw=""); // Check if exists a user with the given data
+int getUserId(string _dni, string _pw); // We can't mix the functions getUserId with userExist for security good practices
+Person *getPersonStructDirection(int _userid); // Get user struct direction from accounts array and return it to store in 'user' global pointer variable
 bool userIdExists(int _userid); // We can't mix the functions getPersonStruct with userIdExists for security good practices
 int genUniqueRandId(); // Generate a random number and check if it is already taken
-int checkForMatch(); // Job offer match with job applicant
+
+// Capa Servidor
+bool pullChangesInUser(); // Send changes in user account to database
+// bool pushChanges(); // Get changes in user account to database
 
 
 /*** FUNCTIONS DECLARATION ***/
@@ -30,22 +27,22 @@ int _login(){
     cout<<"DNI: "; cin>>_dni;
     if( !isNumber(_dni) || _dni.length() != 8 ) return -1;
 
-    if( !_userExists(_dni) ) return -2; // User don't exists
+    if( !userExists(_dni) ) return -2; // User don't exists
 
-    inputpass:
     int i_pass=1;
+    inputpass:
     cout<<"Contrasena: "; cin>>_password;
-    if( !_userExists(_dni,_password) ){
+    if( !userExists(_dni,_password) ){
+        if(i_pass==3) return 0; // Password incorrect
         cout<<"Contraseña incorrecta"<<endl;
-        if(i_pass>=3) return -0; // Password incorrect
         i_pass++;
         goto inputpass;
     }
 
-    // Get logged user struct and change global user variable
-    user = getPersonStruct( _getUserId(_dni,_password) );
+    // Get logged user struct direction
+    user = getPersonStructDirection( getUserId(_dni,_password) );
     // For security and scalability reasons we should get the user structure variable through the user id
-
+// cout<<user->id<<" - "<<user->accounttype<<endl; cin.ignore(3);
     return 1;
 }
 int _register(){
@@ -67,7 +64,7 @@ int _register(){
     if( !isNumber(_dni) || _dni.length() != 8 ) return -1;
 
     // Verify dni already exist
-    if( _userExists(_dni) ) return 0; // User already exists
+    if( userExists(_dni) ) return 0; // User already exists
 
     int i_pass=1;
     inputpass:
@@ -81,52 +78,19 @@ int _register(){
 
     // For security reasons we can't have the dni as the id of person, so we create a random number
     int _id = genUniqueRandId(); // Generate a random number and check if it is not taken
+// cout<<_id<<endl; cin.ignore(1);
 
     Person _new = Person{0}; // Create empty Person structure
     _new.set(_id, _name, _lastname, _borndate, _dni, _password); // Add data to Person structure of user
     accounts[_iac] = _new; // Add person to accounts array
+// cout<<accounts[_iac].id<<" - "<<accounts[_iac].accounttype<<endl; cin.ignore(1);
     _iac++; // Iterate account array variable
     return 1; // Everything alright
 }
 
-void printMMLog(int _case,int _res){
-    if(_case==1){
-        switch(_res){
-            case -2: cout<<"El usuario no existe."; break;
-            case -1: cout<<"La informacion introducida no es valida."; break;
-            case 0: cout<<"Contrasena incorrecta."; break;
-            case 1: cout<<"Inicio de sesion exitoso."; break;
-        }
-    }
-    if(_case==2){
-        switch(_res){
-            case -3: cout<<"Tercer error, intente registrarse nuevamente."; break;
-            case -2: cout<<"No tiene edad suficiente para usar nuestra plataforma."; break;
-            case -1: cout<<"La informacion introducida no es valida."; break;
-            case 0: cout<<"Usuario ya registrado."; break;
-            case 1: cout<<"Cuenta creada exitosamente."; break;
-        }
-    }
-    cout<<endl;
-    pause();
-}
-#include "../Header/menudata.h"
-void printMenu(int _actype){
-    clear();
-    int opc=0;
-    do{
-        cout<<"1. Agregar Trabajador"<<endl;
-        cout<<"2. Agregar Empresa"<<endl;
-        cout<<"3. Nueva Oferta"<<endl;
-        cout<<"4. Ver anuncios de trabajo"<<endl;
-        cout<<"5. Ver trabajadores"<<endl;
-        opc = getValidIntInput("Opc: ", "Introduzca una opcion valida");
-    }while(opc<1||opc>5);
-    cout<<"Alright"<<endl;
-}
 
 /* ### LOGIC LAYER ### */
-bool _userExists(string _dni, string _pw){
+bool userExists(string _dni, string _pw){
     for(int i=0; i<_iac; i++){
         if( accounts[i].dni == _dni ){ // Account exists
             if(_pw != ""){ // Password check
@@ -138,7 +102,7 @@ bool _userExists(string _dni, string _pw){
     }
     return false;
 }
-int _getUserId(string _dni, string _pw){
+int getUserId(string _dni, string _pw){
     for(int i=0; i<_iac; i++){
         if( accounts[i].dni == _dni && accounts[i].password == _pw){ // Account verification
             return accounts[i].id; // Return account id
@@ -146,13 +110,13 @@ int _getUserId(string _dni, string _pw){
     }
     return -1;
 }
-Person getPersonStruct(int _userid){
+Person *getPersonStructDirection(int _userid){
     for(int i=0; i<_iac; i++){
         if( accounts[i].id == _userid ){
-            return accounts[i]; // Return account
+            return &accounts[i]; // Return account pointer
         }
     }
-    return Person{-1}; // There is no way a person can't be found, otherwise it would lead to an error
+    return 0; // There is no way a person can't be found, otherwise it would lead to an error
 };
 bool userIdExists(int _userid){
     for(int i=0; i<_iac; i++){
@@ -174,4 +138,7 @@ int genUniqueRandId(){
     }while( _r );
     return _rd;
 }
+
+
+
 #endif

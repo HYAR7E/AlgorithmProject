@@ -1,6 +1,7 @@
 #include<iostream>
-#include<sstream>
-#include<time.h>
+#include<sstream> // Convert string to int
+#include<time.h> // Time functions
+#include <typeinfo> // Get variable type
 using namespace std;
 int getCurrentTime(char _f){
     time_t _now = time(0); // Gets current system time

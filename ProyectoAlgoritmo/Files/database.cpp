@@ -13,11 +13,12 @@ int _iet = 0; // Iterator for enterprises
 // Global variables
 /* There is no reason why to use a pointer here */
 // Person* p_user = NULL; // Initialize pointer with NULL value for good practices
-Person user = Person{0};
+Person *user = NULL;
+static Person noone = Person{0};
 
 // Static variables
 char st_dateseparator = '/';
-int st_clearlines = 5;
+int st_clearlines = 8;
 
 /*
     We're gonna check the users session by having a pointer to the current user struct variable
@@ -29,10 +30,13 @@ int st_clearlines = 5;
 #ifndef PreLoad
 #define PreLoad
 bool preload(){
-    user.accounttype = -1; // Declare empty Person variable and set accounttype as -1 (undefined)
-    // p_user = &user;
-    // if( p_user->accounttype != -1 ) return false;
-    if( user.accounttype != -1 ) return false;
+    // Declaration of empty user 'noone'
+    noone.id = 0;
+    noone.name = "";
+    noone.lastname = "";
+    noone.accounttype = -1;
+    user = &noone;
+    // cout<<user->accounttype<<endl; cin.ignore(1);
     return true;
 }
 
