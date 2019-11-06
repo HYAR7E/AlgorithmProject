@@ -7,6 +7,7 @@
 // Capa Usuario
 void clear(int n=st_clearlines, char m='\n'); // For our program code to be compilable in other operating systems we should create our own functions of cleaning and pausing cuz these come from libraries which often depends on it
 void pause(); // Getch's imitation but available independent of OS
+void printInformation(int _actype); // Print user information according to their account type
 
 // Capa Logica
 bool isString(string txt, int minlength=-1, int maxlength=-1); // Is it a string value?
@@ -22,7 +23,7 @@ void serverConection(){}
 
 
 /*** FUNCTIONS DECLARATION ***/
-
+/* ### USER LAYER ### */
 void clear(int n, char m){ // n=30 m='\'
     cout<<string(n,m);
 }
@@ -31,7 +32,34 @@ void pause(){
     cin.ignore(st_clearlines,'\n'); // Ignore newline in stream
     cin.get(); // Actually waits for an input character
 }
+void printInformation(int _actype){
+    // They all but enterprise have person information
+    if(_actype!=3){ // Print Person struct information
+        cout<<"ID: "<<user->id<<endl;
+        cout<<"Nombre completo: "<<user->name<<" "<<user->lastname<<endl;
+        cout<<"Fecha de nacimiento: "<<user->borndate<<endl;
+        cout<<"DNI: "<<user->dni<<endl;
+        cout<<"Información de contacto: "<<endl;
+        cout<<"\t Email: "<<user->contact.email<<endl;
+        cout<<"\t Telefono 1: "<<user->contact.telf1<<endl;
+        cout<<"\t Telefono 2: "<<user->contact.telf2<<endl;
+        cout<<"\t Direccion: "<<user->contact.address<<endl;
+    }
+    switch(_actype){ /*** ERROR USER VARIABLE TYPE IS PERSON, NOT WORKER OR ENTERPRISE ***/
+        case 1: // Worker
+            // cout<<"Profesion: "<<user->wProfession<<endl;
+            // cout<<""<<user->A<<endl;
+            break;
+        case 2: // Enterprise
+            break;
+        case 3: // Admin
+            break;
+        default: return;
+    }
+}
 
+
+/* ### LOGIC LAYER ### */
 bool isString(string txt, int minlength, int maxlength){
     if( minlength!=-1) if( txt.length() <= minlength ) return false;
     if( maxlength!=-1) if( txt.length() >= maxlength ) return false;

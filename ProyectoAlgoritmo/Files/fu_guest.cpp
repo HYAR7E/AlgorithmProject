@@ -41,8 +41,19 @@ void ac0_changeData(){
 
 /* ### LOGIC LAYER ### */
 bool _chooseAccountType(int _actype){
-    user->accounttype = _actype;
-    // Add to workers
+    if( !user->setAccountType(_actype) ) return false; // Operation failed, maybe the user has already picked his account type
+    switch(_actype){ // Add to global array
+        case 2:
+            workers[_iwk].setPerson(*user); // Send user value to 'setPerson' function
+            if( !user->setWorker( &workers[_iwk] ) ) return false; // Send new worker element and return false if failed
+            _iwk++; // Iterate variable
+            break;
+        case 3:
+            enterprises[_iet].setPerson(*user); // Send user value to 'setPerson' function
+            if( !user->setEnterprise( &enterprises[_iet] ) ) return false; // Send new enterprise element and return false if failed
+            _iet++; // Iterate variable
+            break;
+    }
     // Send to servidor and return true/false
     return true;
 }

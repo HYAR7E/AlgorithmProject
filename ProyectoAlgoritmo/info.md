@@ -113,6 +113,23 @@
         Changed file name 'f_program.cpp' to 'f_reglog.cpp'
 
     CHANGES MADE v0.6 ( Add worker && enterprise functions )
+        Finalized _chooseAccountType with prevention of errors (only for worker and enterprise)
+        Added elements 'w_ma' and 'e_ma' to Person structure (worker_memoryaddress && enterprise_memoryaddress)
+            These elements lead to the "worker" and "enterprise" memory address
+        Added store user into worker or enterprise array when account type has been selected
+        Added function 'setPerson' in worker and enterprise structures to store Person element
+        Added function 'setWorker' and 'setEnterprise' to storage element memory address in Person, and prevent errors
+        *Added function 'printInformation' to print user information
+        *Added function '_changeData' to change user's data 
+
+
+
+
+
+
+
+
+
     CHANGES MADE v0.7 ( Add communication functions )
     CHANGES MADE v0.8 ( Add database conection and related functions )
     CHANGES MADE v0.9 ( Migrate to database functions )

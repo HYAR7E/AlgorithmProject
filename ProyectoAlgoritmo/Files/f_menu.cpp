@@ -12,7 +12,6 @@ void printAdminMenu();
 // Capa Logica
 // Capa Servidor
 
-
 /*** FUNCTIONS DECLARATION ***/
 /* ### USER LAYER ### */
 void printMMLog(int _case,int _res){

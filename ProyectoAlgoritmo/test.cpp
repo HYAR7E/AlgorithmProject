@@ -48,8 +48,32 @@ int avg(int *array, int length){
 };
 void sum(foo *f){
     cout<<"foo.var: "<<f->var<<endl;
+    cout<<"&foo: "<<f<<endl;
 };
+struct ctn{
+    string s; // default: ""
+    int i; // default: 0
+    char c; // default: ?
+    bool b; // default: 0 false
+    foo _foo;
+}_def;
 int main(){
+    // Pointer to nested structure
+    ctn* _pctn = NULL;
+    _pctn = &_def;
+    cout<<"_pctn->_foo.var: "<<_pctn->_foo.var<<endl;
+    // delete[] _pctn; // Delete pointer to avoid memory leaks // This is not necessary since we didn't use the operator 'new'
+
+    // Empty struct element values
+    ctn declared = ctn{""};
+    cout<<"Default: s: "<<_def.s<<endl; // ""
+    cout<<"Default: i: "<<_def.i<<endl; // 0
+    cout<<"Default: c: "<<_def.c<<endl; // ''
+    cout<<"Default: b: "<<_def.b<<endl; // 0:false
+    cout<<"Declared: s: "<<declared.s<<endl; // ""
+    cout<<"Declared: i: "<<declared.i<<endl; // 0
+    cout<<"Declared: c: "<<declared.c<<endl; // ''
+    cout<<"Declared: b: "<<declared.b<<endl; // 0:false
 
     /*** Sending arrays to as function parameter ***/
     int notes[4] = {15,16,17,18};
