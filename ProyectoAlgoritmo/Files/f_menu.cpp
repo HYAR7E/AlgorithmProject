@@ -36,6 +36,7 @@ void printMMLog(int _case,int _res){
     pause();
 }
 void printMenu(int _actype){ /**/
+    user->online = true; // Only change this value when user enter into menu
     switch(_actype){
         case 0: printGuestMenu();
             break;
@@ -48,21 +49,24 @@ void printMenu(int _actype){ /**/
     }
     // Logout
     user = &noone;
+    user->online = false; // Only change this value when user exit from menu
 }
 void printGuestMenu(){
     int opc=0;
     do{ // Repeat menu
         do{
             clear();
+            cout<<"ID: "<<user->id<<endl;
+            cout<<"Nombre: "<<user->name<<endl;
             cout<<"1. Escoger tipo de cuenta"<<endl;
-            cout<<"2. Cambiar datos"<<endl;
+            cout<<"2. Mis datos"<<endl;
             cout<<"3. Salir"<<endl;
             opc = getValidIntInput("Opc: ", "Introduzca una opcion valida");
         }while(opc<1||opc>3);
         switch(opc){
             case 1: if( ac0_chooseAccountType() ) return; // If account type changed
                 break;
-            case 2: ac0_changeData();
+            case 2: myData(user); // Global user function
                 break;
             case 3: return; // Exit
         }
@@ -79,16 +83,18 @@ void printWorkerMenu(){
             cout<<"3. Ver empresas"<<endl; // Open chat
             cout<<"4. Mensajes"<<endl;
             cout<<"5. Estado de postulaciones"<<endl;
-            cout<<"6. Salir"<<endl;
+            cout<<"6. Mi cuenta"<<endl;
+            cout<<"7. Salir"<<endl;
             opc = getValidIntInput("Opc: ", "Introduzca una opcion valida");
-        }while(opc<1||opc>6);
+        }while(opc<1||opc>7);
         switch(opc){
             case 1: break;
             case 2: break;
             case 3: break;
             case 4: break;
             case 5: break;
-            case 6: return; // Exit
+            case 6: myData(user);
+            case 7: return; // Exit
         }
     pause();
     }while(true); // Infinite bucle
@@ -102,15 +108,17 @@ void printEnterpriseMenu(){
             cout<<"2. Mis ofertas de trabajo"<<endl;
             cout<<"3. Mensajes"<<endl;
             cout<<"4. Modificar datos"<<endl;
-            cout<<"5. Salir"<<endl;
+            cout<<"5. Mi cuenta"<<endl;
+            cout<<"6. Salir"<<endl;
             opc = getValidIntInput("Opc: ", "Introduzca una opcion valida");
-        }while(opc<1||opc>5);
+        }while(opc<1||opc>6);
         switch(opc){
             case 1: break;
             case 2: break;
             case 3: break;
             case 4: break;
-            case 5: return; // Exit
+            case 5: myData(user);
+            case 6: return; // Exit
         }
     pause();
     }while(true); // Infinite bucle

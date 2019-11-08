@@ -48,7 +48,7 @@ int avg(int *array, int length){
 };
 void sum(foo *f){
     cout<<"foo.var: "<<f->var<<endl;
-    cout<<"&foo: "<<f<<endl;
+    cout<<"function &foo: "<<f<<endl;
 };
 struct ctn{
     string s; // default: ""
@@ -56,6 +56,7 @@ struct ctn{
     char c; // default: ?
     bool b; // default: 0 false
     foo _foo;
+    foo* _fma;
 }_def;
 int main(){
     // Pointer to nested structure
@@ -82,6 +83,7 @@ int main(){
     // Explanation: sending just 'notes' without any index sends the memory direction, and the function receive it as the value with '*array', then use it as if the value itself was sended
     // In other words to receive a memory direction and play it as the value u have to receive it like (int *direction)
     sum(&y);
+    cout<<"&foo: "<<&y<<endl;
 
     /*** Pointer to struct ***/
     foo *pointer = NULL;
@@ -177,4 +179,75 @@ int main(){
     _converter>>i_age; // Pass the value to a int variable
     cout<<"Converted integer value: "<<i_age<<endl;
 
+    /*** cout allows ? conditions ***/
+    cout<<"HELLO "<< (true?"WORLD":"DARKNESS MY OLD FRIEND") <<endl;
+    cout<<"cm\t";
+    cout<<"Email: "<<"neldoaf@hotmail.com"<<endl;
+
+    /*** variable from struct element memory address ***/
+    foo* _newfoo = NULL;
+    _newfoo = &y;
+    foo _nf = *_newfoo;
+    cout<<"WORKED? "<<_nf.getBar(7)<<endl;
+    cout<<"compared struct? "<< (&_nf==&y?"SI":"NO") <<endl;
+
+    /*** variable from struct element memory address ***/
+    char name[15]; // Empty char array
+    cout<<"Write ur name: ";
+    // cin.getline(name,15,'\n'); // Get input 15 length, store in 'name' variable and end if there is \n
+    cout<<"Name: "<<name<<endl;
+
+    /*** pass pointer value to another ***/
+    _newfoo; // Pointer to 'y' foo struct
+    foo* _otherfoo = NULL;
+    _otherfoo = _newfoo;
+    cout<<"_otherfoo->var "<<_otherfoo->var<<endl;
+
+    /*** void type pointer ***/
+    void *vpointer;
+
+    int v_int = 15; // Create a any type variable
+    vpointer = &v_int; // Pass the memory address
+    // To print its value we should first convert it into the data type it stores
+    // With (int*) we convert it into a memory address of a integer data type // Which is exactly what it stores
+    // Afterwards we should convert the memory address to the value with '*( (int*) pointer )'
+    // It works with '*(int*) pointer' too
+    cout<< *( (int*) vpointer) <<endl;
+    string v_str = "hola";
+    vpointer = &v_str;
+    cout<< *( (string*) vpointer) <<endl;
+    char v_chr = 'c';
+    vpointer = &v_chr;
+    cout<< *( (char*) vpointer) <<endl;
+    vpointer = &y;
+    cout<< ((foo*) vpointer)->getBar() <<endl; // Pointer to a struct
+
+    /*** pointer as a function parameter ***/
+    foo* _l = &y;
+    sum(_l);
+    cout<<"&_l: "<<&_l<<endl;
+    // By the output we can say that wen a pointer is sended as a parameter it doesn't have the same memory address than the real pointer
+
+    /*** segment violation with void type pointer ***/
+    void *_u = NULL;
+    ctn* _d = &_def; // def pointer
+    _d->_fma = _l; // Send ma of foo to def pointer
+    cout<<"_d->_fma : "<<_d->_fma<<endl;
+    cout<<"_d->_fma->var : "<<_d->_fma->var<<endl;
+    _u = _d; // Get memory address
+    cout<<"( (ctn*) _u)->fma->var : "<<( (ctn*) _u)->_fma->var<<endl;
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+/**/

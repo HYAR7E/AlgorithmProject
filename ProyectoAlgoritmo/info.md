@@ -52,8 +52,8 @@
         In function, parameter variable type can be emphasize by using '${type_name[0]}_' prefix as 'i_age' or 'x_name'
         In utilitaries functions, variables should be declared with no prefix
         In utilitaries functions, variables created to be compared should be declared with '_' prefix
-        In program functions, account menus functions should have the 'ac${account_type}_' prefix as ac0_changeInformation
-        In program functions, user menu functions should be declared with '_' prefix
+        In user functions, user layer account menu functions should have the 'ac${account_type}_' prefix as ac0_changeInformation
+        In user functions, global functions should be declared with no prefix as u_printData
     # Variable's specifications
         Global variables should be declared with no prefix in database.cpp (user)
         Global structures array should be declared with no prefix in database.cpp
@@ -69,6 +69,8 @@
         Logical layer is dedicated to process all the data from User layer and Server layer
             This layer returns data to User layer and Server layer
         Server layer is dedicated to communicate with the database
+    # Useful linux commands
+        grep -iRl "text" // Search text in all files recursively(in the actual directory) and show file names where it was found
 
 
     CHANGES MADE v0.3 (login/register utilitarie functions)
@@ -119,15 +121,20 @@
         Added store user into worker or enterprise array when account type has been selected
         Added function 'setPerson' in worker and enterprise structures to store Person element
         Added function 'setWorker' and 'setEnterprise' to storage element memory address in Person, and prevent errors
-        *Added function 'printInformation' to print user information
-        *Added function '_changeData' to change user's data 
-
-
-
-
-
-
-
+        Added function 'print${account_type}Data' for guest, worker and enterprise in structs.cpp
+        Created new file 'fu_global.cpp'
+        Added global function 'myData' in 'fu_global.cpp' to show data
+            Reusable function that check if the logged in user is the one to be printed if so print element code and allows to edit data
+            Used void data type variable
+        Added global function 'changeData' in 'fu_global.cpp' to change user's data
+            Used if sentences instead of switch sentence
+            Changes are specified by element code printed in 'myData' only if it is the logged user
+            Added restrictions to input values
+            Added support for string with spaces
+        Added isMail function in f_utilitaries.cpp
+        *Active/inactive status of cv according to filled data
+        *Do not allow to choose account type if there is empty user data
+ 
 
 
     CHANGES MADE v0.7 ( Add communication functions )

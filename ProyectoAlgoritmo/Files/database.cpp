@@ -38,5 +38,4 @@ bool preload(){
     // cout<<user->accounttype<<endl; cin.ignore(1);
     return true;
 }
-
 #endif

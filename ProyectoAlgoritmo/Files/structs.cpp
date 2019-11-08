@@ -2,9 +2,12 @@
 #define STRUCT_FILE
 // Structures prototype
 struct Person;
+// Previous definition of worker and enterprise to allow the variable type for memory address storage in Person
 struct Worker;
 struct Enterprise;
 
+
+// Structures declaration
 struct ContactInfo{
     string email;
     string telf1;
@@ -22,6 +25,14 @@ struct ContactInfo{
     void setAddress(string _address){
         address = _address;
     }
+    void printContactData(bool _code){
+        // Print code for modification
+        cout<< (_code ? "cem \t":"") <<"Email: "<<email<<endl;
+        cout<< (_code ? "ct1 \t":"") <<"Telefono 1: "<<telf1<<endl;
+        cout<< (_code ? "ct2 \t":"") <<"Telefono 2: "<<telf2<<endl;
+        cout<< (_code ? "cad \t":"") <<"Direccion: "<<address<<endl;
+        // if( address != "") cout<<"\tDireccion: "<<address<<endl; // Do not show empty data
+    }
 };
 struct Person{
     int id; // For security reasons we can't have the dni as the id of person, so we create a random number
@@ -37,6 +48,7 @@ struct Person{
     Worker* w_ma; // Memory address of the Worker or Enterprise struct owned by this Person
     Enterprise* e_ma; // Memory address of the Worker or Enterprise struct owned by this Person
         // A Enterprise can be owned by more than one person
+// Setter functions
     bool set(int _id, string _name, string _lastname, string _borndate, string _dni, string _password){ // Constructor or setter
         id = _id;
         name = _name;
@@ -67,21 +79,46 @@ struct Person{
         e_ma = _e_ma;
         return true;
     }
+    // Print function
+    void printData(bool _code){
+        // Print code for modification
+        cout<< (_code ? "   \t":"") <<"ID: "<<id<<endl;
+        cout<< (_code ? "pnm\t":"") <<"Nombre: "<<name<<endl;
+        cout<< (_code ? "pln\t":"") <<"Apellido: "<<lastname<<endl;
+        cout<< (_code ? "pwd\t":"") <<"Contrasena: "<<password<<endl;
+        cout<< (_code ? "   \t":"") <<"Fecha de nacimiento: "<<borndate<<endl;
+        cout<< (_code ? "   \t":"") <<"DNI: "<<dni<<endl;
+        cout<< (_code ? "   \t":"") <<"Activo ahora: "<< ( online? "SI":"NO" ) <<endl;
+        contact.printContactData(_code); // Contact data && send _code
+    }
 };
 struct Worker{
-    Person wData;
-    string wProfession;
+    Person one;
+    string profession;
     string description;
     void setPerson(Person _person){ // Created by Person
-        wData = _person;
+        one = _person;
+    }
+    void printData(bool _code){
+        cout<<"Informacion del trabajador\n"<<endl;
+        one.printData(_code); // Person data && end _code
+        cout<< (_code ? "wpf\t":"") <<"Profesion: "<<profession<<endl;
+        cout<< (_code ? "wdc\t":"") <<"Descripcion del perfil: "<<description<<endl;
     }
 };
 struct Enterprise{
-    Person eDirector;
-    string eName;
+    Person one;
+    string name;
     string description;
     void setPerson(Person _person){ // Created by Person
-        eDirector = _person;
+        one = _person;
+    }
+    void printData(bool _code){
+        cout<<"Informacion del director\n"<<endl;
+        one.printData(_code); // Print director data
+        cout<<"\nInformacion de la empresa\n"<<endl;
+        cout<< (_code ? "enm\t":"") <<"Nombre: "<<name<<endl;
+        cout<< (_code ? "edc\t":"") <<"Descripcion: "<<description<<endl;
     }
 };
 struct Request{
@@ -100,5 +137,4 @@ struct Applicants{ // Applicants for working
     Request aRequest;
     string aMessaege;
 };
-
 #endif

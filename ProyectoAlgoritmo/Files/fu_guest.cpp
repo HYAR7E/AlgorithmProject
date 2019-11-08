@@ -4,11 +4,9 @@
 /*** FUNCTIONS PROTOTYPE ***/
 // Capa Usuario
 bool ac0_chooseAccountType();
-void ac0_changeData();
 
 // Capa Logica
 bool _chooseAccountType(int _actype); // Change user's account type
-bool _changeData();
 
 // Capa Servidor
 
@@ -33,22 +31,20 @@ bool ac0_chooseAccountType(){
     if( !_r ) cout<<"Un error ha ocurrido y los cambios no han podido ser realizados";
     else cout<<"Se ha seleccionado el tipo de cuenta correctamente";
     cout<<endl;
+    pause();
     return _r;
-}
-void ac0_changeData(){
-    return;
 }
 
 /* ### LOGIC LAYER ### */
 bool _chooseAccountType(int _actype){
     if( !user->setAccountType(_actype) ) return false; // Operation failed, maybe the user has already picked his account type
     switch(_actype){ // Add to global array
-        case 2:
+        case 1:
             workers[_iwk].setPerson(*user); // Send user value to 'setPerson' function
             if( !user->setWorker( &workers[_iwk] ) ) return false; // Send new worker element and return false if failed
             _iwk++; // Iterate variable
             break;
-        case 3:
+        case 2:
             enterprises[_iet].setPerson(*user); // Send user value to 'setPerson' function
             if( !user->setEnterprise( &enterprises[_iet] ) ) return false; // Send new enterprise element and return false if failed
             _iet++; // Iterate variable
@@ -56,9 +52,6 @@ bool _chooseAccountType(int _actype){
     }
     // Send to servidor and return true/false
     return true;
-}
-bool _changeData(){
-    return false;
 }
 
 /* ### SERVER LAYER ### */

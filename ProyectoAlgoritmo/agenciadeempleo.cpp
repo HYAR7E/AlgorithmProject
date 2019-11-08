@@ -20,6 +20,7 @@ using namespace std; // Allow to avoid std:: prefix
 
 // Functions
 #include "Files/f_utilitaries.cpp" // Utilitaries functions to suport other functions
+#include "Files/fu_global.cpp" // Global user suport functions
 #include "Files/fu_guest.cpp" // Guest User Functions
 #include "Files/fu_worker.cpp" // Worker User Functions
 #include "Files/fu_enterprise.cpp" // Enterprise User Functions
@@ -42,8 +43,8 @@ void printMainMenu(){
     // Main menu
     mainmenu:
     clear();
-cout<<"mainmenu: id: "<<user->id<<endl;
-cout<<"mainmenu: ac: "<<user->accounttype<<endl;
+// cout<<"mainmenu: id: "<<user->id<<endl;
+// cout<<"mainmenu: ac: "<<user->accounttype<<endl;
     cout<<"1. Iniciar sesion"<<endl;
     cout<<"2. Registrarse"<<endl;
     cout<<"3. Salir"<<endl;

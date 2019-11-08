@@ -7,11 +7,11 @@
 // Capa Usuario
 void clear(int n=st_clearlines, char m='\n'); // For our program code to be compilable in other operating systems we should create our own functions of cleaning and pausing cuz these come from libraries which often depends on it
 void pause(); // Getch's imitation but available independent of OS
-void printInformation(int _actype); // Print user information according to their account type
 
 // Capa Logica
 bool isString(string txt, int minlength=-1, int maxlength=-1); // Is it a string value?
 bool isNumber(string num); // Is it a number value?
+bool isMail(string mail); // Is it a mail value?
 int convertToInt(string num); // Convert a string value to int value
 int getValidIntInput(string x_Ask, string x_Error); // Avoid program error when introducing string values into int variable input
 int getCurrentTime(char f); // Gets current time _f: Y,M,D,h,m,s
@@ -29,40 +29,15 @@ void clear(int n, char m){ // n=30 m='\'
 }
 void pause(){
     // Right after a input is readed there left newlines in stream which could cause the pause to be skipped instantly, so we ignore those  inputs left
-    cin.ignore(st_clearlines,'\n'); // Ignore newline in stream
+    cin.ignore(1,'\n'); // Ignore newline in stream
     cin.get(); // Actually waits for an input character
-}
-void printInformation(int _actype){
-    // They all but enterprise have person information
-    if(_actype!=3){ // Print Person struct information
-        cout<<"ID: "<<user->id<<endl;
-        cout<<"Nombre completo: "<<user->name<<" "<<user->lastname<<endl;
-        cout<<"Fecha de nacimiento: "<<user->borndate<<endl;
-        cout<<"DNI: "<<user->dni<<endl;
-        cout<<"Información de contacto: "<<endl;
-        cout<<"\t Email: "<<user->contact.email<<endl;
-        cout<<"\t Telefono 1: "<<user->contact.telf1<<endl;
-        cout<<"\t Telefono 2: "<<user->contact.telf2<<endl;
-        cout<<"\t Direccion: "<<user->contact.address<<endl;
-    }
-    switch(_actype){ /*** ERROR USER VARIABLE TYPE IS PERSON, NOT WORKER OR ENTERPRISE ***/
-        case 1: // Worker
-            // cout<<"Profesion: "<<user->wProfession<<endl;
-            // cout<<""<<user->A<<endl;
-            break;
-        case 2: // Enterprise
-            break;
-        case 3: // Admin
-            break;
-        default: return;
-    }
 }
 
 
 /* ### LOGIC LAYER ### */
 bool isString(string txt, int minlength, int maxlength){
-    if( minlength!=-1) if( txt.length() <= minlength ) return false;
-    if( maxlength!=-1) if( txt.length() >= maxlength ) return false;
+    if( minlength!=-1) if( txt.length() < minlength ) return false;
+    if( maxlength!=-1) if( txt.length() > maxlength ) return false;
 
     char letter;
     for(int i=0; i<txt.length(); i++){
@@ -91,6 +66,27 @@ bool isNumber(string num){
         }
     }
     return true;
+}
+bool isMail(string mail){
+    char letter;
+    bool _arroba = false;
+    bool _dot = false;
+    int _order = 5;
+    for(int i=0; i<mail.length(); i++){
+        letter = mail[i];
+        if(letter=='@'){
+            _arroba = true;
+            _dot = false;
+            _order *= 2; // 5 -> 10 -> 12 : right order
+            continue;
+        }
+        if(letter=='.'){
+            _dot = true;
+            _order += 2; // 5 -> 7 -> 14 : wrong order
+            continue;
+        }
+    }
+    return (_arroba && _dot && _order==12);
 }
 int convertToInt(string x_num){
     if( !isNumber(x_num) ) return 0;
