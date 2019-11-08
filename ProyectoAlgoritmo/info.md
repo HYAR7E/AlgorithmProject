@@ -1,7 +1,7 @@
-# ALGORITHM PROYECT - work agency
+# ALGORITHM PROJECT - work agency
 ## by HYAR7E
 
-    PROYECT ESPECIFICATIONS
+    PROJECT ESPECIFICATIONS
         Struct data Profession is added as keywords like enginner, nurse, assassin, etc.
     *Main Menu
         *Register
@@ -70,6 +70,8 @@
             This layer returns data to User layer and Server layer
         Server layer is dedicated to communicate with the database
     # Useful linux commands
+        g++ file.cpp -o projectname // Compile program and create a 'projectname' binary file
+        ./projectname // Execute the binary compiled file
         grep -iRl "text" // Search text in all files recursively(in the actual directory) and show file names where it was found
 
 
@@ -114,7 +116,7 @@
         Created new files 'f_menu.cpp','fu_guest.cpp','fu_worker.cpp','fu_enterprise.cpp','fu_admin.cpp'
         Changed file name 'f_program.cpp' to 'f_reglog.cpp'
 
-    CHANGES MADE v0.6 ( Add worker && enterprise functions )
+    CHANGES MADE v0.6 ( Add guest && worker && enterprise functions )
         Finalized _chooseAccountType with prevention of errors (only for worker and enterprise)
         Added elements 'w_ma' and 'e_ma' to Person structure (worker_memoryaddress && enterprise_memoryaddress)
             These elements lead to the "worker" and "enterprise" memory address
@@ -132,9 +134,31 @@
             Added restrictions to input values
             Added support for string with spaces
         Added isMail function in f_utilitaries.cpp
-        *Active/inactive status of cv according to filled data
-        *Do not allow to choose account type if there is empty user data
- 
+
+        Added time.h library for compatibility with windows
+        Corrected isMail function in f_utilitaries.cpp (deleted _order, there could be mails with more than one dot)
+        Show message if data changed correctly
+        Modified isString function to allow empty spaces
+        Erased pause in printGuestMenu function in f_menu.cpp
+        Fixed bugs in function myData in fu_global.cpp
+        Modified pause function in f_utilitaries.cpp, now allows one boolean parameter
+            (true: two cin.ignore, often used after menu option input /default)
+            (false: avoid sending remaining stream data from pevious cin input)
+        Converted pause to pauseClear function in f_utilitaries.cpp, now it clear the data stream remaining from previous cin input, and pauses the program (only one at the time)
+        Do not allow to choose account type if there is empty user data
+        --- GUEST MENU FINISHED ---
+        Fixed pauseClear in user menu functions
+
+        *(Guest)Check if string is full spaces (at re set data)
+        *(worker)Active/inactive status of cv according to filled data
+
+
+
+
+
+
+
+
 
 
     CHANGES MADE v0.7 ( Add communication functions )

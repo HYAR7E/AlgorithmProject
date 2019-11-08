@@ -10,6 +10,7 @@
 #include <iostream> // Basic language library
 #include <stdlib.h> // Rand number generation
 #include <sstream> // Convert string to int
+#include <time.h>  // Get system time and timer object
 using namespace std; // Allow to avoid std:: prefix
 
 // Structs file

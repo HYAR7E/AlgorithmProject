@@ -33,7 +33,7 @@ void printMMLog(int _case,int _res){
         }
     }
     cout<<endl;
-    pause();
+    pauseClear();
 }
 void printMenu(int _actype){ /**/
     user->online = true; // Only change this value when user enter into menu
@@ -63,14 +63,14 @@ void printGuestMenu(){
             cout<<"3. Salir"<<endl;
             opc = getValidIntInput("Opc: ", "Introduzca una opcion valida");
         }while(opc<1||opc>3);
+        pauseClear(); // Clear data stream remaining from previous cin input
         switch(opc){
             case 1: if( ac0_chooseAccountType() ) return; // If account type changed
                 break;
-            case 2: myData(user); // Global user function
-                break;
+            case 2: myData(user); break; // Global user function
             case 3: return; // Exit
         }
-    pause();
+    pauseClear(); // Pause
     }while(true); // Infinite bucle
 }
 void printWorkerMenu(){
@@ -87,16 +87,17 @@ void printWorkerMenu(){
             cout<<"7. Salir"<<endl;
             opc = getValidIntInput("Opc: ", "Introduzca una opcion valida");
         }while(opc<1||opc>7);
+        pauseClear(); // Clear data stream remaining from previous cin input
         switch(opc){
             case 1: break;
             case 2: break;
             case 3: break;
             case 4: break;
             case 5: break;
-            case 6: myData(user);
+            case 6: myData(user); break;
             case 7: return; // Exit
         }
-    pause();
+    pauseClear();
     }while(true); // Infinite bucle
 }
 void printEnterpriseMenu(){
@@ -112,6 +113,7 @@ void printEnterpriseMenu(){
             cout<<"6. Salir"<<endl;
             opc = getValidIntInput("Opc: ", "Introduzca una opcion valida");
         }while(opc<1||opc>6);
+        pauseClear(); // Clear data stream remaining from previous cin input
         switch(opc){
             case 1: break;
             case 2: break;
@@ -120,7 +122,7 @@ void printEnterpriseMenu(){
             case 5: myData(user);
             case 6: return; // Exit
         }
-    pause();
+    pauseClear();
     }while(true); // Infinite bucle
 }
 void printAdminMenu(){
@@ -134,13 +136,14 @@ void printAdminMenu(){
             cout<<"4. Salir"<<endl;
             opc = getValidIntInput("Opc: ", "Introduzca una opcion valida");
         }while(opc<1||opc>4);
+        pauseClear(); // Clear data stream remaining from previous cin input
         switch(opc){
             case 1: break;
             case 2: break;
             case 3: break;
             case 4: return; // Exit
         }
-    pause();
+    pauseClear();
     }while(true); // Infinite bucle
 }
 

@@ -20,6 +20,9 @@ void myData(Person *_user){ // _user is memory address of Person structure
     if(_same) cout<<"cod\tDato: valor\n\n"; // Title (?)
     void *_u = NULL; // Void type pointer variable, we use this to store the variable memory address of any data type
     /* ERROR: doesn't allow to use 'switch' statement cuz variables declared within 'switch' overpass 'break' sentences so we would get a same name variable multiple declaration error so we opted for 'if' statement */
+    // _u.printData(_same); // Recursively print data
+    // printData(_same) when _same is true should print all data recursively (worker/enterprise, person, contact)
+        // When _same is false, should print only general data
     if(_user->accounttype == 0){ // Guest
         _u = _user; // Get the Person memory address
         ((Person*) _u)->printData(_same);
@@ -32,23 +35,29 @@ void myData(Person *_user){ // _user is memory address of Person structure
          _u = (_user->e_ma); // Get the Enterprise memory address
         ((Enterprise*) _u)->printData(_same);
     }
-    // _u.printData(_same); // Recursively print data
-    pause();
     if( !_same ) return; // Don't allow to change data if the given user is not the logged in user
+    pauseClear(); // Pause for watch printed data
 
     // Change data
     string _opc = "f";
     string _code="",_value=""; // Empty code and value
     cout<<"Desea realizar cambios en sus datos? (y/n): "; cin>>_opc;
-    if( !isString(_opc,1,1) || (_opc!="y" || _opc!="Y") ) return; // User don't want to change his data
+    pauseClear(); // Earse remaining stream data
+    if( !isString(_opc,1,1) || (_opc!="y" && _opc!="Y") ) return; // User don't want to change his data
 
     cout<<"Que dato desea cambiar? (code): "; cin>>_code; // Get only three characters
-    if( !isString(_code,3,3) ) return; // Failed at enter code
+    pauseClear(); // Earse remaining stream data
+    if( _code.length() != 3 ) return; // Failed at enter code
+
     cout<<"Introduzca el valor a asignar: ";
     getline(cin,_value); // Get the full line with all spaces
+    // pauseClear(); // We don't pause after getline(cin,_var) cuz getline does not remain any data
+
     // Why to send accounttype too? cuz '_changeData' function is gonna be used by admin too, so if we don't send account type parameter he'll can not make changes
     if( !changeData(_user->accounttype,_code,_value) ){ // Send account_type, code, value
-        cout<<"Ha ocurrido un error y los datos no han podido ser procesados."<<endl;
+        cout<<"\nHa ocurrido un error y los datos no han podido ser procesados."<<endl;
+    }else{ // Changed correctly
+        cout<<"\nSe ha modificado correctamente."<<endl;
     }
     return;
 }
@@ -98,6 +107,10 @@ bool changeData(int _actype, string _code, string _value){
             if( !isString(_value,4) ) return false;
             user->lastname = _value;
 
+        }else if(_code == "pwd"){
+            if( _value.length()<6 || _value.length()>15 ) return false;
+            user->password = _value;
+
         }else{ // Code does not exists
             return false;
         }
@@ -136,6 +149,10 @@ bool changeData(int _actype, string _code, string _value){
             if( !isString(_value,4) ) return false;
             _user->one.lastname = _value;
 
+        }else if(_code == "pwd"){
+            if( _value.length()<6 || _value.length()>15 ) return false;
+            _user->one.password = _value;
+
         }else{ // Code does not exists
             return false;
         }
@@ -172,6 +189,10 @@ bool changeData(int _actype, string _code, string _value){
         }else if(_code == "pln"){
             if( !isString(_value,4) ) return false;
             _user->one.lastname = _value;
+
+        }else if(_code == "pwd"){
+            if( _value.length()<6 || _value.length()>15 ) return false;
+            _user->one.password = _value;
 
         }else{ // Code does not exists
             return false;

@@ -6,6 +6,7 @@ struct Person;
 struct Worker;
 struct Enterprise;
 
+// In printData function, when _code is false do not show data, or do not show empty data
 
 // Structures declaration
 struct ContactInfo{
@@ -30,8 +31,8 @@ struct ContactInfo{
         cout<< (_code ? "cem \t":"") <<"Email: "<<email<<endl;
         cout<< (_code ? "ct1 \t":"") <<"Telefono 1: "<<telf1<<endl;
         cout<< (_code ? "ct2 \t":"") <<"Telefono 2: "<<telf2<<endl;
-        cout<< (_code ? "cad \t":"") <<"Direccion: "<<address<<endl;
-        // if( address != "") cout<<"\tDireccion: "<<address<<endl; // Do not show empty data
+        // if is logged in user OR if is not logged user and the string is not empty
+        if( _code || ( !_code && address!="") ) cout<<"cad \tDireccion: "<<address<<endl;
     }
 };
 struct Person{
@@ -80,14 +81,13 @@ struct Person{
         return true;
     }
     // Print function
-    void printData(bool _code){
-        // Print code for modification
-        cout<< (_code ? "   \t":"") <<"ID: "<<id<<endl;
+    void printData(bool _code){ // Print code for modification
+        if( _code ) cout<<"    \tID: "<<id<<endl; // Only if it's the actual user
         cout<< (_code ? "pnm\t":"") <<"Nombre: "<<name<<endl;
         cout<< (_code ? "pln\t":"") <<"Apellido: "<<lastname<<endl;
-        cout<< (_code ? "pwd\t":"") <<"Contrasena: "<<password<<endl;
+        if( _code ) cout<<"pwd \tContrasena: "<<password<<endl; // Only if it's the actual user
         cout<< (_code ? "   \t":"") <<"Fecha de nacimiento: "<<borndate<<endl;
-        cout<< (_code ? "   \t":"") <<"DNI: "<<dni<<endl;
+        if( _code ) cout<<"    \tDNI: "<<dni<<endl; // Only if it's the actual user
         cout<< (_code ? "   \t":"") <<"Activo ahora: "<< ( online? "SI":"NO" ) <<endl;
         contact.printContactData(_code); // Contact data && send _code
     }
@@ -100,7 +100,7 @@ struct Worker{
         one = _person;
     }
     void printData(bool _code){
-        cout<<"Informacion del trabajador\n"<<endl;
+        cout<<"Informacion del trabajador"<<endl;
         one.printData(_code); // Person data && end _code
         cout<< (_code ? "wpf\t":"") <<"Profesion: "<<profession<<endl;
         cout<< (_code ? "wdc\t":"") <<"Descripcion del perfil: "<<description<<endl;
@@ -114,8 +114,10 @@ struct Enterprise{
         one = _person;
     }
     void printData(bool _code){
-        cout<<"Informacion del director\n"<<endl;
-        one.printData(_code); // Print director data
+        if( _code ){ // If it's the actual user
+            cout<<"Informacion del director\n"<<endl;
+            one.printData(_code); // Print director data
+        }
         cout<<"\nInformacion de la empresa\n"<<endl;
         cout<< (_code ? "enm\t":"") <<"Nombre: "<<name<<endl;
         cout<< (_code ? "edc\t":"") <<"Descripcion: "<<description<<endl;

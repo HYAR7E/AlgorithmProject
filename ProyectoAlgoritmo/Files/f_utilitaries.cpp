@@ -6,7 +6,7 @@
 
 // Capa Usuario
 void clear(int n=st_clearlines, char m='\n'); // For our program code to be compilable in other operating systems we should create our own functions of cleaning and pausing cuz these come from libraries which often depends on it
-void pause(); // Getch's imitation but available independent of OS
+void pauseClear(); // Getch's imitation but available independent of OS
 
 // Capa Logica
 bool isString(string txt, int minlength=-1, int maxlength=-1); // Is it a string value?
@@ -27,10 +27,10 @@ void serverConection(){}
 void clear(int n, char m){ // n=30 m='\'
     cout<<string(n,m);
 }
-void pause(){
-    // Right after a input is readed there left newlines in stream which could cause the pause to be skipped instantly, so we ignore those  inputs left
-    cin.ignore(1,'\n'); // Ignore newline in stream
-    cin.get(); // Actually waits for an input character
+void pauseClear(){
+    // Right after a input is readed there left newlines in stream which could cause the pause to be skipped instantly, so we ignore those inputs left
+    // cout<<"pause"<<endl;
+    cin.ignore(30,'\n'); // Ignore characteres left from stream
 }
 
 
@@ -42,7 +42,8 @@ bool isString(string txt, int minlength, int maxlength){
     char letter;
     for(int i=0; i<txt.length(); i++){
         letter = txt.at(i);
-        if( !((letter >= 'a' && letter <= 'z') || (letter >= 'A' && letter <= 'Z')) ){
+        // Allow lowercase, uppercase and spaces
+        if( !((letter >= 'a' && letter <= 'z') || (letter >= 'A' && letter <= 'Z') || letter==' ') ){
             return false;
         }
     }
@@ -71,22 +72,19 @@ bool isMail(string mail){
     char letter;
     bool _arroba = false;
     bool _dot = false;
-    int _order = 5;
     for(int i=0; i<mail.length(); i++){
         letter = mail[i];
         if(letter=='@'){
             _arroba = true;
             _dot = false;
-            _order *= 2; // 5 -> 10 -> 12 : right order
             continue;
         }
         if(letter=='.'){
             _dot = true;
-            _order += 2; // 5 -> 7 -> 14 : wrong order
             continue;
         }
     }
-    return (_arroba && _dot && _order==12);
+    return (_arroba && _dot);
 }
 int convertToInt(string x_num){
     if( !isNumber(x_num) ) return 0;

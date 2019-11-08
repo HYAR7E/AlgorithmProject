@@ -51,17 +51,22 @@ int _register(){
     // Ask personal data
     cout<<"Nombre: "; cin>>_name;
     if( !isString(_name,3) ) return -1;
+    pauseClear();
+
     cout<<"Primer apellido: "; cin>>_lastname;
     if( !isString(_lastname,4) ) return -1;
+    pauseClear();
 
     // BornDate
     cout<<"Fecha de nacimiento DD/MM/AAAA :"; cin>>_borndate;
     if( !isValidDate(_borndate) ) return -1; // Check date
     if( !isValidDate(_borndate, true) ) return -2; // Check age
+    pauseClear();
 
     // Ask and check dni
     cout<<"DNI: "; cin>>_dni;
     if( !isNumber(_dni) || _dni.length() != 8 ) return -1;
+    pauseClear();
 
     // Verify dni already exist
     if( userExists(_dni) ) return 0; // User already exists
@@ -75,6 +80,7 @@ int _register(){
         i_pass++;
         goto inputpass;
     }
+    pauseClear();
 
     // For security reasons we can't have the dni as the id of person, so we create a random number
     int _id = genUniqueRandId(); // Generate a random number and check if it is not taken
