@@ -20,6 +20,7 @@ using namespace std; // Allow to avoid std:: prefix
 #include "Files/database.cpp" // Global and static variables
 
 // Functions
+// #include "Files/prototypes.cpp" // Function owner of all prototypes
 #include "Files/f_utilitaries.cpp" // Utilitaries functions to suport other functions
 #include "Files/fu_global.cpp" // Global user suport functions
 #include "Files/fu_guest.cpp" // Guest User Functions

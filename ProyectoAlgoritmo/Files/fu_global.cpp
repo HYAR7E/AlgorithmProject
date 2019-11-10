@@ -3,20 +3,35 @@
 #define FU_GLOBAL
 /*** FUNCTIONS PROTOTYPE ***/
 // Capa Usuario
-void myData(Person *_user); // Print user data
+void myData(Person *_user); // Print specific user data with possibility of modify
+void printWorkers(string **_data=NULL, int _length=0); // Recursive function, double default value cuz we'll call it without arguments from the menu
+void printEnterprises(); // Recursive function
+
 // Capa Logica
-bool changeData(int _actype, string _code, string _value); // Change user data
+bool mll_changeData(int _actype, string _code, string _value); // Change user data
+bool mll_getWorkers();
+bool mll_getEnterprises();
+Person *getPersonStructAddress(int _userid); // Get user struct direction from accounts array and return it to store in 'user' global pointer variable
+bool userIdExists(int _userid); // We can't mix the functions getPersonStruct with userIdExists for security good practices
+
 // Capa Servidor
+bool pullChangesInUser(int _userid);
 
 
 /*** FUNCTIONS DECLARATION ***/
 /* ### USER LAYER ### */
-void myData(Person *_user){ // _user is memory address of Person structure
+void myData(int _id){ // _user is memory address of Person structure
+    // Get user struct
+    Person* _user = NULL;
+    _user = getPersonStructAddress(_id); // Get user person struct by id
+
     bool _same;
     /* ERROR: The pointer parameter doesn't have the same memory address than the original pointer, so we can't compare 'em, instead we compare the user->id*/
     if( user->id == _user->id ) _same=true; // If logged in user is the given user
     // Get user account type and create a _u variable of the account type indicated
     clear();
+
+
     if(_same) cout<<"cod\tDato: valor\n\n"; // Title (?)
     void *_u = NULL; // Void type pointer variable, we use this to store the variable memory address of any data type
     /* ERROR: doesn't allow to use 'switch' statement cuz variables declared within 'switch' overpass 'break' sentences so we would get a same name variable multiple declaration error so we opted for 'if' statement */
@@ -35,14 +50,17 @@ void myData(Person *_user){ // _user is memory address of Person structure
          _u = (_user->e_ma); // Get the Enterprise memory address
         ((Enterprise*) _u)->printData(_same);
     }
-    if( !_same ) return; // Don't allow to change data if the given user is not the logged in user
-    pauseClear(); // Pause for watch printed data
+    cout<<endl;
 
-    // Change data
+
+    // CHANGE DATA
+    if( !_same ) return; // Don't allow to change data if the given user is not the logged in user
+    // pauseClear(); // Pause for watch printed data
+
     string _opc = "f";
     string _code="",_value=""; // Empty code and value
     cout<<"Desea realizar cambios en sus datos? (y/n): "; cin>>_opc;
-    pauseClear(); // Earse remaining stream data
+    // pauseClear(); // Earse remaining stream data
     if( !isString(_opc,1,1) || (_opc!="y" && _opc!="Y") ) return; // User don't want to change his data
 
     cout<<"Que dato desea cambiar? (code): "; cin>>_code; // Get only three characters
@@ -53,17 +71,53 @@ void myData(Person *_user){ // _user is memory address of Person structure
     getline(cin,_value); // Get the full line with all spaces
     // pauseClear(); // We don't pause after getline(cin,_var) cuz getline does not remain any data
 
-    // Why to send accounttype too? cuz '_changeData' function is gonna be used by admin too, so if we don't send account type parameter he'll can not make changes
-    if( !changeData(_user->accounttype,_code,_value) ){ // Send account_type, code, value
+    // Why to send accounttype too? cuz 'mll__changeData' function is gonna be used by admin too, so if we don't send account type parameter he'll can not make changes
+    if( !mll_changeData(_user->accounttype,_code,_value) ){ // Send account_type, code, value
         cout<<"\nHa ocurrido un error y los datos no han podido ser procesados."<<endl;
     }else{ // Changed correctly
         cout<<"\nSe ha modificado correctamente."<<endl;
     }
+    // pauseClear(); // Pause to watch output
     return;
 }
+void printWorkers(string **data, int _length){ // Print '_length' workers
+    if(data==NULL){ // First execution it will receive no data, so by default data=NULL
+        // Get the data and send it to this function by recursively calling this, do note that it's calling this function again, so this execution does not have the data
+        if( !mll_getWorkers() ){
+            cout<<"No hay trabajadores registrados."<<endl;
+        }else{ // This will be executed when data is already printed
+            int _id;
+            cout<<"\nSeleccionar trabajador (0: salir)"<<endl;
+            _id = getValidIntInput("ID: ","Formato incorrecto");
+            pauseClear(); // Clear stream of previous cin
+            if( _id == 0 ) return;
+            if( !userIdExists(_id) ){ // Id 
+                cout<<"El ID indicado no existe"<<endl;
+                return;
+            }
+            myData(_id); // Print user data
+        }
+        return; // In the second executation we will exit
+    }
+    // data == &_pointerworker == &&workersinfo; // Print the memory address // iterate to change worker
+    // *data == _pointerworker == &workersinfo; // Print each worker // iterate to change data
+    // **data == *_pointerworker == workersinfo; // Print each data // never iterate
+    // Print the received data
+    cout<<"TRABAJADORES REGISTRADOS"<<endl;
+    cout<<" ID\tProfesion\tNombre\tApellido"<<endl;
+    for(int i=0; i<_length; i++){
+        for(int j=0; j<4; j++){
+            cout<< **data <<"\t";
+            (*data)++; // Iterate data element
+        }
+        cout<<endl;
+        data++; // Iterate worker
+    }
+}
+void printEnterprises(){}
 
 /* ### LOGIC LAYER ### */
-bool changeData(int _actype, string _code, string _value){
+bool mll_changeData(int _actype, string _code, string _value){
     /*
     // Logic layer functions does not interact with user, so we only receive parameters and work with 'em
     // Person* _user = NULL;  // Auxiliar pointer which will allow us to write alright code regardless the account type
@@ -122,7 +176,7 @@ bool changeData(int _actype, string _code, string _value){
             _user->profession = _value;
 
         }else if(_code == "wdc"){
-            if( !isString(_value,8) ) return false;
+            if( _value.length() < 8 ) return false; // We don't use isString function cuz there can be anything as ',.$+-*' etc
             _user->description = _value;
 
         }else if(_code == "cem"){
@@ -164,11 +218,12 @@ bool changeData(int _actype, string _code, string _value){
             _user->name = _value;
 
         }else if(_code == "edc"){
-            if( !isString(_value,8) ) return false;
+            if( _value.length() < 8 ) return false; // Description is not necessarily string type
             _user->description = _value;
 
         }else if(_code == "cem"){
-            if( !isMail(_value) ) return false;            _user->one.contact.email = _value;
+            if( !isMail(_value) ) return false;
+            _user->one.contact.email = _value;
 
         }else if(_code == "ct1"){
             if( !isNumber(_value) || _value.length() < 7 ) return false;
@@ -200,7 +255,65 @@ bool changeData(int _actype, string _code, string _value){
     }
     return true;
 }
+bool mll_getWorkers(){ // Get a workers info array
+    _iwk; // Workers array iterator
+    workers; // Workers array
+
+    if( _iwk==0 ) return false;
+
+    string _workersinfo[_iwk][4]; // Create array to store id, name, lastname, profession for each worker
+    string* _pointerworker[ _iwk ]; // One pointer to each array element
+
+    // Get worker's id, name, lastname, profession and add to the void array
+    for(int i=0; i<_iwk; i++){ // Elements of Worker array
+        // cout<<"str: "<<to_string( workers[i].one.id )<<endl;
+        // cout<<"workers[i].one.id: "<< workers[i].one.id <<endl;
+        _workersinfo[i][0] = to_string( workers[i].one.id );
+        _workersinfo[i][1] = workers[i].profession;
+        _workersinfo[i][2] = workers[i].one.name;
+        _workersinfo[i][3] = workers[i].one.lastname;
+        _pointerworker[i] = _workersinfo[i]; // Pass ma of this worker
+    }
+
+    /* Returns void ar[]={name,lastname,profession,&(worker->one)} => afterwards will be displayed(name, lastname and profession), enumerated, selected(by enumeration) and enter to the user's profile by the myData(&(worker->one)) */
+    // Returns the memory address to the pointer of array data
+    printWorkers( _pointerworker,_iwk );
+    return true;
+}
+bool mll_getEnterprises(){
+
+}
+Person *getPersonStructAddress(int _userid){
+    for(int i=0; i<_iac; i++){
+        if( accounts[i].id == _userid ){
+            return &accounts[i]; // Return account pointer
+        }
+    }
+    return NULL; // There is no way a person can't be found, otherwise it would lead to an error
+}
+bool userIdExists(int _userid){
+    for(int i=0; i<_iac; i++){
+        if( accounts[i].id == _userid ){ // Account verification
+            return true; // Return account id
+        }
+    }
+    return false;
+}
+
 
 /* ### SERVER LAYER ### */
 
 #endif
+
+
+
+
+
+
+
+
+
+
+
+
+

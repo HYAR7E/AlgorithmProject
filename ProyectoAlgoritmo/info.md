@@ -52,8 +52,8 @@
         In function, parameter variable type can be emphasize by using '${type_name[0]}_' prefix as 'i_age' or 'x_name'
         In utilitaries functions, variables should be declared with no prefix
         In utilitaries functions, variables created to be compared should be declared with '_' prefix
-        In user functions, user layer account menu functions should have the 'ac${account_type}_' prefix as ac0_changeInformation
-        In user functions, global functions should be declared with no prefix as u_printData
+        In user menu functions, user layer functions should have the 'ac${account_type}_' prefix as ac0_changeInformation
+        In user menu functions, logic layer functions should be declared with 'mll_' prefix as mll_printData (ml: menu logic layer)
     # Variable's specifications
         Global variables should be declared with no prefix in database.cpp (user)
         Global structures array should be declared with no prefix in database.cpp
@@ -146,24 +146,41 @@
             (false: avoid sending remaining stream data from pevious cin input)
         Converted pause to pauseClear function in f_utilitaries.cpp, now it clear the data stream remaining from previous cin input, and pauses the program (only one at the time)
         Do not allow to choose account type if there is empty user data
-        --- GUEST MENU FINISHED ---
         Fixed pauseClear in user menu functions
+        --- GUEST MENU FINISHED ---
+        Remove restriction for description to allow characteres(, ' " + : ), etc
+        printWorkers in fu_global.cpp RECURSIVE FUNCTION
+        Added default users and debug in database.cpp
 
-        *(Guest)Check if string is full spaces (at re set data)
+        *Restrict set function in Person to be called just once
         *(worker)Active/inactive status of cv according to filled data
 
+        ***(guest)Ask for worker data or enterprise data when chooseAccountType
+        **Do not show worker if haven't set his profession
+        *(user)Trim strings at input
+
+        *--- WORKER MENU FINISHED ---
+        *--- ENTERPRISE MENU FINISHED ---
+        *--- ADMIN MENU FINISHED ---
 
 
 
 
 
 
+        To see a specific user, worker or enterprise; we use the myData(_user) function!
+        Since we need to return a string pointer from mll_getWorkers() and mll_getEnterprises() for user data to printWorkers() and printEnterprise()
+            we create the data into a array inside the function and return a pointer to that array, but the function scope will delete the values
+            so the array keeps the memory address but values are UB(unknown behavior) so we shouldn't use it
+            the answer came to instead return the information, send it as a parameter to other function, or even as a recursive function!
+            In function printWorkers and printEnterprises only shows four elements(id,profesion,name,lastname)
+        *To avoid using so many if sentences in mll_changeData function, we can store all the element key(cad,pnm,pwd,etc) in a array
+            Create a function to search the key in the array and returns its index, and use it as a numberic key value with switch
+        In function printWorker or printEnterprises, myData will never print the logged user's data cuz worker can't see other workers, and enterprise can't see other enterprises, although the admin can watch himself and is the only one who can change his data through print function
 
 
-
-    CHANGES MADE v0.7 ( Add communication functions )
-    CHANGES MADE v0.8 ( Add database conection and related functions )
-    CHANGES MADE v0.9 ( Migrate to database functions )
+    CHANGES MADE v0.7 ( Add database conection and related functions )
+    CHANGES MADE v0.8 ( Migrate to database functions )
     CHANGES MADE v0.9 ( Admin functions && Add GUI && hard look for errors )
     RELEASE v1.0 (delete debug commentaries)
 

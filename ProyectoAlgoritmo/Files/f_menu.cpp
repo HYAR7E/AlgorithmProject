@@ -34,6 +34,7 @@ void printMMLog(int _case,int _res){
     }
     cout<<endl;
     pauseClear();
+    pauseClear();
 }
 void printMenu(int _actype){ /**/
     user->online = true; // Only change this value when user enter into menu
@@ -56,8 +57,6 @@ void printGuestMenu(){
     do{ // Repeat menu
         do{
             clear();
-            cout<<"ID: "<<user->id<<endl;
-            cout<<"Nombre: "<<user->name<<endl;
             cout<<"1. Escoger tipo de cuenta"<<endl;
             cout<<"2. Mis datos"<<endl;
             cout<<"3. Salir"<<endl;
@@ -67,7 +66,7 @@ void printGuestMenu(){
         switch(opc){
             case 1: if( ac0_chooseAccountType() ) return; // If account type changed
                 break;
-            case 2: myData(user); break; // Global user function
+            case 2: myData(user->id); break; // Global user function
             case 3: return; // Exit
         }
     pauseClear(); // Pause
@@ -78,6 +77,9 @@ void printWorkerMenu(){
     do{ // Repeat menu
         do{
             clear();
+            // cout<<"ID: "<<user->id<<endl;
+            // cout<<"AC: "<<user->accounttype<<endl;
+            // cout<<"MA: "<<user->w_ma<<endl;
             cout<<"1. CV"<<endl;
             cout<<"2. Ver anuncios"<<endl; // And apply
             cout<<"3. Ver empresas"<<endl; // Open chat
@@ -89,12 +91,12 @@ void printWorkerMenu(){
         }while(opc<1||opc>7);
         pauseClear(); // Clear data stream remaining from previous cin input
         switch(opc){
-            case 1: break;
+            // case 1: ac1_cvStatus(); break; // CV is showing?
             case 2: break;
-            case 3: break;
+            case 3: printWorkers(); break;
             case 4: break;
             case 5: break;
-            case 6: myData(user); break;
+            case 6: myData(user->id); break;
             case 7: return; // Exit
         }
     pauseClear();
@@ -119,7 +121,7 @@ void printEnterpriseMenu(){
             case 2: break;
             case 3: break;
             case 4: break;
-            case 5: myData(user);
+            case 5: myData(user->id);
             case 6: return; // Exit
         }
     pauseClear();

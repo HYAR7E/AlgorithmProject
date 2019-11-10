@@ -10,13 +10,10 @@ int _register(); // Register is named with '_' prefix cuz 'register' is a keywor
 // Capa Logica
 bool userExists(string _dni, string _pw=""); // Check if exists a user with the given data
 int getUserId(string _dni, string _pw); // We can't mix the functions getUserId with userExist for security good practices
-Person *getPersonStructDirection(int _userid); // Get user struct direction from accounts array and return it to store in 'user' global pointer variable
-bool userIdExists(int _userid); // We can't mix the functions getPersonStruct with userIdExists for security good practices
 int genUniqueRandId(); // Generate a random number and check if it is already taken
 
 // Capa Servidor
-bool pullChangesInUser(); // Send changes in user account to database
-// bool pushChanges(); // Get changes in user account to database
+bool storeUser(); // Send changes in user account to database
 
 
 /*** FUNCTIONS DECLARATION ***/
@@ -40,7 +37,7 @@ int _login(){
     }
 
     // Get logged user struct direction
-    user = getPersonStructDirection( getUserId(_dni,_password) );
+    user = getPersonStructAddress( getUserId(_dni,_password) );
     // For security and scalability reasons we should get the user structure variable through the user id
 // cout<<user->id<<" - "<<user->accounttype<<endl; cin.ignore(3);
     return 1;
@@ -116,22 +113,6 @@ int getUserId(string _dni, string _pw){
     }
     return -1;
 }
-Person *getPersonStructDirection(int _userid){
-    for(int i=0; i<_iac; i++){
-        if( accounts[i].id == _userid ){
-            return &accounts[i]; // Return account pointer
-        }
-    }
-    return 0; // There is no way a person can't be found, otherwise it would lead to an error
-};
-bool userIdExists(int _userid){
-    for(int i=0; i<_iac; i++){
-        if( accounts[i].id == _userid ){ // Account verification
-            return true; // Return account id
-        }
-    }
-    return false;
-};
 int genUniqueRandId(){
     int _rd = -1;
     bool _r = false;

@@ -26,6 +26,52 @@ int getCurrentTime(char _f){
     }
     return f;
 }
+void get2p(int** data=NULL); // Declared before getdata function
+void getdata(){
+    int k[4][4]; // Original array which have the information
+    int* kl[4] = {NULL}; // Store the ma of k in kl[]
+    for(int _i=0; _i<4; _i++){
+        cout<<_i<<" :: ";
+        cout<<"&kl["<<_i<<"]: "<<&kl[_i];
+        for(int _j=0; _j<4; _j++){
+            k[_i][_j] = (_i*10 + _j*2);
+            cout<<" - k["<<_i<<"]["<<_j<<"]:"<<&k[_i][_j];
+        }
+        kl[_i] = k[_i]; // Add k to kl
+        cout<<endl;
+    }
+    get2p(&kl[0]); // Send the memory address of kl which have the k information
+    // get2p( k ); // Send the ma of k
+    // We tried to send the k ma itself but functions can only return one value and returning k ma its 'int (*)[4]'
+}
+void get2p(int **data){
+    if(data==NULL){ // If there is no data received
+        getdata();
+        return;
+    }
+    // Return a pointer for each first dimension array
+    for(int j=1; j<=4; j++){
+        cout<<"-----"<<j<<"-----"<<endl;
+        cout<<"data: "<<data<<endl;    // data == &kl[0] == &&k[0]
+        cout<<"*data: "<<*data<<endl;  // *data == kl[0] == &k[0]
+        for(int i=1; i<=4; i++){
+            cout<<"--"<<i<<"--   ";
+            cout<<"**data: "<<**data<<endl;
+            (*data)++; // Iterar kl[j][] == k[]
+        }
+        data++; // Iterar kl[]
+        // data++; *data == kl[0] == &k[0]
+        // data == &kl[1]
+        // data++;  =>  &kl[1]
+    }
+}
+int staticInt(){
+    static int i=0;
+    for(int _i=0; _i<10; _i++){
+        i++;
+    }
+    return i;
+}
 /*** STRUCTS ***/
 struct foo{
     // foo() : bar(3), var(5) {};   // Constructor
@@ -50,6 +96,22 @@ void sum(foo *f){
     cout<<"foo.var: "<<f->var<<endl;
     cout<<"function &foo: "<<f<<endl;
 };
+string *words(string txt){
+    string h1 = "hola";
+    string h2 = "mundo";
+    string h3 = "mis";
+    string h4 = "amiwos";
+
+    // Since we want to conserve these values outside the function we have to declare them as static (otherwise they'll be deleted once the function is over)
+    static string h[] = {h1,h2,h3,h4};
+    string* h_pointer = NULL;
+
+    h_pointer = h; // Pass array ma
+    cout<<"h_pointer: "<<h_pointer<<endl;
+    cout<<"h[0]: "<<*h_pointer<<endl; h_pointer++;
+    cout<<"h[1]: "<<*h_pointer<<endl;
+    return h_pointer;
+}
 struct ctn{
     string s; // default: ""
     int i; // default: 0
@@ -203,6 +265,9 @@ int main(){
     _otherfoo = _newfoo;
     cout<<"_otherfoo->var "<<_otherfoo->var<<endl;
 
+    /*** get variable type ***/
+    cout<<"Type of v_int: "<< typeid(i_age).name() <<endl;
+
     /*** void type pointer ***/
     void *vpointer;
 
@@ -236,6 +301,59 @@ int main(){
     cout<<"_d->_fma->var : "<<_d->_fma->var<<endl;
     _u = _d; // Get memory address
     cout<<"( (ctn*) _u)->fma->var : "<<( (ctn*) _u)->_fma->var<<endl;
+
+    /*** void pointer to void pointer array ***/
+    void *_ama[3] = {NULL}; // Array of memory address
+    _ama[0] = &v_int; // Int value 15
+    cout<<"_ama[0] == &v_int / &_ama[0]: "<<_ama[0]<<" / "<<&_ama[0]<<endl;
+    _ama[1] = &v_chr; // Char value 'c'
+    cout<<"_ama[1] == &v_chr / &_ama[1]: "<<_ama[1]<<" / "<<&_ama[1]<<endl;
+    _ama[2] = &v_str; // String value "hola"
+    cout<<"_ama[2] == &v_str / &_ama[2]: "<<_ama[2]<<" / "<<&_ama[2]<<endl;
+
+    void *_pta = NULL; // Pointer to ama
+    _pta = _ama; // Pass ma of _ama to _pta
+    cout<<"_pta: "<<_pta<<endl;
+    // _pta : &&v_int
+    // *((int**) _pta) : &v_int : _ama[0]
+    cout<<"&v_int: "<< *((int**) _pta)<<endl;
+    cout<<"*_pta: "<< *((int*) *((int**) _pta) ) <<"\t_ama: "<< *((int*) _ama[0]) <<endl;
+    // ++*((int**) _pta); // Iterate index of void pointer array
+    // *((int*) _pta)++; // IDFK HOW TO ITERATE, THIS DIDN'T WORK!! :c
+    // cout<<"*_pta: "<< *((char*) *((char**) _pta) ) <<"\t_ama: "<< *((char*) _ama[1]) <<endl;
+    // cout<<"*_pta: "<< *((string*) ++*((string**) _pta) ) <<"\t_ama: "<< *((string*) _ama[2]) <<endl;
+
+
+    /*** return pointer to variables inside a function ***/
+    string* h_p = NULL;
+    h_p = words("nada"); // Returns pointer to string array inside the function
+    cout<<"h_p: "<<h_p<<endl;
+    cout<<"*h_pointer[0]: "<<*h_p<<endl; h_p++;
+    cout<<"*h_pointer[1]: "<<*h_p<<endl; h_p++;
+    h_p = NULL;
+    // cout<<"*h_pointer[2]: "<<*h_p<<endl; // Segment violation
+    // We can access to these values cuz they were declarated as static
+
+    /*** static variable inside a function ***/
+    // When we declare a static variable type inside a function, the program only declare it the first time the function is called, afterwards just keep its last value
+    // Its value lasts all the program duration
+    cout<<"1: "<<staticInt()<<endl; // i=00 (i+=10) i=10
+    cout<<"2: "<<staticInt()<<endl; // i=10 (i+=10) i=20
+    cout<<"3: "<<staticInt()<<endl; // i=20 (i+=10) i=30
+
+
+    /*** static variable inside a function ***/
+    getdata();
+
+
+    /*** passing int value into string type variable ***/
+    string _strint1;
+    string _strint2;
+    _strint1 = to_string(v_int);
+    _strint2 = v_int;
+    cout<<"v_int: "<<v_int<<endl;
+    cout<<"_strint1: "<<_strint1<<endl;
+    cout<<"_strint2: "<<_strint2<<endl;
 
 }
 

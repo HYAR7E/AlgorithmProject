@@ -31,8 +31,7 @@ struct ContactInfo{
         cout<< (_code ? "cem \t":"") <<"Email: "<<email<<endl;
         cout<< (_code ? "ct1 \t":"") <<"Telefono 1: "<<telf1<<endl;
         cout<< (_code ? "ct2 \t":"") <<"Telefono 2: "<<telf2<<endl;
-        // if is logged in user OR if is not logged user and the string is not empty
-        if( _code || ( !_code && address!="") ) cout<<"cad \tDireccion: "<<address<<endl;
+        cout<< (_code ? "ct2 \t":"") <<"Direccion: "<<address<<endl;
     }
 };
 struct Person{
