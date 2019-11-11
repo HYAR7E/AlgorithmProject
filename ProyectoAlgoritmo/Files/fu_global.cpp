@@ -3,27 +3,35 @@
 #define FU_GLOBAL
 /*** FUNCTIONS PROTOTYPE ***/
 // Capa Usuario
-void myData(Person *_user); // Print specific user data with possibility of modify
-void printWorkers(string **_data=NULL, int _length=0); // Recursive function, double default value cuz we'll call it without arguments from the menu
-void printEnterprises(); // Recursive function
+void myData(int _userid, int _actype); // Print specific user(guest/worker/enterprise) data, with possibility of modify
+void printWorkers(string **data=NULL, int _length=0); // Recursive function, double default value cuz we'll call it without arguments from the menu
+void printEnterprises(string **data=NULL, int _length=0); // Recursive function
+void printJobOffers(int _entid=-1, string **data=NULL, int _length=0); // Print all job offers, owned by enterprise with id = _entid
 
 // Capa Logica
 bool mll_changeData(int _actype, string _code, string _value); // Change user data
-bool mll_getWorkers();
-bool mll_getEnterprises();
+bool mll_getWorkers(); // Get workers data
+bool mll_getEnterprises(); // Get enterprises data
+bool mll_getJobOffers(); // Get request data
 Person *getPersonStructAddress(int _userid); // Get user struct direction from accounts array and return it to store in 'user' global pointer variable
 bool userIdExists(int _userid); // We can't mix the functions getPersonStruct with userIdExists for security good practices
+bool jobOfferExists(int _offerid); // Job offer exists?
+int genUniqueRandId(int _idtype); // Generate a random number and check if it is already taken
 
 // Capa Servidor
-bool pullChangesInUser(int _userid);
+// bool pullChangesInUser(int _userid);
 
 
 /*** FUNCTIONS DECLARATION ***/
 /* ### USER LAYER ### */
-void myData(int _id){ // _user is memory address of Person structure
+void myData(int _userid, int _actype){ // _user is memory address of Person structure
     // Get user struct
     Person* _user = NULL;
-    _user = getPersonStructAddress(_id); // Get user person struct by id
+    _user = getPersonStructAddress(_userid); // Get user person struct by id
+    if( _user->accounttype != _actype ){
+        cout<<"El ID no existe"<<endl;
+        return;
+    }
 
     bool _same;
     /* ERROR: The pointer parameter doesn't have the same memory address than the original pointer, so we can't compare 'em, instead we compare the user->id*/
@@ -89,32 +97,93 @@ void printWorkers(string **data, int _length){ // Print '_length' workers
             int _id;
             cout<<"\nSeleccionar trabajador (0: salir)"<<endl;
             _id = getValidIntInput("ID: ","Formato incorrecto");
+            if( _id == 0 ) return; // Return before pause if 0 is selected
             pauseClear(); // Clear stream of previous cin
-            if( _id == 0 ) return;
             if( !userIdExists(_id) ){ // Id 
                 cout<<"El ID indicado no existe"<<endl;
                 return;
             }
-            myData(_id); // Print user data
+            myData(_id,1); // Print specific user's data
         }
         return; // In the second executation we will exit
     }
     // data == &_pointerworker == &&workersinfo; // Print the memory address // iterate to change worker
     // *data == _pointerworker == &workersinfo; // Print each worker // iterate to change data
     // **data == *_pointerworker == workersinfo; // Print each data // never iterate
+    clear(); // Clear screen
     // Print the received data
     cout<<"TRABAJADORES REGISTRADOS"<<endl;
-    cout<<" ID\tProfesion\tNombre\tApellido"<<endl;
+    cout<<" ID\t\tProfesion\t\tNombre\t\tApellido"<<endl;
     for(int i=0; i<_length; i++){
         for(int j=0; j<4; j++){
-            cout<< **data <<"\t";
+            cout<< **data <<"\t\t";
             (*data)++; // Iterate data element
         }
         cout<<endl;
         data++; // Iterate worker
     }
 }
-void printEnterprises(){}
+void printEnterprises(string **data, int _length){
+    if(data==NULL){
+        if( !mll_getEnterprises() ){
+            cout<<"No hay empresas registradas"<<endl;
+        }else{
+            int _id;
+            cout<<"\nSeleccionar trabajador (0: salir)"<<endl;
+            _id = getValidIntInput("ID: ","Formato incorrecto");
+            if( _id == 0 ) return; // Return before pause if 0 is selected
+            pauseClear();
+            if( !userIdExists(_id) ){
+                cout<<"El ID indicado no existe"<<endl;
+                return;
+            }
+            myData(_id,2);
+        }
+        return;
+    }
+    clear();
+    cout<<"EMPRESAS REGISTRADAS"<<endl;
+    cout<<" ID\t\tNombre\t\t\tTrabajos disponibles"<<endl;
+    for(int i=0; i<_length; i++){
+        for(int j=0; j<3; j++){
+            cout<< **data <<"\t\t";
+            (*data)++;
+        }
+        cout<<endl;
+        data++;
+    }
+}
+void printJobOffers(int _entid, string **data, int _length){
+     if(data==NULL){
+         if( !mll_getJobOffers() ){ // There is no requests
+             cout<<"No hay ofertas de trabajo disponibles"<<endl;
+         }else{
+             int _id;
+             cout<<"\nSeleccionar trabajo (0: salir)"<<endl;
+             _id = getValidIntInput("ID: ","Formato incorrecto");
+             if( _id == 0 ) return; // Return before pause if 0 is selected
+             pauseClear();
+             if( !jobOfferExists(_id) ){ // Job offer with id = _id exists
+                 cout<<"El ID indicado no existe"<<endl;
+                 return;
+             }
+             // myJobOffer(_id); // Print specific job offer's information
+         }
+         return;
+     }
+     clear();
+     cout<<"OFERTAS DE TRABAJO"<<endl;
+     cout<<" ID\t\tProfesion\tSalario\t\tEmpresa"<<endl;
+     for(int i=0; i<_length; i++){
+         for(int j=0; j<4; j++){
+             cout<< **data <<"\t\t";
+             (*data)++;
+         }
+         cout<<endl;
+         data++;
+     }
+}
+
 
 /* ### LOGIC LAYER ### */
 bool mll_changeData(int _actype, string _code, string _value){
@@ -259,7 +328,7 @@ bool mll_getWorkers(){ // Get a workers info array
     _iwk; // Workers array iterator
     workers; // Workers array
 
-    if( _iwk==0 ) return false;
+    if( _iwk==0 ) return false; // There is no worker register yet
 
     string _workersinfo[_iwk][4]; // Create array to store id, name, lastname, profession for each worker
     string* _pointerworker[ _iwk ]; // One pointer to each array element
@@ -268,6 +337,7 @@ bool mll_getWorkers(){ // Get a workers info array
     for(int i=0; i<_iwk; i++){ // Elements of Worker array
         // cout<<"str: "<<to_string( workers[i].one.id )<<endl;
         // cout<<"workers[i].one.id: "<< workers[i].one.id <<endl;
+        // For good practices we should convert all data to string, regardless if it is string by default or other. But the to_string function does not allow string type parameters
         _workersinfo[i][0] = to_string( workers[i].one.id );
         _workersinfo[i][1] = workers[i].profession;
         _workersinfo[i][2] = workers[i].one.name;
@@ -281,7 +351,43 @@ bool mll_getWorkers(){ // Get a workers info array
     return true;
 }
 bool mll_getEnterprises(){
+    _iet; // Enterprise global array iterator
+    enterprises; // Enterprises array
 
+    if( _iet==0 ) return false; // There is no enterprise register yet
+
+    string _enterprisesinfo[_iet][3];
+    string* _pointerenterprises[_iet];
+
+    for(int i=0; i<_iet; i++){
+        _enterprisesinfo[i][0] = to_string( enterprises[i].one.id ); // Get enterprise id
+        _enterprisesinfo[i][1] = enterprises[i].name; // Get enterprise name
+        _enterprisesinfo[i][2] = to_string( enterprises[i].countRequests() ); // Get enterprises's requests amount
+        _pointerenterprises[i] = _enterprisesinfo[i]; // Pass data to enterprises pointer
+    }
+
+    printEnterprises( _pointerenterprises,_iet );
+    return true;
+}
+bool mll_getJobOffers(){
+    _irq; // Request global array iterator
+    requests; // Requests array
+
+    if( _irq==0 ) return false; // There is no job offer posted yet
+
+    string _rqinfo[_irq][3]; // Request's info
+    string* _pointerrq[_irq]; // Pointer to request info
+
+    for(int i=0; i<_irq; i++){ // ID, profession, salary, enterprise
+        _rqinfo[i][0] = to_string( requests[i].id ); // Get request's id
+        _rqinfo[i][1] = requests[i].rProfession; // Get request's profession required
+        _rqinfo[i][2] = to_string( requests[i].rSalary ); // Get request's salary offered
+        _rqinfo[i][3] = requests[i].rEnterprise.name; // Get request's enterprise
+        _pointerrq[i] = _rqinfo[i]; // Pass data to requests pointer
+    }
+
+    printJobOffers( -1,_pointerrq,_irq );
+    return true;
 }
 Person *getPersonStructAddress(int _userid){
     for(int i=0; i<_iac; i++){
@@ -293,13 +399,39 @@ Person *getPersonStructAddress(int _userid){
 }
 bool userIdExists(int _userid){
     for(int i=0; i<_iac; i++){
-        if( accounts[i].id == _userid ){ // Account verification
-            return true; // Return account id
+        if( accounts[i].id == _userid ){ // Check if it is the same user id
+            return true; // User exists
         }
     }
-    return false;
+    return false; // User does not exists
 }
-
+bool jobOfferExists(int _offerid){
+    for(int i=0; i<_irq; i++){
+        if( requests[i].id == _offerid ){ // Check if it is the same job offer id
+            return true; // Job offer exists
+        }
+    }
+    return false; // Job offer does not exists
+}
+int genUniqueRandId(int _idtype){
+   int _rd = -1;
+   bool _r = false;
+   srand(time(NULL)); // Initialize random seed
+   /* SERVER FUNCTION */
+   // Check if it is already taken
+   do{
+       _rd = ( rand()%8999 ) + 1000; // Generate random number from 1000 - 9999
+       switch(_idtype){
+           case 1: // User id type
+               _r = userIdExists(_rd); // Is it already taken?
+               break;
+         case 2: // Request id type
+             _r = jobOfferExists(_rd); // Is it already taken?
+             break;
+       }
+   }while( _r ); // Repeat if it is already taken
+   return _rd; // Return rand number generated
+}
 
 /* ### SERVER LAYER ### */
 

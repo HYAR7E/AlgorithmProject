@@ -10,7 +10,6 @@ int _register(); // Register is named with '_' prefix cuz 'register' is a keywor
 // Capa Logica
 bool userExists(string _dni, string _pw=""); // Check if exists a user with the given data
 int getUserId(string _dni, string _pw); // We can't mix the functions getUserId with userExist for security good practices
-int genUniqueRandId(); // Generate a random number and check if it is already taken
 
 // Capa Servidor
 bool storeUser(); // Send changes in user account to database
@@ -77,10 +76,9 @@ int _register(){
         i_pass++;
         goto inputpass;
     }
-    pauseClear();
 
     // For security reasons we can't have the dni as the id of person, so we create a random number
-    int _id = genUniqueRandId(); // Generate a random number and check if it is not taken
+    int _id = genUniqueRandId(1); // Generate a random number id(1: user type) and check if it is not taken
 // cout<<_id<<endl; cin.ignore(1);
 
     Person _new = Person{0}; // Create empty Person structure
@@ -112,18 +110,6 @@ int getUserId(string _dni, string _pw){
         }
     }
     return -1;
-}
-int genUniqueRandId(){
-    int _rd = -1;
-    bool _r = false;
-    srand(time(NULL)); // Initialize random seed
-    _rd = ( rand()%8999 ) + 1000; // Generate random number from 1000 - 9999
-    // Check if it is already taken
-    /* SERVER FUNCTION */
-    do{
-        _r = userIdExists(_rd);
-    }while( _r );
-    return _rd;
 }
 
 

@@ -8,10 +8,11 @@ Worker workers[30]={0};
 int _iwk = 0; // Iterator for workers
 Enterprise enterprises[30]={0};
 int _iet = 0; // Iterator for enterprises
+Request requests[30]={0};
+int _irq = 0; // Iterator for requests
 
 // Global variables
-// Person* p_user = NULL; // Initialize pointer with NULL value for good practices
-Person *user = NULL;
+Person *user = NULL; // Initialize pointer with NULL value for good practices
 static Person noone = Person{0};
 
 // Static variables
@@ -40,24 +41,21 @@ bool preload(){
 
 /*
 */
-    // usuarios predefinidos
-
+    // PRE SET WORKER
     Person _new = Person{0};
     // Add data
-    _new.set(1111, "neldo", "agustin", "20/05/2000", "72112258", "neldoaf");
+    _new.set(1111, "nelson", "agustin", "20/05/2000", "72112258", "neldoaf");
     _new.contact.email="a@b.c";
     _new.contact.telf1="977865134";
     _new.contact.address="mikaza";
     _new.setAccountType(1);
     _new.setWorker( &workers[_iwk] ); // Set memory address before store in array
-    workers[_iwk].setPerson(_new); // Add person to worker array element
-    _iwk++; // Iterate
     accounts[_iac] = _new; // Add to accounts array
     _iac++; // Iterate
-    // cout<<"_new.w_ma: "<<_new.w_ma<<endl;
-    // cout<<"workers[0].one.id: "<<workers[0].one.id<<endl;
-    // cout<<"workers[0].one.w_ma: "<<workers[0].one.w_ma<<endl;
-
+    workers[_iwk].setPerson(_new); // Add person to worker array element
+    workers[_iwk].profession = "asesinador";
+    _iwk++; // Iterate
+    // workers[0].printData(true);
     Person _new1 = Person{0};
     _new1.set(2222, "kailen", "agustin falcon", "11/04/2000", "72112251", "kailen123");
     _new1.contact.email="a@b.c";
@@ -65,14 +63,80 @@ bool preload(){
     _new1.contact.address="mikaza";
     _new1.setAccountType(1);
     _new1.setWorker( &workers[_iwk] );
-    workers[_iwk].setPerson(_new1);
-    _iwk++;
     accounts[_iac] = _new1;
     _iac++;
-    // cout<<"_new1.w_ma: "<<_new1.w_ma<<endl;
-    // cout<<"workers[1].one.id: "<<workers[1].one.id<<endl;
-    // cout<<"workers[1].one.w_ma: "<<workers[1].one.w_ma<<endl;
-    // workers[0].printData(false);
+    workers[_iwk].setPerson(_new1);
+    workers[_iwk].profession = "cocinero";
+    _iwk++;
+    // workers[1].printData(true);
+    Person _new5 = Person{0};
+    _new5.set(6666, "carlos", "falcon", "11/04/2000", "72112252", "kailen123");
+    _new5.contact.email="a@b.c";
+    _new5.contact.telf1="977865134";
+    _new5.contact.address="mikaza";
+    _new5.setAccountType(1);
+    _new5.setWorker( &workers[_iwk] );
+    accounts[_iac] = _new5;
+    _iac++;
+    workers[_iwk].setPerson(_new5);
+    workers[_iwk].profession = "barrendero";
+    _iwk++;
+    // workers[2].printData(true);
+
+
+    // PRE SET ENTERPRISE
+    Person _new2 = Person{0};
+    // Add data
+    _new2.set(3333, "jefe1", "boss", "18/07/2000", "12345673", "boos123");
+    _new2.contact.email="a@b.c";
+    _new2.contact.telf1="987654321";
+    _new2.contact.address="mikaza";
+    _new2.setAccountType(2);
+    _new2.setEnterprise( &enterprises[_iet] );
+    accounts[_iac] = _new2;
+    _iac++;
+    enterprises[_iet].setPerson(_new2);
+    enterprises[_iet].name = "mibakita sac";
+    _iet++;
+    // enterprises[0].printData(true);
+    Person _new3 = Person{0};
+    _new3.set(4444, "jefe2", "boss", "22/05/1999", "12345674", "boos123");
+    _new3.contact.email="a@b.c";
+    _new3.contact.telf1="977865134";
+    _new3.contact.address="mikaza";
+    _new3.setAccountType(2);
+    _new3.setEnterprise( &enterprises[_iet] );
+    accounts[_iac] = _new3;
+    _iac++;
+    enterprises[_iet].setPerson(_new3);
+    enterprises[_iet].name = "inkofarma sac";
+    _iet++;
+    // cout<<"_new3.id: "<<_new3.id<<endl;
+    // cout<<"_new3.e_ma: "<<_new3.e_ma<<endl;
+    // cout<<"enterprises[1].one.id: "<<enterprises[1].one.id<<endl;
+    // cout<<"enterprises[1].one.e_ma: "<<enterprises[1].one.e_ma<<endl;
+    // enterprises[1].printData(true);
+
+
+    // PRE SET REQUEST
+    Request _new4 = Request{0};
+    _new4.create(5555,enterprises[0],"asesino",1200,8,1,20,28,"necesito alguien que mate los mosquitos de mi fabrica");
+    enterprises[0].addRequest( &_new4 );
+    requests[_irq] = _new4;
+    _irq++;
+
+
+    // PRE SET ADMIN
+    Person _admin = Person{0};
+    // Add data
+    _admin.set(0000, "admin", "god", "01/02/1993", "25478260", "admin");
+    _admin.contact.email="admin@root.ez";
+    _admin.contact.telf1="987654321";
+    _admin.contact.address="milap";
+    _admin.setAccountType(3);
+    accounts[_iac] = _admin; // Add to accounts array
+    _iac++; // Iterate
+
     // cin.ignore();
 /**/
 

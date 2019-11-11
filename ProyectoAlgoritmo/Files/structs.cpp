@@ -5,6 +5,7 @@ struct Person;
 // Previous definition of worker and enterprise to allow the variable type for memory address storage in Person
 struct Worker;
 struct Enterprise;
+struct Request;
 
 // In printData function, when _code is false do not show data, or do not show empty data
 
@@ -31,7 +32,7 @@ struct ContactInfo{
         cout<< (_code ? "cem \t":"") <<"Email: "<<email<<endl;
         cout<< (_code ? "ct1 \t":"") <<"Telefono 1: "<<telf1<<endl;
         cout<< (_code ? "ct2 \t":"") <<"Telefono 2: "<<telf2<<endl;
-        cout<< (_code ? "ct2 \t":"") <<"Direccion: "<<address<<endl;
+        cout<< (_code ? "cad \t":"") <<"Direccion: "<<address<<endl;
     }
 };
 struct Person{
@@ -50,6 +51,7 @@ struct Person{
         // A Enterprise can be owned by more than one person
 // Setter functions
     bool set(int _id, string _name, string _lastname, string _borndate, string _dni, string _password){ // Constructor or setter
+        if( id!=0 ) return false; // Only allow to set data once
         id = _id;
         name = _name;
         lastname = _lastname;
@@ -66,16 +68,19 @@ struct Person{
     };
     bool setAccountType(int _actype){
         if( accounttype!=0 ) return false; // Only allow to set of account type if the user is a guest yet
+        if( _actype==0 ) return false; // Do not allow to set account type to Guest
         accounttype = _actype;
         return true;
     }
     bool setWorker(Worker *_w_ma){ // Parameter is worker array element memory address
         if( accounttype!=1 ) return false; // Only allow if Person account type is Worker
+        if( w_ma!=NULL ) return false; // Worker ma is already setted
         w_ma = _w_ma;
         return true;
     }
     bool setEnterprise(Enterprise *_e_ma){ // Parameter is enterprise array element memory address
         if( accounttype!=2 ) return false; // Only allow if Person account type is Enterprise
+        if( e_ma!=NULL ) return false; // Enterprise ma is already setted
         e_ma = _e_ma;
         return true;
     }
@@ -109,29 +114,68 @@ struct Enterprise{
     Person one;
     string name;
     string description;
+    // Requests memory address
+    Request* r_ma[5]; // One enterprise can post up to 5 job requests
     void setPerson(Person _person){ // Created by Person
         one = _person;
+        // Request ma initializated to NULL
+        r_ma[0] = NULL;
+        r_ma[1] = NULL;
+        r_ma[2] = NULL;
+        r_ma[3] = NULL;
+        r_ma[4] = NULL;
     }
     void printData(bool _code){
-        if( _code ){ // If it's the actual user
-            cout<<"Informacion del director\n"<<endl;
-            one.printData(_code); // Print director data
-        }
         cout<<"\nInformacion de la empresa\n"<<endl;
         cout<< (_code ? "enm\t":"") <<"Nombre: "<<name<<endl;
         cout<< (_code ? "edc\t":"") <<"Descripcion: "<<description<<endl;
+        if( _code ){ // If it's the actual user
+            cout<<"Informacion del director\n"<<endl;
+            one.printData(_code); // Print director data
+        }else{ // Shown as enterprise information
+            cout<<"Telefono: "<<one.contact.telf1<<endl;
+            cout<<"Email: "<<one.contact.email<<endl;
+            cout<<"Direccion: "<<one.contact.address<<endl;
+        }
+    }
+    bool addRequest(Request *_r_ma){
+        for(int _i=0; _i<5; _i++){ // Iterate the 5 elements in array
+            if( r_ma[_i] == NULL ){ // If rma if empty
+                r_ma[_i] = _r_ma; // Store rma
+                return true; // _rma stored
+            }
+        }
+        return false; // All spaces ocupated
+    }
+    int countRequests(){
+        for(int _i=0; _i<5; _i++){
+            if( r_ma[_i] == NULL ) return _i; // If rma is empty then return the iterator value
+        }
+        return 5; // All requests spaces available ocupated
     }
 };
 struct Request{
+    int id;
     Enterprise rEnterprise;
     string rProfession;
     int rSalary; // Amount in dollars
     int rWorkDuration; // Time in months
-    int rDuration; // Time in months
     int rAmount; // Number of people requested
     int minAge;
     int maxAge;
     string description; // Description of the work
+    bool create(int _id, Enterprise _e, string _p, int _s, int _d, int _a, int _minage, int _maxage, string _dsc){
+        id = _id;
+        rEnterprise = _e;
+        rProfession = _p;
+        rSalary = _s;
+        rWorkDuration = _d;
+        rAmount = _a;
+        minAge = _minage;
+        maxAge = _maxage;
+        description = _dsc;
+        return true;
+    }
 };
 struct Applicants{ // Applicants for working
     Person aPerson;

@@ -53,7 +53,7 @@
         In utilitaries functions, variables should be declared with no prefix
         In utilitaries functions, variables created to be compared should be declared with '_' prefix
         In user menu functions, user layer functions should have the 'ac${account_type}_' prefix as ac0_changeInformation
-        In user menu functions, logic layer functions should be declared with 'mll_' prefix as mll_printData (ml: menu logic layer)
+        In user menu functions, logic layer functions should be declared with 'mll_' prefix as mll_printData (mll: menu logic layer)
     # Variable's specifications
         Global variables should be declared with no prefix in database.cpp (user)
         Global structures array should be declared with no prefix in database.cpp
@@ -73,6 +73,8 @@
         g++ file.cpp -o projectname // Compile program and create a 'projectname' binary file
         ./projectname // Execute the binary compiled file
         grep -iRl "text" // Search text in all files recursively(in the actual directory) and show file names where it was found
+    # Useful github commands
+        git grep "text" // Search for the text and shows which file contains it and where it is (line)
 
 
     CHANGES MADE v0.3 (login/register utilitarie functions)
@@ -147,37 +149,58 @@
         Converted pause to pauseClear function in f_utilitaries.cpp, now it clear the data stream remaining from previous cin input, and pauses the program (only one at the time)
         Do not allow to choose account type if there is empty user data
         Fixed pauseClear in user menu functions
+        Restrict set function in Person to be called just once
         --- GUEST MENU FINISHED ---
-        Remove restriction for description to allow characteres(, ' " + : ), etc
+
+        Remove restriction for description in changeData function to allow characteres(, ' " + : ), etc
         printWorkers in fu_global.cpp RECURSIVE FUNCTION
-        Added default users and debug in database.cpp
+        Added default workers in database.cpp
+        Workers can watch Enterprises
+        --- WORKER MENU FINISHED ---
 
-        *Restrict set function in Person to be called just once
-        *(worker)Active/inactive status of cv according to filled data
+        printEnterprises in fu_global.cpp RECURSIVE FUNCTION
+        Added function addRequest into Enterprise structure in structs.cpp
+        Added ac2_postJobOffers function in fu_enterprise.cpp
+        Added _postJobOffers function in fu_enterprise.cpp
+        Added printJobOffers function in fu_global.cpp
+        Added mll_getJobOffers function in fu_global.cpp
+        Moved genUniqueRandId function to fu_global.cpp (now it receive a parameter to indicate if the id is gonna be for user or request)
+        Added jobOfferExists function in fu_global.cpp (almost the same as userIdExists(user) cuz this is other kind of data type(request))
+        Added default enterprises in database.cpp
+        Added default requests in database.cpp
+        --- ENTERPRISE MENU FINISHED ---
 
-        ***(guest)Ask for worker data or enterprise data when chooseAccountType
-        **Do not show worker if haven't set his profession
-        *(user)Trim strings at input
-
-        *--- WORKER MENU FINISHED ---
-        *--- ENTERPRISE MENU FINISHED ---
-        *--- ADMIN MENU FINISHED ---
+        Added default admin in preload function in database.cpp
+        Show workers and enterprises
+        --- ADMIN MENU FINISHED ---
 
 
+        *Worker watch job offers
+        *Worker apply to job offers
+        *Enterprise accept worker applies
+
+        *(admin) Add admin to Person structure function, add its own structure inherited from Person structure, add its print function to myData function in fu_global.cpp
+        *(guest) Ask for worker data or enterprise data when set account type in chooseAccountType function
+        *(enterprise) Show job offers in enterprise profile
+        *(enterprise) Open chat in printEnterprises function
+        *(worker) Active/inactive status of cv according to filled data
+        *(worker) Do not show worker if does not have setted profession
+        *(admin) Ban worker or enterprise
+        **Allow to erase data with condition of do not show their profiles
+        **(user) Trim strings at input
 
 
-
-
-        To see a specific user, worker or enterprise; we use the myData(_user) function!
-        Since we need to return a string pointer from mll_getWorkers() and mll_getEnterprises() for user data to printWorkers() and printEnterprise()
-            we create the data into a array inside the function and return a pointer to that array, but the function scope will delete the values
-            so the array keeps the memory address but values are UB(unknown behavior) so we shouldn't use it
-            the answer came to instead return the information, send it as a parameter to other function, or even as a recursive function!
-            In function printWorkers and printEnterprises only shows four elements(id,profesion,name,lastname)
+    v0.6 TOPICS EXPLANATION:
+        To see a specific user, worker or enterprise; we use the myData(_userid,_actype) function; we send the user id to know what user is, and we send the accountype to verify that is the correct user(mainly used for print functions)
+        Since we need to return a string pointer from mll_getWorkers() and mll_getEnterprises() for user's data to printWorkers() and printEnterprises()
+            we created the data into a array inside the function and return a pointer to that array, but the function scope will delete the values so the array keeps the memory address but values are UB(unknown behavior) so we shouldn't use it
+            the answer came to instead of returning the information, send it as a parameter to other function, or even to the same print function recursively
+            In function printWorkers and printEnterprises only shows four elements(id,profesion,name,lastname) for each worker, so we use a double dimension array to store the information, and another array to store the ma of each worker data array and then send another array with the ma of the second array created
+            We send this third array as a parameter to the print function, this way the data is still available and will be deleted once this function is over
         *To avoid using so many if sentences in mll_changeData function, we can store all the element key(cad,pnm,pwd,etc) in a array
             Create a function to search the key in the array and returns its index, and use it as a numberic key value with switch
         In function printWorker or printEnterprises, myData will never print the logged user's data cuz worker can't see other workers, and enterprise can't see other enterprises, although the admin can watch himself and is the only one who can change his data through print function
-
+        Enterprise structure only have 5 request spaces, make that dinamically by setting a variable cuz it also appear in addRequest and countRequests functions
 
     CHANGES MADE v0.7 ( Add database conection and related functions )
     CHANGES MADE v0.8 ( Migrate to database functions )

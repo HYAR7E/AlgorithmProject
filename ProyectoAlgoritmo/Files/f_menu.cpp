@@ -5,7 +5,7 @@
 // Capa Usuario
 void printMMLog(int _case,int _res); // Main menu log
 void printMenu(int _actype); // Menu function, changes depend of account type
-void printGuestMenu();
+void printGuestMenu(); // Print guest menu
 void printWorkerMenu();
 void printEnterpriseMenu();
 void printAdminMenu();
@@ -33,8 +33,8 @@ void printMMLog(int _case,int _res){
         }
     }
     cout<<endl;
-    pauseClear();
-    pauseClear();
+    pauseClear(); // Clear remaining stream
+    pauseClear(); // Pause
 }
 void printMenu(int _actype){ /**/
     user->online = true; // Only change this value when user enter into menu
@@ -66,7 +66,7 @@ void printGuestMenu(){
         switch(opc){
             case 1: if( ac0_chooseAccountType() ) return; // If account type changed
                 break;
-            case 2: myData(user->id); break; // Global user function
+            case 2: myData(user->id, user->accounttype); break; // Global user function
             case 3: return; // Exit
         }
     pauseClear(); // Pause
@@ -92,11 +92,11 @@ void printWorkerMenu(){
         pauseClear(); // Clear data stream remaining from previous cin input
         switch(opc){
             // case 1: ac1_cvStatus(); break; // CV is showing?
-            case 2: break;
-            case 3: printWorkers(); break;
+            case 2: printJobOffers(); break; // Print all job offers
+            case 3: printEnterprises(); break;
             case 4: break;
             case 5: break;
-            case 6: myData(user->id); break;
+            case 6: myData(user->id, user->accounttype); break;
             case 7: return; // Exit
         }
     pauseClear();
@@ -117,11 +117,11 @@ void printEnterpriseMenu(){
         }while(opc<1||opc>6);
         pauseClear(); // Clear data stream remaining from previous cin input
         switch(opc){
-            case 1: break;
-            case 2: break;
+            case 1: ac2_postJobOffers(); break;
+            case 2: printJobOffers(user->id); break; // Print all job offers owned by logged in enterprise
             case 3: break;
             case 4: break;
-            case 5: myData(user->id);
+            case 5: myData(user->id, user->accounttype); break;
             case 6: return; // Exit
         }
     pauseClear();
@@ -140,9 +140,9 @@ void printAdminMenu(){
         }while(opc<1||opc>4);
         pauseClear(); // Clear data stream remaining from previous cin input
         switch(opc){
-            case 1: break;
-            case 2: break;
-            case 3: break;
+            case 1: printJobOffers(); break; // Print all job offers
+            case 2: printWorkers(); break; // Print all workers
+            case 3: printEnterprises(); break; // Print all enterprises
             case 4: return; // Exit
         }
     pauseClear();
