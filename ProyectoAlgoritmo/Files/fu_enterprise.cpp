@@ -74,8 +74,8 @@ void ac2_postJobOffers(){
 
     _ei=0; // Reiniciate error iterator
     do{ // Description
-        cout<<"Descripcion del trabajo: "; getline(cin,_profession);
-        if( !isString(_profession) || _profession.length()<8 ){
+        cout<<"Descripcion del trabajo: "; getline(cin,_description);
+        if( _description.length()<8 ){ // Error
             if( _ei == _maxerror ){
                 cout<<"Maxima cantidad de errores permitidos, abortando"<<endl;
                 return; // Exit the function

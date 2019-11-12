@@ -175,9 +175,10 @@ void printJobOffers(int _entid, string **data, int _length){
      }
      clear();
      cout<<"OFERTAS DE TRABAJO"<<endl;
+     cout<<"Total ofertas: "<<_length<<endl;
      cout<<" ID\t\tProfesion\tSalario\t\tEmpresa"<<endl;
      for(int i=0; i<_length; i++){
-        cout<<"i: "<<i<<endl;
+        // cout<<"i: "<<i<<endl;
         for(int j=0; j<4; j++){
             // cout<<"j: "<<j<<endl;
             // cout<<"data: "<<data<<endl;
@@ -385,7 +386,7 @@ bool mll_getJobOffers(int _entid){
 
     if( _length==0 ) return false; // There is no job offer posted yet
 
-    cout<<"1: "<<_entid<<endl;
+    // cout<<"1: "<<_entid<<endl;
     if( _entid != -1 ){ // Check if the given enterprises have at least one requests
         Person *_entp = NULL; // Initialize to NULL
         _entp = getPersonStructAddress( _entid ); // Get enterprise's director Person structure
@@ -402,19 +403,17 @@ bool mll_getJobOffers(int _entid){
 
     string _rqinfo[_length][4]; // Request's info
     string* _pointerrq[_length]; // Pointer to request info
-    cout<<"5"<<endl;
+    // cout<<"5"<<endl;
 
     // ERROR //
-    int _aux=-1; // Auxiliar iterator for enterprise specific data store
-    cout<<"length: "<<_length<<" - irq: "<<_irq<<endl;
+    int _aux=0; // Auxiliar iterator for enterprise specific data store
+    // cout<<"length: "<<_length<<" - irq: "<<_irq<<endl;
     for(int i=0; i<_irq; i++){ // ID, profession, salary, enterprise
         if( _entid != -1 ){ // If there is a specific enterprise
-            cout<<requests[i].rEnterprise.one->id <<" - "<< _entid<<endl;
+            // cout<<requests[i].rEnterprise.one->id <<" - "<< _entid<<endl;
             if( requests[i].rEnterprise.one->id != _entid ){ // If this requests is not from our specific enterprise
-                cout<<"i: "<<i<<" - skip"<<endl;
+                // cout<<"i: "<<i<<" - skip"<<endl;
                 continue; // Skip to next requests
-            }else{
-                _aux++;
             }
         }
         // cout<<"i: "<<i<<" - aux:"<<_aux<<endl;
@@ -423,14 +422,15 @@ bool mll_getJobOffers(int _entid){
         _rqinfo[_aux][2] = to_string( requests[i].rSalary ); // Get request's salary offered
         _rqinfo[_aux][3] = requests[i].rEnterprise.name; // Get request's enterprise
         _pointerrq[_aux] = _rqinfo[_aux]; // Pass data to requests pointer
+        _aux++;
     }
-    cout<<"res: "<<_rqinfo[0][0]<<endl;
-    cout<<"res: "<<_rqinfo[0][1]<<endl;
-    cout<<"res: "<<_rqinfo[0][2]<<endl;
-    cout<<"res: "<<_rqinfo[0][3]<<endl;
-    cout<<"_rqinfo[0]: "<<_rqinfo[0]<<endl;
-    cout<<"_pointerrq: "<<_pointerrq<<endl;
-    cout<<"7"<<endl;
+    // cout<<"res: "<<_rqinfo[0][0]<<endl;
+    // cout<<"res: "<<_rqinfo[0][1]<<endl;
+    // cout<<"res: "<<_rqinfo[0][2]<<endl;
+    // cout<<"res: "<<_rqinfo[0][3]<<endl;
+    // cout<<"_rqinfo[0]: "<<_rqinfo[0]<<endl;
+    // cout<<"_pointerrq: "<<_pointerrq<<endl;
+    // cout<<"7"<<endl;
 
     printJobOffers( -1,_pointerrq,_length );
     return true;

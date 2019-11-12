@@ -171,11 +171,11 @@
         Fixed changeData function in fu_global.cpp
         Fixed ac2_postJobOffers function in enterprise.cpp
         Fixed to enterprise account type printJobOffers function in fu_global.cpp
+        Fixed printJobOffers function in fu_global.cpp
+        Validate minage and maxage in ac2_postJobOffers function in fu_enterprise.cpp
 
-        *BUGS IN CREATE JOB OFFER
-
-        *Error to show job when accountype != 2
-        *BUG IN SHOW JOF
+        *Add option to watch job offers in myData function in fu_global.cpp
+        *(guest) Ask for worker data or enterprise data when set account type in chooseAccountType function
 
         *TEST ENTERPRISE FUNCTIONS
         --- ENTERPRISE MENU FINISHED ---
@@ -186,20 +186,17 @@
 
         Added static global variables of the proyect in database.cpp
 
+        **Allow to erase data with condition of do not show their profiles
+        *(worker) Active/inactive status of cv according to filled data
         *Show job offer info
         *Worker apply to job offers
         *Enterprise accept worker applies
 
-        *(enterprise) Validate minage and maxage in ac2_postJobOffers function in fu_enterprise.cpp
-        *(admin) Add admin to Person structure function, add its own structure inherited from Person structure, add its print function to myData function in fu_global.cpp
-        *(guest) Ask for worker data or enterprise data when set account type in chooseAccountType function
-        *(enterprise) Show job offers in enterprise profile
         *(enterprise) Open chat in printEnterprises function
-        *(worker) Active/inactive status of cv according to filled data
-        *(worker) Do not show worker if does not have setted profession
+        *(admin) Add admin to Person structure function, add its own structure inherited from Person structure, add its print function to myData function in fu_global.cpp
         *(admin) Ban worker or enterprise
-        **Allow to erase data with condition of do not show their profiles
         **(user) Trim strings at input
+
     v0.6 ERRORS && BUGS
         # BUG:1 in changeData function in fu_global.cpp do not store changes when worker or enterprise, only works for guest
             Bug explanation: When working with worker/enterprise we create a new structure, so now we are handling with two structures (Person and Worker/Enterprise), they are conected through the w_ma/e_ma element in Person structure
