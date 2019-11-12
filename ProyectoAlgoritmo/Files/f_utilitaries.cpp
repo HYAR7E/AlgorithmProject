@@ -13,7 +13,7 @@ bool isString(string txt, int minlength=-1, int maxlength=-1); // Is it a string
 bool isNumber(string num); // Is it a number value?
 bool isMail(string mail); // Is it a mail value?
 int convertToInt(string num); // Convert a string value to int value
-int getValidIntInput(string x_Ask, string x_Error); // Avoid program error when introducing string values into int variable input
+int getValidIntInput(string x_Ask, string x_Error, int i_min=-1, int i_max=-1, int maxerror=st_maxerror); // Avoid program error when introducing string values into int variable input
 int getCurrentTime(char f); // Gets current time _f: Y,M,D,h,m,s
 bool isDate(string date); // Is it a date value?
 bool isValidDate(string date, bool _checkage=false); // Is it a correct date value?
@@ -93,16 +93,22 @@ int convertToInt(string x_num){
     _num>>_n; // Pass value of _num (stringstream object) to int variable
     return _n;
 }
-int getValidIntInput(string x_Ask, string x_Error){
+int getValidIntInput(string x_Ask, string x_Error, int i_min, int i_max, int maxerror){
     string x_n = "";
     int i_n = 0;
-    cout<<x_Ask; cin>>x_n;
-    while( !isNumber(x_n) ){ // If it's invalid input show error message
-        cout<<x_Error<<endl;
+    int errorcount=0;
+
+    do{
         cout<<x_Ask; cin>>x_n;
-    }
-    i_n = convertToInt(x_n);
-    return i_n;
+        if( !isNumber(x_n) || (i_min!=-1 && convertToInt(x_n)<i_min) || (i_max!=-1 && convertToInt(x_n)>i_max) ){
+            cout<<x_Error<<endl; // Print error
+            errorcount++; // Iterate error count
+            if( errorcount == maxerror ) return -1; // Condition of fail
+        }
+        else break; // It is alright
+    }while( true ); // Infinite bucle
+
+    return convertToInt(x_n);
 }
 int getCurrentTime(char _f){
     time_t _now = time(0); // Gets current system time

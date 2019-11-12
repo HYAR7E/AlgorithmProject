@@ -16,8 +16,13 @@ Person *user = NULL; // Initialize pointer with NULL value for good practices
 static Person noone = Person{0};
 
 // Static variables
-char st_dateseparator = '/';
-int st_clearlines = 8;
+static char st_dateseparator = '/';
+static int st_clearlines = 8;
+static int st_maxerror=3;
+static int st_minage=18;
+static int st_maxage=65;
+static int st_minduration=1;
+static int st_minpay=800;
 /*
     We're gonna check the users session by having a pointer to the current user struct variable
     so we're gonna get his data by pointer->person_element like user->id, and make changes to their data too
@@ -55,7 +60,7 @@ bool preload(){
     workers[_iwk].profession = "asesinador";
     _iac++; // Iterate
     _iwk++; // Iterate
-    workers[0].printData(true);
+    // workers[0].printData(true);
     /* BUG FIXED
         We use should use the global variable to set a pointer, otherwise they will store thrash data and will be UB(undefined behavior)
         workers[_iwk].setPerson(&accounts[_iac] );

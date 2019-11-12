@@ -168,9 +168,14 @@
         Added default enterprises in database.cpp
         Added default requests in database.cpp
         Fixed show only myJobOffers in fu_global.cpp
+        Fixed changeData function in fu_global.cpp
 
-        *DO NOT EXIT WHEN ERROR IN CREATE NEW JOB OFFER
+        *Fixed ac2_postJobOffers function in enterprise.cpp
         *BUGS IN CREATE JOB OFFER
+
+        *Error to show job when accountype != 2
+        *BUG IN SHOW JOF
+
         *TEST ENTERPRISE FUNCTIONS
         --- ENTERPRISE MENU FINISHED ---
 
@@ -178,6 +183,7 @@
         Show requests, workers and enterprises
         --- ADMIN MENU FINISHED ---
 
+        Added static global variables of the proyect in database.cpp
 
         *Show job offer info
         *Worker apply to job offers

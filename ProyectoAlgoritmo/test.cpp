@@ -1,7 +1,8 @@
 #include<iostream>
 #include<sstream> // Convert string to int
 #include<time.h> // Time functions
-#include <typeinfo> // Get variable type
+#include<typeinfo> // Get variable type
+#include<string.h> // strpcy
 using namespace std;
 int getCurrentTime(char _f){
     time_t _now = time(0); // Gets current system time
@@ -366,6 +367,12 @@ int main(){
         }
     }
     cout<<"if sentence is over"<<endl;
+
+
+    /*** test project functions ***/
+    v_str = "hola ";
+    v_str += "mundo.";
+    cout<<v_str<<endl;
 }
 
 
