@@ -169,8 +169,9 @@
         Added default requests in database.cpp
         Fixed show only myJobOffers in fu_global.cpp
         Fixed changeData function in fu_global.cpp
+        Fixed ac2_postJobOffers function in enterprise.cpp
+        Fixed to enterprise account type printJobOffers function in fu_global.cpp
 
-        *Fixed ac2_postJobOffers function in enterprise.cpp
         *BUGS IN CREATE JOB OFFER
 
         *Error to show job when accountype != 2

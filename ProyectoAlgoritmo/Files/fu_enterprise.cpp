@@ -66,7 +66,7 @@ void ac2_postJobOffers(){
     }
 
     _msg = "Introduzca un numero valido menor o igual que " + to_string(st_maxage);
-    _maxage = getValidIntInput("Edad maxima para el trabajo("+to_string(st_maxage)+"): ",_msg,st_minage,st_maxage); pauseClear();
+    _maxage = getValidIntInput("Edad maxima para el trabajo("+to_string(st_maxage)+"): ",_msg,_minage,st_maxage); pauseClear(); 
     if( _maxage == -1 ){ // Return of error
       cout<<"Maxima cantidad de errores permitidos, abortando"<<endl;
       return;
