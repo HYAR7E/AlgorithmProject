@@ -2,11 +2,10 @@
 ## by HYAR7E
 
     PROJECT ESPECIFICATIONS
-        Struct data Profession is added as keywords like enginner, nurse, assassin, etc.
-    *Main Menu
-        *Register
-        *Login
-        *Exit
+    Main Menu
+        Register
+        Login
+        Exit
     Guest menu
         Choose accoun type
         Add contact info
@@ -168,17 +167,23 @@
         Added jobOfferExists function in fu_global.cpp (almost the same as userIdExists(user) cuz this is other kind of data type(request))
         Added default enterprises in database.cpp
         Added default requests in database.cpp
+        Fixed show only myJobOffers in fu_global.cpp
+
+        *DO NOT EXIT WHEN ERROR IN CREATE NEW JOB OFFER
+        *BUGS IN CREATE JOB OFFER
+        *TEST ENTERPRISE FUNCTIONS
         --- ENTERPRISE MENU FINISHED ---
 
         Added default admin in preload function in database.cpp
-        Show workers and enterprises
+        Show requests, workers and enterprises
         --- ADMIN MENU FINISHED ---
 
 
-        *Worker watch job offers
+        *Show job offer info
         *Worker apply to job offers
         *Enterprise accept worker applies
 
+        *(enterprise) Validate minage and maxage in ac2_postJobOffers function in fu_enterprise.cpp
         *(admin) Add admin to Person structure function, add its own structure inherited from Person structure, add its print function to myData function in fu_global.cpp
         *(guest) Ask for worker data or enterprise data when set account type in chooseAccountType function
         *(enterprise) Show job offers in enterprise profile
@@ -188,6 +193,20 @@
         *(admin) Ban worker or enterprise
         **Allow to erase data with condition of do not show their profiles
         **(user) Trim strings at input
+    v0.6 ERRORS && BUGS
+        # BUG:1 in changeData function in fu_global.cpp do not store changes when worker or enterprise, only works for guest
+            Bug explanation: When working with worker/enterprise we create a new structure, so now we are handling with two structures (Person and Worker/Enterprise), they are conected through the w_ma/e_ma element in Person structure
+                So we have to pass the changes we do in Person structure to Worker structure, and reverse.
+            Solution: Connect these two structures by setting Worker/Enterprise 'one' element a pointer to Person structure, so no matter what of them we change, the other one will know too.
+        # ERROR:1 in myData function in fu_global.cpp (shows random data)
+            Error explanation: The problem was caused cuz in default users we declare them in preload function in database.cpp and as we are working with pointer, these variables memory address get stored, but at the end of scope they get erased
+            Solution: Work with the global variables, in functions like Worker::setPerson && Enterprise::setPerson && Person::setWorker && Person::setEnterprise we should send as parameter a global variables
+        # BUGS:2 in _postJobOffers function if fu_enterprise.cpp
+            Bug explanation: Pointer element in structure leads to a variable with function scope
+            Solution: Changed the Enterprise::addRequest function parameter to work with global array 'requests'
+        # BUGS:3 in showJobOffers function if fu_global.cpp
+            Bug explanation:
+            Solution:
 
 
     v0.6 TOPICS EXPLANATION:

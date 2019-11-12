@@ -355,6 +355,17 @@ int main(){
     cout<<"_strint1: "<<_strint1<<endl;
     cout<<"_strint2: "<<_strint2<<endl;
 
+
+    /*** exit a if statement ***/
+    if(true){
+        cout<<"within the if sentence"<<endl;
+        if(true){ // break :/
+            cout<<"break"<<endl;
+        }else{
+            cout<<"this should not be showing"<<endl;
+        }
+    }
+    cout<<"if sentence is over"<<endl;
 }
 
 

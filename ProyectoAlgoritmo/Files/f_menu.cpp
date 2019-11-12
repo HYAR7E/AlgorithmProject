@@ -77,9 +77,10 @@ void printWorkerMenu(){
     do{ // Repeat menu
         do{
             clear();
-            // cout<<"ID: "<<user->id<<endl;
-            // cout<<"AC: "<<user->accounttype<<endl;
-            // cout<<"MA: "<<user->w_ma<<endl;
+            cout<<"ID: "<<user->id<<endl;
+            cout<<"AC: "<<user->accounttype<<endl;
+            cout<<"MA: "<<user->w_ma<<endl;
+            
             cout<<"1. CV"<<endl;
             cout<<"2. Ver anuncios"<<endl; // And apply
             cout<<"3. Ver empresas"<<endl; // Open chat

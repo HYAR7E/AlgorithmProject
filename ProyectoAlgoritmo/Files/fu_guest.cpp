@@ -37,7 +37,7 @@ bool ac0_chooseAccountType(){
 
     bool _r = _chooseAccountType(opc);
     if( !_r ) cout<<"Un error ha ocurrido y los cambios no han podido ser realizados";
-    else cout<<"Se ha seleccionado el tipo de cuenta correctamente";
+    else cout<<"Se ha seleccionado el tipo de cuenta correctamente, por favor inicie sesion nuevamente";
     cout<<endl;
     pauseClear();
     return _r;
@@ -48,12 +48,12 @@ bool _chooseAccountType(int _actype){
     if( !user->setAccountType(_actype) ) return false; // Operation failed, maybe the user has already picked his account type
     switch(_actype){ // Add to global array
         case 1:
-            workers[_iwk].setPerson(*user); // Send user value to 'setPerson' function
+            workers[_iwk].setPerson(user); // Send user value to 'setPerson' function
             if( !user->setWorker( &workers[_iwk] ) ) return false; // Send new worker element and return false if failed
             _iwk++; // Iterate variable
             break;
         case 2:
-            enterprises[_iet].setPerson(*user); // Send user value to 'setPerson' function
+            enterprises[_iet].setPerson(user); // Send user value to 'setPerson' function
             if( !user->setEnterprise( &enterprises[_iet] ) ) return false; // Send new enterprise element and return false if failed
             _iet++; // Iterate variable
             break;

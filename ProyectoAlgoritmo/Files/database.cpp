@@ -51,11 +51,20 @@ bool preload(){
     _new.setAccountType(1);
     _new.setWorker( &workers[_iwk] ); // Set memory address before store in array
     accounts[_iac] = _new; // Add to accounts array
-    _iac++; // Iterate
-    workers[_iwk].setPerson(_new); // Add person to worker array element
+    workers[_iwk].setPerson(&accounts[_iac] ); // Add person to worker array element
     workers[_iwk].profession = "asesinador";
+    _iac++; // Iterate
     _iwk++; // Iterate
-    // workers[0].printData(true);
+    workers[0].printData(true);
+    /* BUG FIXED
+        We use should use the global variable to set a pointer, otherwise they will store thrash data and will be UB(undefined behavior)
+        workers[_iwk].setPerson(&accounts[_iac] );
+    */
+
+
+
+
+
     Person _new1 = Person{0};
     _new1.set(2222, "kailen", "agustin falcon", "11/04/2000", "72112251", "kailen123");
     _new1.contact.email="a@b.c";
@@ -64,9 +73,9 @@ bool preload(){
     _new1.setAccountType(1);
     _new1.setWorker( &workers[_iwk] );
     accounts[_iac] = _new1;
-    _iac++;
-    workers[_iwk].setPerson(_new1);
+    workers[_iwk].setPerson(&accounts[_iac]);
     workers[_iwk].profession = "cocinero";
+    _iac++;
     _iwk++;
     // workers[1].printData(true);
     Person _new5 = Person{0};
@@ -77,9 +86,9 @@ bool preload(){
     _new5.setAccountType(1);
     _new5.setWorker( &workers[_iwk] );
     accounts[_iac] = _new5;
-    _iac++;
-    workers[_iwk].setPerson(_new5);
+    workers[_iwk].setPerson(&accounts[_iac]);
     workers[_iwk].profession = "barrendero";
+    _iac++;
     _iwk++;
     // workers[2].printData(true);
 
@@ -94,9 +103,9 @@ bool preload(){
     _new2.setAccountType(2);
     _new2.setEnterprise( &enterprises[_iet] );
     accounts[_iac] = _new2;
-    _iac++;
-    enterprises[_iet].setPerson(_new2);
+    enterprises[_iet].setPerson(&accounts[_iac]);
     enterprises[_iet].name = "mibakita sac";
+    _iac++;
     _iet++;
     // enterprises[0].printData(true);
     Person _new3 = Person{0};
@@ -107,9 +116,9 @@ bool preload(){
     _new3.setAccountType(2);
     _new3.setEnterprise( &enterprises[_iet] );
     accounts[_iac] = _new3;
-    _iac++;
-    enterprises[_iet].setPerson(_new3);
+    enterprises[_iet].setPerson(&accounts[_iac]);
     enterprises[_iet].name = "inkofarma sac";
+    _iac++;
     _iet++;
     // cout<<"_new3.id: "<<_new3.id<<endl;
     // cout<<"_new3.e_ma: "<<_new3.e_ma<<endl;

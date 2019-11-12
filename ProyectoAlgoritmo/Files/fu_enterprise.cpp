@@ -51,7 +51,7 @@ void ac2_postJobOffers(){
         cout<<"La edad maxima para trabajar es 65"<<endl;
         return;
     }
-    cout<<"Decripcion del trabajo: "; cin>>_description; pauseClear();
+    cout<<"Descripcion del trabajo: "; getline(cin,_description);
     if( _description.length() < 8 ){
         cout<<"La descripcion debe contener minimo 8 letras."<<endl;
         return;
@@ -74,8 +74,8 @@ bool _postJobOffers(Enterprise *_e, string _p, int _s, int _d, int _a, int _mina
     _result = _r.create(_id,*_e,_p,_s,_d,_a,_minage,_maxage,_dsc); // Pass values to request
     if( !_result ) return false; // If fail return false
 
-    _e->addRequest( &_r ); // Add request in enterprise variable
     requests[_irq] = _r; // Store request in global array
+    _e->addRequest( &requests[_irq] ); // Add request in enterprise variable
     _irq++; // Iterate global requests iterator
 
     return true;

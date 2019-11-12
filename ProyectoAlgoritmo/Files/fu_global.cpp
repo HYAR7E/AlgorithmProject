@@ -4,6 +4,7 @@
 /*** FUNCTIONS PROTOTYPE ***/
 // Capa Usuario
 void myData(int _userid, int _actype); // Print specific user(guest/worker/enterprise) data, with possibility of modify
+void myJobOffer(int _userid, int _actype); // Print specific job offer data, with possibility of modify
 void printWorkers(string **data=NULL, int _length=0); // Recursive function, double default value cuz we'll call it without arguments from the menu
 void printEnterprises(string **data=NULL, int _length=0); // Recursive function
 void printJobOffers(int _entid=-1, string **data=NULL, int _length=0); // Print all job offers, owned by enterprise with id = _entid
@@ -12,7 +13,7 @@ void printJobOffers(int _entid=-1, string **data=NULL, int _length=0); // Print 
 bool mll_changeData(int _actype, string _code, string _value); // Change user data
 bool mll_getWorkers(); // Get workers data
 bool mll_getEnterprises(); // Get enterprises data
-bool mll_getJobOffers(); // Get request data
+bool mll_getJobOffers(int _entid); // Get request data
 Person *getPersonStructAddress(int _userid); // Get user struct direction from accounts array and return it to store in 'user' global pointer variable
 bool userIdExists(int _userid); // We can't mix the functions getPersonStruct with userIdExists for security good practices
 bool jobOfferExists(int _offerid); // Job offer exists?
@@ -155,8 +156,9 @@ void printEnterprises(string **data, int _length){
 }
 void printJobOffers(int _entid, string **data, int _length){
      if(data==NULL){
-         if( !mll_getJobOffers() ){ // There is no requests
-             cout<<"No hay ofertas de trabajo disponibles"<<endl;
+         if( !mll_getJobOffers(_entid) ){ // There is no requests
+            if( _entid != -1 ) cout<<"Ud no ha publicado ningun trabajo"<<endl;
+            else cout<<"No hay ofertas de trabajo disponibles"<<endl;
          }else{
              int _id;
              cout<<"\nSeleccionar trabajo (0: salir)"<<endl;
@@ -175,12 +177,16 @@ void printJobOffers(int _entid, string **data, int _length){
      cout<<"OFERTAS DE TRABAJO"<<endl;
      cout<<" ID\t\tProfesion\tSalario\t\tEmpresa"<<endl;
      for(int i=0; i<_length; i++){
-         for(int j=0; j<4; j++){
-             cout<< **data <<"\t\t";
-             (*data)++;
-         }
-         cout<<endl;
-         data++;
+        cout<<"i: "<<i<<endl;
+        for(int j=0; j<4; j++){
+            // cout<<"j: "<<j<<endl;
+            // cout<<"data: "<<data<<endl;
+            // cout<<"*data: "<<*data<<endl;
+            cout<< **data <<"\t\t";
+            (*data)++;
+        }
+        cout<<endl;
+        data++;
      }
 }
 
@@ -238,47 +244,51 @@ bool mll_changeData(int _actype, string _code, string _value){
             return false;
         }
     }else if(_actype == 1){ // Is worker
-        Worker* _user = user->w_ma;
+        Worker *_user = NULL;
+        _user = user->w_ma;
 
         if(      _code == "wpf"){
             if( !isString(_value,4) ) return false;
             _user->profession = _value;
 
         }else if(_code == "wdc"){
-            if( _value.length() < 8 ) return false; // We don't use isString function cuz there can be anything as ',.$+-*' etc
+            // We don't use isString function cuz there can be anything as ',.$+-*' etc
             _user->description = _value;
 
         }else if(_code == "cem"){
             if( !isMail(_value) ) return false;
-            _user->one.contact.email = _value;
+            _user->one->contact.email = _value;
 
         }else if(_code == "ct1"){
             if( !isNumber(_value) || _value.length() < 7 ) return false;
-            _user->one.contact.telf1 = _value;
+            _user->one->contact.telf1 = _value;
 
         }else if(_code == "ct2"){
             if( !isNumber(_value) || _value.length() < 7 ) return false;
-            _user->one.contact.telf2 = _value;
+            _user->one->contact.telf2 = _value;
 
         }else if(_code == "cad"){
             if( !isString(_value,6) ) return false;
-            _user->one.contact.address = _value;
+            _user->one->contact.address = _value;
 
         }else if(_code == "pnm"){
             if( !isString(_value,3) ) return false;
-            _user->one.name = _value;
+            _user->one->name = _value;
 
         }else if(_code == "pln"){
             if( !isString(_value,4) ) return false;
-            _user->one.lastname = _value;
+            _user->one->lastname = _value;
 
         }else if(_code == "pwd"){
             if( _value.length()<6 || _value.length()>15 ) return false;
-            _user->one.password = _value;
+            _user->one->password = _value;
+            cout<<"_user->one.password: "<<_user->one->password<<endl;
+            cout<<"user->password: "<<user->password<<endl;
 
         }else{ // Code does not exists
             return false;
         }
+        user->setWorker(_user); // Pass all changes done to user
     }else if(_actype == 2){ // Is enterprise
         Enterprise* _user = user->e_ma;
 
@@ -287,36 +297,36 @@ bool mll_changeData(int _actype, string _code, string _value){
             _user->name = _value;
 
         }else if(_code == "edc"){
-            if( _value.length() < 8 ) return false; // Description is not necessarily string type
+            // Description is not necessarily string type
             _user->description = _value;
 
         }else if(_code == "cem"){
             if( !isMail(_value) ) return false;
-            _user->one.contact.email = _value;
+            _user->one->contact.email = _value;
 
         }else if(_code == "ct1"){
             if( !isNumber(_value) || _value.length() < 7 ) return false;
-            _user->one.contact.telf1 = _value;
+            _user->one->contact.telf1 = _value;
 
         }else if(_code == "ct2"){
             if( !isNumber(_value) || _value.length() < 7 ) return false;
-            _user->one.contact.telf2 = _value;
+            _user->one->contact.telf2 = _value;
 
         }else if(_code == "cad"){
             if( !isString(_value,6) ) return false;
-            _user->one.contact.address = _value;
+            _user->one->contact.address = _value;
 
         }else if(_code == "pnm"){
             if( !isString(_value,3) ) return false;
-            _user->one.name = _value;
+            _user->one->name = _value;
 
         }else if(_code == "pln"){
             if( !isString(_value,4) ) return false;
-            _user->one.lastname = _value;
+            _user->one->lastname = _value;
 
         }else if(_code == "pwd"){
             if( _value.length()<6 || _value.length()>15 ) return false;
-            _user->one.password = _value;
+            _user->one->password = _value;
 
         }else{ // Code does not exists
             return false;
@@ -338,10 +348,10 @@ bool mll_getWorkers(){ // Get a workers info array
         // cout<<"str: "<<to_string( workers[i].one.id )<<endl;
         // cout<<"workers[i].one.id: "<< workers[i].one.id <<endl;
         // For good practices we should convert all data to string, regardless if it is string by default or other. But the to_string function does not allow string type parameters
-        _workersinfo[i][0] = to_string( workers[i].one.id );
+        _workersinfo[i][0] = to_string( workers[i].one->id );
         _workersinfo[i][1] = workers[i].profession;
-        _workersinfo[i][2] = workers[i].one.name;
-        _workersinfo[i][3] = workers[i].one.lastname;
+        _workersinfo[i][2] = workers[i].one->name;
+        _workersinfo[i][3] = workers[i].one->lastname;
         _pointerworker[i] = _workersinfo[i]; // Pass ma of this worker
     }
 
@@ -360,7 +370,7 @@ bool mll_getEnterprises(){
     string* _pointerenterprises[_iet];
 
     for(int i=0; i<_iet; i++){
-        _enterprisesinfo[i][0] = to_string( enterprises[i].one.id ); // Get enterprise id
+        _enterprisesinfo[i][0] = to_string( enterprises[i].one->id ); // Get enterprise id
         _enterprisesinfo[i][1] = enterprises[i].name; // Get enterprise name
         _enterprisesinfo[i][2] = to_string( enterprises[i].countRequests() ); // Get enterprises's requests amount
         _pointerenterprises[i] = _enterprisesinfo[i]; // Pass data to enterprises pointer
@@ -369,24 +379,60 @@ bool mll_getEnterprises(){
     printEnterprises( _pointerenterprises,_iet );
     return true;
 }
-bool mll_getJobOffers(){
-    _irq; // Request global array iterator
+bool mll_getJobOffers(int _entid){
+    int _length = _irq; // Request global array iterator
     requests; // Requests array
 
-    if( _irq==0 ) return false; // There is no job offer posted yet
+    if( _length==0 ) return false; // There is no job offer posted yet
 
-    string _rqinfo[_irq][3]; // Request's info
-    string* _pointerrq[_irq]; // Pointer to request info
-
-    for(int i=0; i<_irq; i++){ // ID, profession, salary, enterprise
-        _rqinfo[i][0] = to_string( requests[i].id ); // Get request's id
-        _rqinfo[i][1] = requests[i].rProfession; // Get request's profession required
-        _rqinfo[i][2] = to_string( requests[i].rSalary ); // Get request's salary offered
-        _rqinfo[i][3] = requests[i].rEnterprise.name; // Get request's enterprise
-        _pointerrq[i] = _rqinfo[i]; // Pass data to requests pointer
+    cout<<"1: "<<_entid<<endl;
+    if( _entid != -1 ){ // Check if the given enterprises have at least one requests
+        Person *_entp = NULL; // Initialize to NULL
+        _entp = getPersonStructAddress( _entid ); // Get enterprise's director Person structure
+        // cout<<"2"<<endl;
+        Enterprise* _ent = NULL; // Initializeto NULL
+        _ent = _entp->e_ma; // Pass the enterprise ma to enterprise pointer
+        // cout<<"3"<<endl;
+        // Set array length
+        _length = _ent->countRequests(); // Get this enterprise's number of requests
+        // Print this enterprise's requests
+        if( _length == 0 ) return false; // Check, if it has no requests then exit
+        // cout<<"4"<<endl;
     }
 
-    printJobOffers( -1,_pointerrq,_irq );
+    string _rqinfo[_length][4]; // Request's info
+    string* _pointerrq[_length]; // Pointer to request info
+    cout<<"5"<<endl;
+
+    // ERROR //
+    int _aux=-1; // Auxiliar iterator for enterprise specific data store
+    cout<<"length: "<<_length<<" - irq: "<<_irq<<endl;
+    for(int i=0; i<_irq; i++){ // ID, profession, salary, enterprise
+        if( _entid != -1 ){ // If there is a specific enterprise
+            cout<<requests[i].rEnterprise.one->id <<" - "<< _entid<<endl;
+            if( requests[i].rEnterprise.one->id != _entid ){ // If this requests is not from our specific enterprise
+                cout<<"i: "<<i<<" - skip"<<endl;
+                continue; // Skip to next requests
+            }else{
+                _aux++;
+            }
+        }
+        // cout<<"i: "<<i<<" - aux:"<<_aux<<endl;
+        _rqinfo[_aux][0] = to_string( requests[i].id ); // Get request's id
+        _rqinfo[_aux][1] = requests[i].rProfession; // Get request's profession required
+        _rqinfo[_aux][2] = to_string( requests[i].rSalary ); // Get request's salary offered
+        _rqinfo[_aux][3] = requests[i].rEnterprise.name; // Get request's enterprise
+        _pointerrq[_aux] = _rqinfo[_aux]; // Pass data to requests pointer
+    }
+    cout<<"res: "<<_rqinfo[0][0]<<endl;
+    cout<<"res: "<<_rqinfo[0][1]<<endl;
+    cout<<"res: "<<_rqinfo[0][2]<<endl;
+    cout<<"res: "<<_rqinfo[0][3]<<endl;
+    cout<<"_rqinfo[0]: "<<_rqinfo[0]<<endl;
+    cout<<"_pointerrq: "<<_pointerrq<<endl;
+    cout<<"7"<<endl;
+
+    printJobOffers( -1,_pointerrq,_length );
     return true;
 }
 Person *getPersonStructAddress(int _userid){

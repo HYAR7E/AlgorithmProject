@@ -97,26 +97,28 @@ struct Person{
     }
 };
 struct Worker{
-    Person one;
+    Person* one;
     string profession;
     string description;
-    void setPerson(Person _person){ // Created by Person
+    void setPerson(Person *_person){ // Created by Person
+
         one = _person;
+
     }
     void printData(bool _code){
         cout<<"Informacion del trabajador"<<endl;
-        one.printData(_code); // Person data && end _code
+        one->printData(_code); // Person data && end _code
         cout<< (_code ? "wpf\t":"") <<"Profesion: "<<profession<<endl;
         cout<< (_code ? "wdc\t":"") <<"Descripcion del perfil: "<<description<<endl;
     }
 };
 struct Enterprise{
-    Person one;
+    Person* one;
     string name;
     string description;
     // Requests memory address
     Request* r_ma[5]; // One enterprise can post up to 5 job requests
-    void setPerson(Person _person){ // Created by Person
+    void setPerson(Person *_person){ // Created by Person
         one = _person;
         // Request ma initializated to NULL
         r_ma[0] = NULL;
@@ -131,11 +133,11 @@ struct Enterprise{
         cout<< (_code ? "edc\t":"") <<"Descripcion: "<<description<<endl;
         if( _code ){ // If it's the actual user
             cout<<"Informacion del director\n"<<endl;
-            one.printData(_code); // Print director data
+            one->printData(_code); // Print director data
         }else{ // Shown as enterprise information
-            cout<<"Telefono: "<<one.contact.telf1<<endl;
-            cout<<"Email: "<<one.contact.email<<endl;
-            cout<<"Direccion: "<<one.contact.address<<endl;
+            cout<<"Telefono: "<<one->contact.telf1<<endl;
+            cout<<"Email: "<<one->contact.email<<endl;
+            cout<<"Direccion: "<<one->contact.address<<endl;
         }
     }
     bool addRequest(Request *_r_ma){
