@@ -1,0 +1,78 @@
+AUTOKEY
+    https://saravananthirumuruganathan.wordpress.com/2010/04/14/autokey-linux-utility-for-text-substitution-hotkeys-and-desktop-automation/
+
+VIM
+    https://www.google.com.pe/search?q=vim&oq=vim&aqs=chrome..69i57j69i60l2j69i61j69i60j69i65.648j0j7&client=ubuntu&sourceid=chrome&ie=UTF-8
+
+REST
+    https://www.restapitutorial.com/
+
+SERVER
+    https://github.com/appwrite/appwrite
+    https://www.instructables.com/id/Set-up-your-very-own-Web-server/
+
+LINUX COMMANDS
+    # Crear archivos
+    touch archivo.txt
+    # Abrir archivos de texto en el terminal
+    nano archivo.txt
+    # Imprimir texto de un archivo en el terminal
+    cat archivo.txt
+    # Para borrar archivos
+    rm archivo.txt
+
+WEB SERVER
+    # Muestra todos los servicios instalados
+    service --status-all
+    # Verifica el estado del servicio
+    service apache2 status
+    # Cambia el estado del servicio
+    service apache2 start/restart/stop
+
+    ## Preparando el servicio
+    # Instala el packete de apache2
+    sudo apt-get install apache2
+    # Dehabilitamos el inicio automatico cuando la pc se prende
+    sudo update-rc.d apache2 disable
+    # Iniciar el servicio apache2
+    sudo service apache2 start
+
+    ## Iniciando la pagina web
+    # Ir a la carpera donde deben ir las paginas web
+    cd /var/www/html/
+    # Crear carpeta para la pagina web
+    mkdir paginaweb
+    # Entrar a la carpeta de la pagina web
+    cd paginaweb/
+    # Crear archivo index.html para probar que funciona
+    touch index.html
+    # Agregar algo de codigo al archivo
+    sudo nano index.html
+    <h1>HOLA MUNDO</h1>
+    # Entrar a la pagina web a travez de un navegador web
+    localhost/paginaweb/
+    # Esto debería mostrar el mensaje "HOLA MUNDO", por ahora nuestra pagina es local
+
+    ## Crear archivo de configuracion para la pagina web
+    # Entrar a la carpeta donde los archivos de configuracion de apache se encuentran
+    cd /etc/apache2/sites-available/
+    # Duplicar el archivo 000-default.conf con el nombre mipagina.conf
+
+    ## Activar configuracion nueva y desactivar configuracion default
+    # Deshabilitar el archivo de configuracion por defecto
+    sudo a2dissite 000-default.conf
+    # Habilitar el archivo de configuracion que hemos creado para nuestra pagina
+    sudo a2ensite mipagina.conf
+    # Reiniciar el servicio apache para que los cambios surjan efecto
+    sudo service apache2 restart
+
+    ## Modificar archivo de DNS
+    # Entrar a la carpeta del archivo hosts
+    cd /etc/
+    # Modificar archivo hosts y agrega tu ip seguido del ServerName que le pusiste a cada VirtualHost
+    sudo nano hosts
+
+    # Eso sería todo.
+
+
+
