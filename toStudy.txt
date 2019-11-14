@@ -36,6 +36,8 @@ WEB SERVER
     sudo update-rc.d apache2 disable
     # Iniciar el servicio apache2
     sudo service apache2 start
+    # Configurar firewall para permitir trafico de apache2
+    sudo ufw allow apache2
 
     ## Iniciando la pagina web
     # Ir a la carpera donde deben ir las paginas web
@@ -73,6 +75,55 @@ WEB SERVER
     sudo nano hosts
 
     # Eso sería todo.
+
+
+DATABASE SERVER
+    ## Preparando el servicio
+    # Instalar
+    sudo apt-get install mysql-server
+    # Configurar firewall para permitir trafico de mysql
+    sudo ufw allow mysql
+
+    ## Configurar mysql para permitir acceso remoto
+    # Entrar a la carpeta de configuracion
+    cd /etc/mysql
+    # Revisar el archivo my.cnf y buscar en las carpetas incluidas el archivo mysqld.cnf
+    # Abrimos el archivo mysql.conf y buscamos la linea que tenga bind-address
+    # Cambiamos la ip de bind-address y ponemos la nuestra, ahora el servidor mysql esta "amarrado" a nuestra ip
+
+    ## Configurar a base de datos
+    # Entrar como root a la base de datos
+    sudo mysql -u root
+    # Crear un nuevo usuario que sera remoto con acceso a mysql
+    CREATE USER 'nombre'@'dominio' IDENTIFIED BY 'contraseña';
+    # Darle privilegios de administrador
+    GRANT ALL PRIVILEGES ON databasename.tablename TO 'usuario'@'dominio';
+    # Darle privilegios especificos
+    GRANT SELECT ON databasename TO 'usuario'@'dominio';
+    # Extra: en lugar de poner el nombre de la base de datos, podemos poner * que significa que tiene acceso a todos
+    # Ejm: GRANT ALL PRIVILEGES ON *.* TO 'usuario'@'dominio';
+
+    # Entrar a la base de datos
+    mysql -u usuario -p -h 192.168.43.xxx
+    # -u: usuario; -p: indica que el usuario se logeara con contraseña; -h: indica la ip del servidor
+
+    # Usar una base de datos
+    USE databasename;
+    # Mostrar informacion de una tabla
+    SELECT * FROM nombretabla;
+    # Modificar un valor, si if_campo es igual a if_valor, entonces campo=valor
+    UPDATE tabla SET campo=valor WHERE if_campo=if_valor
+
+
+
+
+
+
+
+
+
+
+
 
 
 
