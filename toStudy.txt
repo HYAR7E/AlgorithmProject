@@ -12,118 +12,156 @@ SERVER
     https://www.instructables.com/id/Set-up-your-very-own-Web-server/
 
 LINUX COMMANDS
-    # Crear archivos
+    # Crear archivos / Create files
     touch archivo.txt
-    # Abrir archivos de texto en el terminal
+    # Abrir archivos de texto en el terminal / Open text file in terminal
     nano archivo.txt
-    # Imprimir texto de un archivo en el terminal
+    # Imprimir texto de un archivo en el terminal / Print text file into terminal
     cat archivo.txt
-    # Para borrar archivos
+    # Borrar archivos / Erase files
     rm archivo.txt
+    # Mover un archivo / Move files
+    mv file.txt Directory/
 
 WEB SERVER
-    # Muestra todos los servicios instalados
+    # Muestra todos los servicios instalados / Show all installed services
     service --status-all
-    # Verifica el estado del servicio
+    # Verifica el estado del servicio / Check service status
     service apache2 status
-    # Cambia el estado del servicio
+    # Cambia el estado del servicio / Change service status
     service apache2 start/restart/stop
 
-    ## Preparando el servicio
-    # Instala el packete de apache2
+    ## Preparando el servicio / Get the service ready
+    # Instala el packete de apache2 / To install apache2 package
     sudo apt-get install apache2
-    # Dehabilitamos el inicio automatico cuando la pc se prende
+    # Dehabilitamos el inicio automatico cuando la pc se prende / Disable service auto execution
     sudo update-rc.d apache2 disable
-    # Iniciar el servicio apache2
+    # Iniciar el servicio apache2 / Start apache2 service
     sudo service apache2 start
-    # Configurar firewall para permitir trafico de apache2
+    # Configurar firewall para permitir trafico de apache2 / Configurate firewall to allow apache2 traffic
     sudo ufw allow apache2
 
-    ## Iniciando la pagina web
-    # Ir a la carpera donde deben ir las paginas web
+    ## Iniciando la pagina web / Starting a web page
+    # Ir a la carpera donde deben ir las paginas web / Move to web page's directory
     cd /var/www/html/
-    # Crear carpeta para la pagina web
+    # Crear carpeta para la pagina web / Create directory for web page
     mkdir paginaweb
-    # Entrar a la carpeta de la pagina web
+    # Entrar a la carpeta de la pagina web / Move into web page directory
     cd paginaweb/
-    # Crear archivo index.html para probar que funciona
+    # Crear archivo index.html para probar que funciona / Create index.html file to test if it works
     touch index.html
-    # Agregar algo de codigo al archivo
+    # Agregar algo de codigo al archivo / Add some code to the file
     sudo nano index.html
     <h1>HOLA MUNDO</h1>
-    # Entrar a la pagina web a travez de un navegador web
+    # Entrar a la pagina web a travez de un navegador web / Open the web page through a web navigator
     localhost/paginaweb/
-    # Esto debería mostrar el mensaje "HOLA MUNDO", por ahora nuestra pagina es local
+    # Esto debería mostrar el mensaje "HOLA MUNDO", por ahora nuestra pagina es local / This should show the "HOLA MUNDO" message
 
-    ## Crear archivo de configuracion para la pagina web
-    # Entrar a la carpeta donde los archivos de configuracion de apache se encuentran
+    ## Crear archivo de virtualhost para la pagina web / Create virtual host file for web page
+    # Entrar a la carpeta donde los archivos virtualhost de apache se encuentran / Move into apache virtualhost file's directory
     cd /etc/apache2/sites-available/
-    # Duplicar el archivo 000-default.conf con el nombre mipagina.conf
+    # Duplicar el archivo 000-default.conf con el nombre mipagina.conf / Duplicate 000-default.conf with your page's name
 
-    ## Activar configuracion nueva y desactivar configuracion default
-    # Deshabilitar el archivo de configuracion por defecto
+    ## Activar configuracion(virtualhost) nueva y desactivar configuracion default / Enable newer configuration file and disable default configuration file
+    # Deshabilitar el archivo de configuracion por defecto / Disable default configuration file
     sudo a2dissite 000-default.conf
-    # Habilitar el archivo de configuracion que hemos creado para nuestra pagina
+    # Habilitar el archivo de configuracion que hemos creado para nuestra pagina / Enable new configuration file
     sudo a2ensite mipagina.conf
-    # Reiniciar el servicio apache para que los cambios surjan efecto
+    # Reiniciar el servicio apache para que los cambios surjan efecto / Restart apache2 service for changes to make effect
     sudo service apache2 restart
 
-    ## Modificar archivo de DNS
-    # Entrar a la carpeta del archivo hosts
+    ## Modificar archivo de Hosts / Modify Hosts file
+    # Entrar a la carpeta del archivo hosts / Move into hosts file's directory
     cd /etc/
     # Modificar archivo hosts y agrega tu ip seguido del ServerName que le pusiste a cada VirtualHost
+    # Modify hosts file and add your ip followed by your virtual host's server name
     sudo nano hosts
 
-    # Eso sería todo.
+    # Eso sería todo. / That should be all
 
 
 DATABASE SERVER
-    ## Preparando el servicio
-    # Instalar
+    ## Preparando el servicio / Get the service ready
+    # Instalar / Install
     sudo apt-get install mysql-server
-    # Configurar firewall para permitir trafico de mysql
+    # Configurar firewall para permitir trafico de mysql / Configurate firewall to allow MySQL traffic
     sudo ufw allow mysql
 
-    ## Configurar mysql para permitir acceso remoto
-    # Entrar a la carpeta de configuracion
+    ## Configurar mysql para permitir acceso remoto / Config MySQL to allow remote access
+    # Entrar a la carpeta de configuracion / Move into configuration directory
     cd /etc/mysql
     # Revisar el archivo my.cnf y buscar en las carpetas incluidas el archivo mysqld.cnf
-    # Abrimos el archivo mysql.conf y buscamos la linea que tenga bind-address
+    # Check my.cnf file and look for mysqld.cnf in directories included
+    # Abrimos el archivo mysql.cnf y buscamos la linea que tenga bind-address
+    # Open mysqld.cnf and look for "bing-address"
     # Cambiamos la ip de bind-address y ponemos la nuestra, ahora el servidor mysql esta "amarrado" a nuestra ip
+    # Replace bind-address ip with ours, now mysql server is binded to our ip
 
-    ## Configurar a base de datos
-    # Entrar como root a la base de datos
+    ## Configurar a base de datos / Configurate data base
+    # Entrar como root a la base de datos / Enter as root user
     sudo mysql -u root
-    # Crear un nuevo usuario que sera remoto con acceso a mysql
+    # Crear un nuevo usuario que sera remoto con acceso a mysql / Create a new user to mysql database remote access
     CREATE USER 'nombre'@'dominio' IDENTIFIED BY 'contraseña';
-    # Darle privilegios de administrador
+    # Darle privilegios de administrador / Grant administrator privileges
     GRANT ALL PRIVILEGES ON databasename.tablename TO 'usuario'@'dominio';
-    # Darle privilegios especificos
+    # Darle privilegios especificos / Grant specific privileges
     GRANT SELECT ON databasename TO 'usuario'@'dominio';
     # Extra: en lugar de poner el nombre de la base de datos, podemos poner * que significa que tiene acceso a todos
     # Ejm: GRANT ALL PRIVILEGES ON *.* TO 'usuario'@'dominio';
 
-    # Entrar a la base de datos
+    # Entrar a la base de datos / Enter to database
     mysql -u usuario -p -h 192.168.43.xxx
     # -u: usuario; -p: indica que el usuario se logeara con contraseña; -h: indica la ip del servidor
 
-    # Usar una base de datos
+    # Usar una base de datos / Use database
     USE databasename;
-    # Mostrar informacion de una tabla
+    # Mostrar informacion de una tabla / Show a table's registers
     SELECT * FROM nombretabla;
     # Modificar un valor, si if_campo es igual a if_valor, entonces campo=valor
+    # If _field equals _value, then set field=value in table _table
     UPDATE tabla SET campo=valor WHERE if_campo=if_valor
 
 
+SSH SERVER
+    ## Preparar el servidor / Get the server ready
+    # Instalar el protocolo xrdp (implementacion de Remote Desktop Protocol) / Install the xrdp protocol
+    sudo apt install xrdp
+    # Iniciar el servicio / Start the server
+    sudo service xrdp start
 
+    # Configurar el firewall para permitir el trafico a traves del puerto 22
+    # Configurate firewall to allow traffic through 22 port
+    sudo ufw allow to any port 22
 
+    # Entrando al servidor / Enter into the server
+    ssh ${usuario_del_servidor_remoto}@${ip_del_servidor_remoto}
+    # Salir del servidor / Exit from the server
+    exit
 
+FIREWALL RULES
+    ## Verificar el estado del firewall / Check firewall status
+    sudo ufw status
+    # Si nos sale el error: "inactive status" significa que nuestro firewall esta deshabilitado, así que usamos el siguiente comando
+    # If we are given the "inactive status" error, we should use the next command to solve it
+    sudo ufw enable
 
-
-
-
-
-
-
-
+    # Ver que servicios estan permitidos por el wirewall / Show what services are allowed to work through firewall
+    sudo ufw status
+    # Agregar un servicio como excepcion en el wirewall / Add service as firewall exception
+    sudo ufw allow ${nombre_del_servicio}
+    # Bloquear un ip / Block a specific ip number
+    sudo ufw deny from ${ip_number}
+    # Bloquear un ip a determinado puerto
+    sudo ufw deny from ${ip_number} to any port ${port_number}
+    # Bloquear un ip a determinado puerto a un determinado protocolo
+    sudo ufw deny proto ${tcp|udp} from ${ip_number} to any port ${port_number}
+    # Quitar un bloqueo, para esto debemos mostrar las reglas del firewall enumeradas
+    # Remove a block rule
+    sudo ufw status numbered
+    sudo ufw delete ${rule_number}
+    ## ERROR: He agregado una regla de bloqueo, pero no funciona
+    # Si tenemos una regla que permite el trafico ftp a travez del puerto 22
+    # y luego agregamos una regla que bloquee el trafico de una ip atravez de puerto 22 al protocolo ftp
+    # La regla de bloqueo no funcionara pues la jerarquia de reglas es descendiente, es decir
+    # Las primeras reglas tienen prioridad sobre a las ultimas
 
