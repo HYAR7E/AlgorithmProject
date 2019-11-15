@@ -83,7 +83,7 @@ void myData(int _userid, int _printtype){ // _printtype is the acount type of th
     getline(cin,_value); // Get the full line with all spaces
     // pauseClear(); // We don't pause after getline(cin,_var) cuz getline does not remain any data
 
-    // Why to send accounttype too? cuz 'mll__changeData' function is gonna be used by admin too, so if we don't send account type parameter he'll can not make changes
+    // Why to send accounttype too? cuz 'mll_changeData' function is gonna be used by admin too, so if we don't send account type parameter he'll can not make changes
     if( !mll_changeData(_user->accounttype,_code,_value) ){ // Send account_type, code, value
         cout<<"\nHa ocurrido un error y los datos no han podido ser procesados."<<endl;
     }else{ // Changed correctly
@@ -114,9 +114,14 @@ void myJobOffer(int _idjob){ // Print a specific job offer
     cout<<endl;
 
 
+    // APPLY FOR REQUEST
+    // (y/n)
+    // applyForJobOffer()
+
     // CHANGE DATA
     if( !_same ) return; // Don't allow to change data if the given user is not the logged in user
-    cout<<"Owner"<<endl;
+    cout<<"Los valores no pueden ser modificados, si desea realizar algun cambio por favor cree una nueva oferta de trabajo."<<endl;
+    /**/
 }
 void printWorkers(string **data, int _length){ // Print '_length' workers
     if(data==NULL){ // First execution it will receive no data, so by default data=NULL

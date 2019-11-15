@@ -202,5 +202,6 @@ struct Applicants{ // Applicants for working
     Person* aPerson;
     Request* aRequest;
     string aMessaege;
+    bool status;
 };
 #endif

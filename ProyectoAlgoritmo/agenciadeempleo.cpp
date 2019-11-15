@@ -23,10 +23,12 @@ using namespace std; // Allow to avoid std:: prefix
 // #include "Files/prototypes.cpp" // Function owner of all prototypes
 #include "Files/f_utilitaries.cpp" // Utilitaries functions to suport other functions
 #include "Files/fu_global.cpp" // Global user suport functions
+
 #include "Files/fu_guest.cpp" // Guest User Functions
-#include "Files/fu_worker.cpp" // Worker User Functions
 #include "Files/fu_enterprise.cpp" // Enterprise User Functions
+#include "Files/fu_worker.cpp" // Worker User Functions
 #include "Files/fu_admin.cpp" // Admin User Functions
+
 #include "Files/f_menu.cpp" // Menu Functions
 #include "Files/f_reglog.cpp" // Register-Login Functions
 void printMainMenu();

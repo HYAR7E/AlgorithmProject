@@ -7,12 +7,12 @@
         Login
         Exit
     Guest menu
-        Choose accoun type
-        Add contact info
+        Choose account type
+        Account info
     Worker menu
         Publish cv (add to workers) {check cv empty, min 15 rows}
         Look announcements {show table}
-            Apply for work (show announcements paginated) {select by element index in table}
+            Apply to work (show announcements paginated) {select by element index in table}
         Look enterprises
             Open chat
         Chats
@@ -38,7 +38,7 @@
             Information and contact
             Job vacancies
         Options
-            Apply
+            Apply to
     Worker sheet
         Show
             Information and contact
@@ -173,12 +173,10 @@
         Fixed to enterprise account type printJobOffers function in fu_global.cpp
         Fixed printJobOffers function in fu_global.cpp
         Validate minage and maxage in ac2_postJobOffers function in fu_enterprise.cpp
+        Added myJobOffer function in fu_global.cpp
 
-        *Added myJobOffer function in fu_global.cpp
-
-        *Add option to watch job offers in myData function in fu_global.cpp
-        *(guest) Ask for worker data or enterprise data when set account type in chooseAccountType function in fu_guest.cpp
-
+        *Add print job offers in myData function when accountype is enterprise in fu_global.cpp
+        *Added deleteJobOffer function in fu_enterprise.cpp
         *TEST ENTERPRISE FUNCTIONS
         --- ENTERPRISE MENU FINISHED ---
 
@@ -186,13 +184,13 @@
         Show requests, workers and enterprises
         --- ADMIN MENU FINISHED ---
 
-        Added static global variables of the proyect in database.cpp
-
-        *Worker apply to job offers in fu_worker.cpp
+        *Worker applies to job offers in fu_worker.cpp
         *Enterprise accept worker applies fu_enterprise.cpp
         **Allow to erase data with condition of do not show their profiles
-        *(worker) Active/inactive status of cv according to filled data
+        Added static global variables of the proyect in database.cpp
 
+        *(worker) Active/inactive status of cv according to filled data (store in void global variable)
+        *(guest) Ask for worker data or enterprise data when set account type in chooseAccountType function in fu_guest.cpp
         *(enterprise) Open chat in printEnterprises function
         *(admin) Add admin to Person structure function, add its own structure inherited from Person structure, add its print function to myData function in fu_global.cpp
         *(admin) Ban worker or enterprise
