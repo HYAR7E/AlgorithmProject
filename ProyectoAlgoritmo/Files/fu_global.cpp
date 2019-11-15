@@ -3,8 +3,8 @@
 #define FU_GLOBAL
 /*** FUNCTIONS PROTOTYPE ***/
 // Capa Usuario
-void myData(int _userid, int _actype); // Print specific user(guest/worker/enterprise) data, with possibility of modify
-void myJobOffer(int _userid, int _actype); // Print specific job offer data, with possibility of modify
+void myData(int _userid, int _printtype); // Print specific user(guest/worker/enterprise) data, with possibility of modify
+void myJobOffer(int _jobid, int _userid); // Print specific job offer data, with possibility of modify
 void printWorkers(string **data=NULL, int _length=0); // Recursive function, double default value cuz we'll call it without arguments from the menu
 void printEnterprises(string **data=NULL, int _length=0); // Recursive function
 void printJobOffers(int _entid=-1, string **data=NULL, int _length=0); // Print all job offers, owned by enterprise with id = _entid
@@ -14,10 +14,11 @@ bool mll_changeData(int _actype, string _code, string _value); // Change user da
 bool mll_getWorkers(); // Get workers data
 bool mll_getEnterprises(); // Get enterprises data
 bool mll_getJobOffers(int _entid); // Get request data
-Person *getPersonStructAddress(int _userid); // Get user struct direction from accounts array and return it to store in 'user' global pointer variable
-bool userIdExists(int _userid); // We can't mix the functions getPersonStruct with userIdExists for security good practices
-bool jobOfferExists(int _offerid); // Job offer exists?
 int genUniqueRandId(int _idtype); // Generate a random number and check if it is already taken
+Person *getPersonStructAddress(int _userid); // Get user struct address from accounts array and return it to store in 'user' global pointer variable
+bool userIdExists(int _userid); // We can't mix the functions getPersonStruct with userIdExists for security good practices
+Request *getRequestStructAddress(int _jobid); // Get job offer structure address
+bool jobOfferExists(int _offerid); // Job offer exists?
 
 // Capa Servidor
 // bool pullChangesInUser(int _userid);
@@ -25,23 +26,25 @@ int genUniqueRandId(int _idtype); // Generate a random number and check if it is
 
 /*** FUNCTIONS DECLARATION ***/
 /* ### USER LAYER ### */
-void myData(int _userid, int _actype){ // _user is memory address of Person structure
+void myData(int _userid, int _printtype){ // _printtype is the acount type of the print
     // Get user struct
+    // _user is memory address of Person structure
     Person* _user = NULL;
     _user = getPersonStructAddress(_userid); // Get user person struct by id
-    if( _user->accounttype != _actype ){
+    // Prevent of choosing a id that exists but is from another account type
+    if( _user->accounttype != _printtype ){ // If the given user id is for another account type
         cout<<"El ID no existe"<<endl;
         return;
     }
 
-    bool _same;
+    bool _same = false;
     /* ERROR: The pointer parameter doesn't have the same memory address than the original pointer, so we can't compare 'em, instead we compare the user->id*/
     if( user->id == _user->id ) _same=true; // If logged in user is the given user
-    // Get user account type and create a _u variable of the account type indicated
     clear();
 
 
     if(_same) cout<<"cod\tDato: valor\n\n"; // Title (?)
+    // Get user account type and create a _u variable of the account type indicated
     void *_u = NULL; // Void type pointer variable, we use this to store the variable memory address of any data type
     /* ERROR: doesn't allow to use 'switch' statement cuz variables declared within 'switch' overpass 'break' sentences so we would get a same name variable multiple declaration error so we opted for 'if' statement */
     // _u.printData(_same); // Recursively print data
@@ -89,6 +92,32 @@ void myData(int _userid, int _actype){ // _user is memory address of Person stru
     // pauseClear(); // Pause to watch output
     return;
 }
+void myJobOffer(int _idjob){ // Print a specific job offer
+    // Get request struct
+    Request* _job = NULL;
+    // We should check if the jobIdExists() before calling this function
+    _job = getRequestStructAddress(_idjob); // Get request struct by id
+
+    // cout<<"user->accounttype: "<< user->accounttype <<endl;
+    bool _same = false;
+    if( user->accounttype == 2 ){ // If the logged in user is enterprise
+        // cout<<"user->e_ma->getJob(_idjob): "<<user->e_ma->getJob(_idjob)<<endl;
+        if( user->e_ma->getJob(_idjob) != NULL ) // Is owner of the job
+            _same = true;
+    }
+    // cout<<"_same: "<<_same<<endl;
+    clear();
+
+
+    if(_same) cout<<"cod\tDato: valor\n\n"; // Title (?)
+    _job->printRequest(_same); // Print request data
+    cout<<endl;
+
+
+    // CHANGE DATA
+    if( !_same ) return; // Don't allow to change data if the given user is not the logged in user
+    cout<<"Owner"<<endl;
+}
 void printWorkers(string **data, int _length){ // Print '_length' workers
     if(data==NULL){ // First execution it will receive no data, so by default data=NULL
         // Get the data and send it to this function by recursively calling this, do note that it's calling this function again, so this execution does not have the data
@@ -98,9 +127,14 @@ void printWorkers(string **data, int _length){ // Print '_length' workers
             int _id;
             cout<<"\nSeleccionar trabajador (0: salir)"<<endl;
             _id = getValidIntInput("ID: ","Formato incorrecto");
-            if( _id == 0 ) return; // Return before pause if 0 is selected
-            pauseClear(); // Clear stream of previous cin
-            if( !userIdExists(_id) ){ // Id 
+
+            if( _id==0 ) return; // Return before pause if 0 is selected
+            pauseClear();
+            if( _id==-1 ){ // Max amount of errors
+                cout<<"Maxima cantidad de errores, regresando.."<<endl;
+                return; // End function cuz too many errors
+            }
+            if( !userIdExists(_id) ){ // Id
                 cout<<"El ID indicado no existe"<<endl;
                 return;
             }
@@ -132,6 +166,7 @@ void printEnterprises(string **data, int _length){
             int _id;
             cout<<"\nSeleccionar trabajador (0: salir)"<<endl;
             _id = getValidIntInput("ID: ","Formato incorrecto");
+
             if( _id == 0 ) return; // Return before pause if 0 is selected
             pauseClear();
             if( !userIdExists(_id) ){
@@ -163,13 +198,14 @@ void printJobOffers(int _entid, string **data, int _length){
              int _id;
              cout<<"\nSeleccionar trabajo (0: salir)"<<endl;
              _id = getValidIntInput("ID: ","Formato incorrecto");
+
              if( _id == 0 ) return; // Return before pause if 0 is selected
              pauseClear();
              if( !jobOfferExists(_id) ){ // Job offer with id = _id exists
                  cout<<"El ID indicado no existe"<<endl;
                  return;
              }
-             // myJobOffer(_id); // Print specific job offer's information
+             myJobOffer(_id); // Print specific job offer's information
          }
          return;
      }
@@ -411,7 +447,7 @@ bool mll_getJobOffers(int _entid){
     for(int i=0; i<_irq; i++){ // ID, profession, salary, enterprise
         if( _entid != -1 ){ // If there is a specific enterprise
             // cout<<requests[i].rEnterprise.one->id <<" - "<< _entid<<endl;
-            if( requests[i].rEnterprise.one->id != _entid ){ // If this requests is not from our specific enterprise
+            if( requests[i].rEnterprise->one->id != _entid ){ // If this requests is not from our specific enterprise
                 // cout<<"i: "<<i<<" - skip"<<endl;
                 continue; // Skip to next requests
             }
@@ -420,7 +456,7 @@ bool mll_getJobOffers(int _entid){
         _rqinfo[_aux][0] = to_string( requests[i].id ); // Get request's id
         _rqinfo[_aux][1] = requests[i].rProfession; // Get request's profession required
         _rqinfo[_aux][2] = to_string( requests[i].rSalary ); // Get request's salary offered
-        _rqinfo[_aux][3] = requests[i].rEnterprise.name; // Get request's enterprise
+        _rqinfo[_aux][3] = requests[i].rEnterprise->name; // Get request's enterprise
         _pointerrq[_aux] = _rqinfo[_aux]; // Pass data to requests pointer
         _aux++;
     }
@@ -438,7 +474,16 @@ bool mll_getJobOffers(int _entid){
 Person *getPersonStructAddress(int _userid){
     for(int i=0; i<_iac; i++){
         if( accounts[i].id == _userid ){
-            return &accounts[i]; // Return account pointer
+            return &accounts[i]; // Return account's pointer
+        }
+    }
+    // Always check first if userIdExists()
+    return NULL; // There is no way a person can't be found, otherwise it would lead to an error
+}
+Request *getRequestStructAddress(int _jobid){
+    for(int i=0; i<_irq; i++){
+        if( requests[i].id == _jobid ){
+            return &requests[i]; // Return request's pointer
         }
     }
     return NULL; // There is no way a person can't be found, otherwise it would lead to an error

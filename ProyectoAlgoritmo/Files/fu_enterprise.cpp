@@ -101,7 +101,7 @@ bool _postJobOffers(Enterprise *_e, string _p, int _s, int _d, int _a, int _mina
     Request _r = Request{0}; // Declarate request variable
     int _id = genUniqueRandId(2); // Generate a random number id(2: request type) and check if it is not taken
 
-    _result = _r.create(_id,*_e,_p,_s,_d,_a,_minage,_maxage,_dsc); // Pass values to request
+    _result = _r.create(_id,_e,_p,_s,_d,_a,_minage,_maxage,_dsc); // Pass values to request
     if( !_result ) return false; // If fail return false
 
     requests[_irq] = _r; // Store request in global array

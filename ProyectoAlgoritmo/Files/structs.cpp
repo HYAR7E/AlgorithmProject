@@ -1,13 +1,14 @@
 #ifndef STRUCT_FILE
 #define STRUCT_FILE
 // Structures prototype
+struct ContactInfo;
 struct Person;
 // Previous definition of worker and enterprise to allow the variable type for memory address storage in Person
 struct Worker;
+struct Request; // Request before Enterprise cuz enterprise::getJob() uses request elements
 struct Enterprise;
-struct Request;
+struct Applicants;
 
-// In printData function, when _code is false do not show data, or do not show empty data
 
 // Structures declaration
 struct ContactInfo{
@@ -106,10 +107,44 @@ struct Worker{
 
     }
     void printData(bool _code){
-        cout<<"Informacion del trabajador"<<endl;
+        cout<<"Informacion del trabajador\n"<<endl;
         one->printData(_code); // Person data && end _code
         cout<< (_code ? "wpf\t":"") <<"Profesion: "<<profession<<endl;
         cout<< (_code ? "wdc\t":"") <<"Descripcion del perfil: "<<description<<endl;
+    }
+};
+struct Request{
+    int id;
+    Enterprise* rEnterprise;
+    string rProfession;
+    int rSalary; // Amount in dollars
+    int rWorkDuration; // Time in months
+    int rAmount; // Number of people requested
+    int minAge;
+    int maxAge;
+    string description; // Description of the work
+    bool create(int _id, Enterprise *_e, string _p, int _s, int _d, int _a, int _minage, int _maxage, string _dsc){
+        id = _id;
+        rEnterprise = _e;
+        rProfession = _p;
+        rSalary = _s;
+        rWorkDuration = _d;
+        rAmount = _a;
+        minAge = _minage;
+        maxAge = _maxage;
+        description = _dsc;
+        return true;
+    }
+    void printRequest(bool _code){
+        cout<<"\nInformacion de la solicitud\n"<<endl;
+        if(_code) cout<<"   \tID: "<<id<<endl;
+        cout<< (_code ? "rpf\t":"") <<"Profesion: "<<rProfession<<endl;
+        cout<< (_code ? "rsl\t":"") <<"Salario: "<<rSalary<<endl;
+        cout<< (_code ? "rwd\t":"") <<"Duracion: "<<rWorkDuration<<endl;
+        cout<< (_code ? "rpr\t":"") <<"Personas requeridas: "<<rAmount<<endl;
+        cout<< (_code ? "rmi\t":"") <<"Edad minima: "<<minAge<<endl;
+        cout<< (_code ? "rma\t":"") <<"Edad maxima: "<<maxAge<<endl;
+        cout<< (_code ? "rdc\t":"") <<"Descripcion: "<<description<<endl;
     }
 };
 struct Enterprise{
@@ -155,33 +190,17 @@ struct Enterprise{
         }
         return 5; // All requests spaces available ocupated
     }
-};
-struct Request{
-    int id;
-    Enterprise rEnterprise;
-    string rProfession;
-    int rSalary; // Amount in dollars
-    int rWorkDuration; // Time in months
-    int rAmount; // Number of people requested
-    int minAge;
-    int maxAge;
-    string description; // Description of the work
-    bool create(int _id, Enterprise _e, string _p, int _s, int _d, int _a, int _minage, int _maxage, string _dsc){
-        id = _id;
-        rEnterprise = _e;
-        rProfession = _p;
-        rSalary = _s;
-        rWorkDuration = _d;
-        rAmount = _a;
-        minAge = _minage;
-        maxAge = _maxage;
-        description = _dsc;
-        return true;
+    Request* getJob(int _idjob){
+        for(int i=0; i<countRequests(); i++){
+            if( r_ma[0]->id == _idjob )
+                return r_ma[i]; // Request ma
+        }
+        return NULL;
     }
 };
 struct Applicants{ // Applicants for working
-    Person aPerson;
-    Request aRequest;
+    Person* aPerson;
+    Request* aRequest;
     string aMessaege;
 };
 #endif

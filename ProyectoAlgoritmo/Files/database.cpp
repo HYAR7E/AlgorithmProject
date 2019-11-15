@@ -1,6 +1,7 @@
 #ifndef DATABASE
 #define DATABASE
 // Arrays
+// These arrays should be of variable type, no pointers cuz these store the structure data
 Person accounts[30]={0}; // It gets initializated with {0} cuz first element is int type
     // Can't declarate with Person{0} cuz it requires array elements
 int _iac = 0; // Iterator for accounts
@@ -65,11 +66,6 @@ bool preload(){
         We use should use the global variable to set a pointer, otherwise they will store thrash data and will be UB(undefined behavior)
         workers[_iwk].setPerson(&accounts[_iac] );
     */
-
-
-
-
-
     Person _new1 = Person{0};
     _new1.set(2222, "kailen", "agustin falcon", "11/04/2000", "72112251", "kailen123");
     _new1.contact.email="a@b.c";
@@ -134,9 +130,10 @@ bool preload(){
 
     // PRE SET REQUEST
     Request _new4 = Request{0};
-    _new4.create(5555,enterprises[0],"asesino",1200,8,1,20,28,"necesito alguien que mate los mosquitos de mi fabrica");
-    enterprises[0].addRequest( &_new4 );
+    _new4.create(5555,&enterprises[0],"asesino",1200,8,1,20,28,"necesito alguien que mate los mosquitos de mi fabrica");
     requests[_irq] = _new4;
+    enterprises[0].addRequest( &requests[_irq] );
+    // myJobOffer();
     _irq++;
 
 

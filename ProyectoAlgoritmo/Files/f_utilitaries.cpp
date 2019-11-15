@@ -24,7 +24,7 @@ void serverConection(){}
 
 /*** FUNCTIONS DECLARATION ***/
 /* ### USER LAYER ### */
-void clear(int n, char m){ // n=30 m='\'
+void clear(int n, char m){ // n=30 m='\n'
     cout<<string(n,m);
 }
 void pauseClear(){

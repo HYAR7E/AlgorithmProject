@@ -174,8 +174,10 @@
         Fixed printJobOffers function in fu_global.cpp
         Validate minage and maxage in ac2_postJobOffers function in fu_enterprise.cpp
 
+        *Added myJobOffer function in fu_global.cpp
+
         *Add option to watch job offers in myData function in fu_global.cpp
-        *(guest) Ask for worker data or enterprise data when set account type in chooseAccountType function
+        *(guest) Ask for worker data or enterprise data when set account type in chooseAccountType function in fu_guest.cpp
 
         *TEST ENTERPRISE FUNCTIONS
         --- ENTERPRISE MENU FINISHED ---
@@ -186,11 +188,10 @@
 
         Added static global variables of the proyect in database.cpp
 
+        *Worker apply to job offers in fu_worker.cpp
+        *Enterprise accept worker applies fu_enterprise.cpp
         **Allow to erase data with condition of do not show their profiles
         *(worker) Active/inactive status of cv according to filled data
-        *Show job offer info
-        *Worker apply to job offers
-        *Enterprise accept worker applies
 
         *(enterprise) Open chat in printEnterprises function
         *(admin) Add admin to Person structure function, add its own structure inherited from Person structure, add its print function to myData function in fu_global.cpp
