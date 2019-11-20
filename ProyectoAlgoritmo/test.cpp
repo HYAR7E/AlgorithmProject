@@ -14,7 +14,7 @@ int getCurrentTime(char _f){
             break;
         case 'M': f = now->tm_mon + 1;
             break;
-        case 'D': f = now->tm_mday + 1900;
+        case 'D': f = now->tm_mday;
             break;
         case 'h': f = now->tm_hour;
             break;
@@ -121,6 +121,13 @@ struct ctn{
     foo _foo;
     foo* _fma;
 }_def;
+struct hoy{
+    int i;
+    hoy *asd(int _i){
+        this->i = _i;
+        return this;
+    }
+};
 int main(){
     // Pointer to nested structure
     ctn* _pctn = NULL;
@@ -373,6 +380,26 @@ int main(){
     v_str = "hola ";
     v_str += "mundo.";
     cout<<v_str<<endl;
+
+
+    /*** get current date ***/
+    string _date = "";
+    int _da = getCurrentTime('D');
+    _date +=  to_string(_da) + '/';
+    int _m = getCurrentTime('M');
+    _date += to_string(_m) + '/';
+    int _y = getCurrentTime('Y');
+    _date += to_string(_y);
+    cout<<"Date: "<<_date<<endl; // return date
+
+
+    /*** this element in structures ***/
+    hoy _hoy;
+    hoy* r_hoy = NULL;
+    r_hoy = _hoy.asd(15);
+    cout<<"_hoy.i: "<<_hoy.i<<endl;
+    cout<<"r_hoy->i: "<<r_hoy->i<<endl;
+
 }
 
 

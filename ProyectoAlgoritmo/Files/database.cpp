@@ -2,28 +2,28 @@
 #define DATABASE
 // Arrays
 // These arrays should be of variable type, no pointers cuz these store the structure data
-Person accounts[30]={0}; // It gets initializated with {0} cuz first element is int type
+static Person accounts[30]={0}; // It gets initializated with {0} cuz first element is int type
     // Can't declarate with Person{0} cuz it requires array elements
-int _iac = 0; // Iterator for accounts
-Worker workers[30]={0};
-int _iwk = 0; // Iterator for workers
-Enterprise enterprises[30]={0};
-int _iet = 0; // Iterator for enterprises
-Request requests[30]={0};
-int _irq = 0; // Iterator for requests
+static int _iac = 0; // Iterator for accounts
+static Worker workers[30]={0};
+static int _iwk = 0; // Iterator for workers
+static Enterprise enterprises[30]={0};
+static int _iet = 0; // Iterator for enterprises
+static Request requests[30]={0};
+static int _irq = 0; // Iterator for requests
 
 // Global variables
-Person *user = NULL; // Initialize pointer with NULL value for good practices
+static Person *user = NULL; // Initialize pointer with NULL value for good practices
 static Person noone = Person{0};
 
 // Static variables
-static char st_dateseparator = '/';
-static int st_clearlines = 8;
-static int st_maxerror=3;
-static int st_minage=18;
-static int st_maxage=65;
-static int st_minduration=1;
-static int st_minpay=800;
+static const char st_dateseparator = '/';
+static const int st_clearlines = 38;
+static const int st_maxerror = 3;
+static const int st_minage = 18;
+static const int st_maxage = 65;
+static const int st_minduration = 1;
+static const int st_minpay = 800;
 /*
     We're gonna check the users session by having a pointer to the current user struct variable
     so we're gonna get his data by pointer->person_element like user->id, and make changes to their data too
@@ -50,7 +50,7 @@ bool preload(){
     // PRE SET WORKER
     Person _new = Person{0};
     // Add data
-    _new.set(1111, "nelson", "agustin", "20/05/2000", "72112258", "neldoaf");
+    _new.create(1111, "nelson", "agustin", "20/05/2000", "72112258", "neldoaf");
     _new.contact.email="a@b.c";
     _new.contact.telf1="977865134";
     _new.contact.address="mikaza";
@@ -67,7 +67,7 @@ bool preload(){
         workers[_iwk].setPerson(&accounts[_iac] );
     */
     Person _new1 = Person{0};
-    _new1.set(2222, "kailen", "agustin falcon", "11/04/2000", "72112251", "kailen123");
+    _new1.create(2222, "kailen", "agustin falcon", "11/04/2000", "72112251", "kailen123");
     _new1.contact.email="a@b.c";
     _new1.contact.telf1="977865134";
     _new1.contact.address="mikaza";
@@ -80,7 +80,7 @@ bool preload(){
     _iwk++;
     // workers[1].printData(true);
     Person _new5 = Person{0};
-    _new5.set(6666, "carlos", "falcon", "11/04/2000", "72112252", "kailen123");
+    _new5.create(6666, "carlos", "falcon", "11/04/2000", "72112252", "kailen123");
     _new5.contact.email="a@b.c";
     _new5.contact.telf1="977865134";
     _new5.contact.address="mikaza";
@@ -97,7 +97,7 @@ bool preload(){
     // PRE SET ENTERPRISE
     Person _new2 = Person{0};
     // Add data
-    _new2.set(3333, "jefe1", "boss", "18/07/2000", "12345673", "boos123");
+    _new2.create(3333, "jefe1", "boss", "18/07/2000", "12345673", "boos123");
     _new2.contact.email="a@b.c";
     _new2.contact.telf1="987654321";
     _new2.contact.address="mikaza";
@@ -110,7 +110,7 @@ bool preload(){
     _iet++;
     // enterprises[0].printData(true);
     Person _new3 = Person{0};
-    _new3.set(4444, "jefe2", "boss", "22/05/1999", "12345674", "boos123");
+    _new3.create(4444, "jefe2", "boss", "22/05/1999", "12345674", "boos123");
     _new3.contact.email="a@b.c";
     _new3.contact.telf1="977865134";
     _new3.contact.address="mikaza";
@@ -140,7 +140,7 @@ bool preload(){
     // PRE SET ADMIN
     Person _admin = Person{0};
     // Add data
-    _admin.set(0000, "admin", "god", "01/02/1993", "25478260", "admin");
+    _admin.create(0000, "admin", "god", "01/02/1993", "25478260", "admin");
     _admin.contact.email="admin@root.ez";
     _admin.contact.telf1="987654321";
     _admin.contact.address="milap";

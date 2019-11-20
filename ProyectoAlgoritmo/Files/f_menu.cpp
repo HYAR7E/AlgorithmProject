@@ -95,7 +95,7 @@ void printWorkerMenu(){
             case 2: printJobOffers(); break; // Print all job offers
             case 3: printEnterprises(); break;
             case 4: break;
-            case 5: break;
+            case 5: printApplications(user->id); break;
             case 6: myData(user->id, user->accounttype); break;
             case 7: return; // Exit
         }
@@ -110,19 +110,17 @@ void printEnterpriseMenu(){
             cout<<"1. Nueva oferta de trabajo"<<endl;
             cout<<"2. Mis ofertas de trabajo"<<endl;
             cout<<"3. Mensajes"<<endl;
-            cout<<"4. Modificar datos"<<endl;
-            cout<<"5. Mi cuenta"<<endl;
-            cout<<"6. Salir"<<endl;
+            cout<<"4. Mi cuenta"<<endl;
+            cout<<"5. Salir"<<endl;
             opc = getValidIntInput("Opc: ", "Introduzca una opcion valida");
-        }while(opc<1||opc>6);
+        }while(opc<1||opc>5);
         pauseClear(); // Clear data stream remaining from previous cin input
         switch(opc){
             case 1: ac2_postJobOffers(); break;
             case 2: printJobOffers(user->id); break; // Print all job offers owned by logged in enterprise
             case 3: break;
-            case 4: break;
-            case 5: myData(user->id, user->accounttype); break;
-            case 6: return; // Exit
+            case 4: myData(user->id, user->accounttype); break;
+            case 5: return; // Exit
         }
     pauseClear();
     }while(true); // Infinite bucle

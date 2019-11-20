@@ -8,6 +8,7 @@ void myJobOffer(int _jobid, int _userid); // Print specific job offer data, with
 void printWorkers(string **data=NULL, int _length=0); // Recursive function, double default value cuz we'll call it without arguments from the menu
 void printEnterprises(string **data=NULL, int _length=0); // Recursive function
 void printJobOffers(int _entid=-1, string **data=NULL, int _length=0); // Print all job offers, owned by enterprise with id = _entid
+void printApplications(int _userid);
 
 // Capa Logica
 bool mll_changeData(int _actype, string _code, string _value); // Change user data
@@ -19,6 +20,10 @@ Person *getPersonStructAddress(int _userid); // Get user struct address from acc
 bool userIdExists(int _userid); // We can't mix the functions getPersonStruct with userIdExists for security good practices
 Request *getRequestStructAddress(int _jobid); // Get job offer structure address
 bool jobOfferExists(int _offerid); // Job offer exists?
+#ifndef PROTO_APPLYOFFER // If applyForJobOffer prototype function hasn't been declared yet
+#define PROTO_APPLYOFFER // Define applyForJobOffer prototype function
+bool applyForJobOffer(int _idjob); // Apply to job offer function
+#endif
 
 // Capa Servidor
 // bool pullChangesInUser(int _userid);
@@ -72,12 +77,14 @@ void myData(int _userid, int _printtype){ // _printtype is the acount type of th
     string _opc = "f";
     string _code="",_value=""; // Empty code and value
     cout<<"Desea realizar cambios en sus datos? (y/n): "; cin>>_opc;
-    // pauseClear(); // Earse remaining stream data
     if( !isString(_opc,1,1) || (_opc!="y" && _opc!="Y") ) return; // User don't want to change his data
 
     cout<<"Que dato desea cambiar? (code): "; cin>>_code; // Get only three characters
     pauseClear(); // Earse remaining stream data
-    if( _code.length() != 3 ) return; // Failed at enter code
+    if( _code.length() != 3 ){ // Failed at enter code
+        cout<<"Formato de codigo incorrecto"<<endl;
+        return;
+    }
 
     cout<<"Introduzca el valor a asignar: ";
     getline(cin,_value); // Get the full line with all spaces
@@ -85,7 +92,7 @@ void myData(int _userid, int _printtype){ // _printtype is the acount type of th
 
     // Why to send accounttype too? cuz 'mll_changeData' function is gonna be used by admin too, so if we don't send account type parameter he'll can not make changes
     if( !mll_changeData(_user->accounttype,_code,_value) ){ // Send account_type, code, value
-        cout<<"\nHa ocurrido un error y los datos no han podido ser procesados."<<endl;
+        cout<<"\nEl codigo o formato de dato no ha podido ser procesado."<<endl;
     }else{ // Changed correctly
         cout<<"\nSe ha modificado correctamente."<<endl;
     }
@@ -101,8 +108,8 @@ void myJobOffer(int _idjob){ // Print a specific job offer
     // cout<<"user->accounttype: "<< user->accounttype <<endl;
     bool _same = false;
     if( user->accounttype == 2 ){ // If the logged in user is enterprise
-        // cout<<"user->e_ma->getJob(_idjob): "<<user->e_ma->getJob(_idjob)<<endl;
-        if( user->e_ma->getJob(_idjob) != NULL ) // Is owner of the job
+        // cout<<"user->e_ma->getRequest(_idjob): "<<user->e_ma->getRequest(_idjob)<<endl;
+        if( user->e_ma->getRequest(_idjob) != NULL ) // Is owner of the job
             _same = true;
     }
     // cout<<"_same: "<<_same<<endl;
@@ -111,16 +118,29 @@ void myJobOffer(int _idjob){ // Print a specific job offer
 
     if(_same) cout<<"cod\tDato: valor\n\n"; // Title (?)
     _job->printRequest(_same); // Print request data
+    if( user->accounttype == 3) cout<<"   \tCantidad de postulantes: "<<_job->countApplicants()<<endl; // Show applicants amount when user is admin
     cout<<endl;
 
 
-    // APPLY FOR REQUEST
-    // (y/n)
-    // applyForJobOffer()
+    // APPLY FOR JOB OFFER
+    if( user->accounttype == 1 ){ // User gotta be worker
+        string _opc = "f";
+        cout<<"Desea postular a este trabajo? (y/n): "; cin>>_opc;
+        if( !(_opc!="y" && _opc!="Y") ){ // User want to apply for this job
+            if( applyForJobOffer(_idjob) ) cout<<"Se ha postulado correctamente."<<endl;
+            else cout<<"Trabajador ya postulando o no vacantes disponibles."<<endl; // This could be cuz enterprise earse the job offer right before worker applies
+            pauseClear();
+        }
+        return;
+    }
 
-    // CHANGE DATA
-    if( !_same ) return; // Don't allow to change data if the given user is not the logged in user
-    cout<<"Los valores no pueden ser modificados, si desea realizar algun cambio por favor cree una nueva oferta de trabajo."<<endl;
+    // Watch appliers (enterprise only)
+    if( !_same ) return; // Don't allow watch appliers if it is not the given enterprise
+    string _opc = "f";
+    cout<<"Desea ver los postulantes? (y/n): "; cin>>_opc;
+    if( !isString(_opc,1,1) || (_opc!="y" && _opc!="Y") ) return; // Enterprise do not want to watch appliers
+    pauseClear();
+    _job->printApplications();
     /**/
 }
 void printWorkers(string **data, int _length){ // Print '_length' workers
@@ -195,30 +215,30 @@ void printEnterprises(string **data, int _length){
     }
 }
 void printJobOffers(int _entid, string **data, int _length){
-     if(data==NULL){
-         if( !mll_getJobOffers(_entid) ){ // There is no requests
+    if(data==NULL){
+        if( !mll_getJobOffers(_entid) ){ // There is no requests
             if( _entid != -1 ) cout<<"Ud no ha publicado ningun trabajo"<<endl;
-            else cout<<"No hay ofertas de trabajo disponibles"<<endl;
-         }else{
-             int _id;
-             cout<<"\nSeleccionar trabajo (0: salir)"<<endl;
-             _id = getValidIntInput("ID: ","Formato incorrecto");
+            else cout<<"No hay ofertas de trabajo disponibles"<<endl; // Worker
+        }else{
+            int _id;
+            cout<<"\nSeleccionar trabajo (0: salir)"<<endl;
+            _id = getValidIntInput("ID: ","Formato incorrecto");
 
-             if( _id == 0 ) return; // Return before pause if 0 is selected
-             pauseClear();
-             if( !jobOfferExists(_id) ){ // Job offer with id = _id exists
-                 cout<<"El ID indicado no existe"<<endl;
-                 return;
-             }
-             myJobOffer(_id); // Print specific job offer's information
-         }
-         return;
-     }
-     clear();
-     cout<<"OFERTAS DE TRABAJO"<<endl;
-     cout<<"Total ofertas: "<<_length<<endl;
-     cout<<" ID\t\tProfesion\tSalario\t\tEmpresa"<<endl;
-     for(int i=0; i<_length; i++){
+            if( _id == 0 ) return; // Return before pause if 0 is selected
+            pauseClear();
+            if( !jobOfferExists(_id) ){ // Job offer with id = _id exists
+                cout<<"El ID indicado no existe"<<endl;
+                return;
+            }
+            myJobOffer(_id); // Print specific job offer's information
+        }
+        return;
+    }
+    clear();
+    cout<<"OFERTAS DE TRABAJO"<<endl;
+    cout<<"Total ofertas: "<<_length<<endl;
+    cout<<" ID\t\tProfesion\tSalario\t\tEmpresa"<<endl;
+    for(int i=0; i<_length; i++){
         // cout<<"i: "<<i<<endl;
         for(int j=0; j<4; j++){
             // cout<<"j: "<<j<<endl;
@@ -229,7 +249,18 @@ void printJobOffers(int _entid, string **data, int _length){
         }
         cout<<endl;
         data++;
-     }
+    }
+}
+void printApplications(int _userid){
+    Person *_p = NULL;
+    if( !userIdExists(_userid) ){ // User don't exists
+        cout<<"El usuario indicado no existe";
+        return;
+    }
+    _p = getPersonStructAddress(_userid); // Pass the person owner of the id
+    _p->w_ma->printApplications(); // Print applications info
+
+    // DELETE OPTION
 }
 
 

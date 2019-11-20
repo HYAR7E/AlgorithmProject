@@ -17,6 +17,11 @@ int getValidIntInput(string x_Ask, string x_Error, int i_min=-1, int i_max=-1, i
 int getCurrentTime(char f); // Gets current time _f: Y,M,D,h,m,s
 bool isDate(string date); // Is it a date value?
 bool isValidDate(string date, bool _checkage=false); // Is it a correct date value?
+#ifndef PROTO_CURDATE
+#define PROTO_CURDATE
+string getCurrentDate(); // Returns a string with the current date (no time)
+#endif
+
 
 // Capa Servidor
 void serverConection(){}
@@ -120,7 +125,7 @@ int getCurrentTime(char _f){
             break;
         case 'M': f = now->tm_mon + 1;
             break;
-        case 'D': f = now->tm_mday + 1900;
+        case 'D': f = now->tm_mday;
             break;
         case 'h': f = now->tm_hour;
             break;
@@ -164,5 +169,15 @@ bool isValidDate(string date, bool checkage){ // date = "11/22/3333"
     if( day < 1 || day > maxday ) return false;
 
     return true;
+}
+string getCurrentDate(){
+    string _date = "";
+    int _d = getCurrentTime('D');
+    _date +=  to_string(_d) + st_dateseparator;
+    int _m = getCurrentTime('M');
+    _date += to_string(_m) + st_dateseparator;
+    int _y = getCurrentTime('Y');
+    _date += to_string(_y);
+    return _date; // return date
 }
 #endif

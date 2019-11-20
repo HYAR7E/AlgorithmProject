@@ -239,5 +239,9 @@ ERRORES
     https://ekiketa.es/initramfs-problema-de-arranque-pantalla-negra-ubuntu/
 
 
+ALUMNOS
+    AGUSTIN FALCON, Neldo
+    BONILLA VALVERDE, Sergio
+    SILVESTRE MONAGO, Bryan
 
 

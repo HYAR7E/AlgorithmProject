@@ -25,8 +25,8 @@ using namespace std; // Allow to avoid std:: prefix
 #include "Files/fu_global.cpp" // Global user suport functions
 
 #include "Files/fu_guest.cpp" // Guest User Functions
-#include "Files/fu_enterprise.cpp" // Enterprise User Functions
 #include "Files/fu_worker.cpp" // Worker User Functions
+#include "Files/fu_enterprise.cpp" // Enterprise User Functions
 #include "Files/fu_admin.cpp" // Admin User Functions
 
 #include "Files/f_menu.cpp" // Menu Functions
@@ -73,4 +73,4 @@ void printMainMenu(){
             break;
     }
     goto mainmenu;
-}
+}   

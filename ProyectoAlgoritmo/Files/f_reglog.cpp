@@ -82,7 +82,7 @@ int _register(){
 // cout<<_id<<endl; cin.ignore(1);
 
     Person _new = Person{0}; // Create empty Person structure
-    _new.set(_id, _name, _lastname, _borndate, _dni, _password); // Add data to Person structure of user
+    _new.create(_id, _name, _lastname, _borndate, _dni, _password); // Add data to Person structure of user
     accounts[_iac] = _new; // Add person to accounts array
 // cout<<accounts[_iac].id<<" - "<<accounts[_iac].accounttype<<endl; cin.ignore(1);
     _iac++; // Iterate account array variable

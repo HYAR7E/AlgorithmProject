@@ -155,6 +155,8 @@
         printWorkers in fu_global.cpp RECURSIVE FUNCTION
         Added default workers in database.cpp
         Workers can watch Enterprises
+        Added applyForJobOffer function in fu_worker.cpp
+        Worker applies to job offers
         --- WORKER MENU FINISHED ---
 
         printEnterprises in fu_global.cpp RECURSIVE FUNCTION
@@ -174,20 +176,34 @@
         Fixed printJobOffers function in fu_global.cpp
         Validate minage and maxage in ac2_postJobOffers function in fu_enterprise.cpp
         Added myJobOffer function in fu_global.cpp
+        Print number of applicants to work in table
+        Added isAplying function in structs.cpp
+        Added worker can't apply to the same job offer twice
+        Added application related functions for worker in structs.cpp
+        Added printApplications function in fu_global.cpp
+        Added Worker::printApplicants function for worker in structs.cpp
+        Added Request::printApplicants function for enterprise in structs.cpp
+        *Added hireWorker function for enterprise (Applicant::status, Request::rAmount)
+        *Added print hired appliers in myJobOffer function in fu_global.cpp
 
-        *Add print job offers in myData function when accountype is enterprise in fu_global.cpp
-        *Added deleteJobOffer function in fu_enterprise.cpp
-        *TEST ENTERPRISE FUNCTIONS
+        **Added deleteJobOffer function in fu_enterprise.cpp
         --- ENTERPRISE MENU FINISHED ---
 
         Added default admin in preload function in database.cpp
         Show requests, workers and enterprises
+        Show applicants amount and winners for requests in .cpp
         --- ADMIN MENU FINISHED ---
 
-        *Worker applies to job offers in fu_worker.cpp
+        *(Worker) Add Worker::applies a_ma[5]
+        *(Worker) Show jobs you already applied to
+        *(Worker) Free applies after job is full
+        *Show applicants in job offer in fu_enterprise.cpp
         *Enterprise accept worker applies fu_enterprise.cpp
+
+        **Worker can decline a job offer
         **Allow to erase data with condition of do not show their profiles
         Added static global variables of the proyect in database.cpp
+        Added usage of this element in structures
 
         *(worker) Active/inactive status of cv according to filled data (store in void global variable)
         *(guest) Ask for worker data or enterprise data when set account type in chooseAccountType function in fu_guest.cpp
@@ -207,9 +223,9 @@
         # BUGS:2 in _postJobOffers function if fu_enterprise.cpp
             Bug explanation: Pointer element in structure leads to a variable with function scope
             Solution: Changed the Enterprise::addRequest function parameter to work with global array 'requests'
-        # BUGS:3 in showJobOffers function if fu_global.cpp
-            Bug explanation:
-            Solution:
+        # BUGS:3 in Request::addApplicant function if structs.cpp
+            Bug explanation: We were declaring applicants as Applicant structure variable pointer, and it only stored the ma but the value
+            Solution: Change applicants type to Applicant variable
 
 
     v0.6 TOPICS EXPLANATION:

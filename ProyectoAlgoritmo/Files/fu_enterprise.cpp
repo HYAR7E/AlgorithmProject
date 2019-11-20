@@ -5,7 +5,7 @@
 // Capa Usuario
 void ac2_postJobOffers(); // Post job offers
 // Capa Logica
-bool _postJobOffers(Enterprise *_e, string _p, int _s, int _d, int _a, int _minage, int _maxage, string _dsc);
+bool _postJobOffer(Enterprise *_e, string _p, int _s, int _d, int _a, int _minage, int _maxage, string _dsc);
 // Capa Servidor
 
 
@@ -88,7 +88,7 @@ void ac2_postJobOffers(){
     }while(true);
 
     bool _result;
-    _result = _postJobOffers(user->e_ma,_profession,_salary,_duration,_amount,_minage,_maxage,_description); // Send to logical layer
+    _result = _postJobOffer(user->e_ma,_profession,_salary,_duration,_amount,_minage,_maxage,_description); // Send to logical layer
     if( _result ){
         cout<<"\nLa oferta de trabajo se agrego correctamente."<<endl;
     }else{
@@ -96,7 +96,7 @@ void ac2_postJobOffers(){
     }
 }
 /* ### LOGIC LAYER ### */
-bool _postJobOffers(Enterprise *_e, string _p, int _s, int _d, int _a, int _minage, int _maxage, string _dsc){
+bool _postJobOffer(Enterprise *_e, string _p, int _s, int _d, int _a, int _minage, int _maxage, string _dsc){
     bool _result=false;
     Request _r = Request{0}; // Declarate request variable
     int _id = genUniqueRandId(2); // Generate a random number id(2: request type) and check if it is not taken
