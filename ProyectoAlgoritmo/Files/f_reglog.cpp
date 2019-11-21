@@ -49,9 +49,8 @@ int _register(){
     if( !isString(_name,3) ) return -1;
     pauseClear();
 
-    cout<<"Primer apellido: "; cin>>_lastname;
+    cout<<"Primer apellido: "; getline(cin,_lastname);
     if( !isString(_lastname,4) ) return -1;
-    pauseClear();
 
     // BornDate
     cout<<"Fecha de nacimiento DD/MM/AAAA :"; cin>>_borndate;

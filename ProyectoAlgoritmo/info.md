@@ -157,6 +157,8 @@
         Workers can watch Enterprises
         Added applyForJobOffer function in fu_worker.cpp
         Worker applies to job offers
+        Added Worker::applications[5] element in structs.cpp
+        Added Worker::printApplications function in structs.cpp
         --- WORKER MENU FINISHED ---
 
         printEnterprises in fu_global.cpp RECURSIVE FUNCTION
@@ -183,10 +185,15 @@
         Added printApplications function in fu_global.cpp
         Added Worker::printApplicants function for worker in structs.cpp
         Added Request::printApplicants function for enterprise in structs.cpp
+        Added default applies in database.cpp
+
+        ->*(guest) Ask for worker data or enterprise data when set account type in chooseAccountType function in fu_guest.cpp
+        ->*Ver trabajos desde perfil de empresa
+        ->*Verificar edad al postular a trabajo
         *Added hireWorker function for enterprise (Applicant::status, Request::rAmount)
         *Added print hired appliers in myJobOffer function in fu_global.cpp
-
         **Added deleteJobOffer function in fu_enterprise.cpp
+        **MOVE BACK ARRAY INDEX WHEN DELETING STRUCTURE ARRAY ELEMENTS
         --- ENTERPRISE MENU FINISHED ---
 
         Added default admin in preload function in database.cpp
@@ -194,9 +201,7 @@
         Show applicants amount and winners for requests in .cpp
         --- ADMIN MENU FINISHED ---
 
-        *(Worker) Add Worker::applies a_ma[5]
-        *(Worker) Show jobs you already applied to
-        *(Worker) Free applies after job is full
+        *(Worker) Free applies after job is over
         *Show applicants in job offer in fu_enterprise.cpp
         *Enterprise accept worker applies fu_enterprise.cpp
 
@@ -204,9 +209,10 @@
         **Allow to erase data with condition of do not show their profiles
         Added static global variables of the proyect in database.cpp
         Added usage of this element in structures
+        Check if online/offline is working
+        Do not allow to watch applicants if it is not enterprise owner or admin, don't allow to watch if there is no applicant either
 
         *(worker) Active/inactive status of cv according to filled data (store in void global variable)
-        *(guest) Ask for worker data or enterprise data when set account type in chooseAccountType function in fu_guest.cpp
         *(enterprise) Open chat in printEnterprises function
         *(admin) Add admin to Person structure function, add its own structure inherited from Person structure, add its print function to myData function in fu_global.cpp
         *(admin) Ban worker or enterprise

@@ -118,7 +118,7 @@ void myJobOffer(int _idjob){ // Print a specific job offer
 
     if(_same) cout<<"cod\tDato: valor\n\n"; // Title (?)
     _job->printRequest(_same); // Print request data
-    if( user->accounttype == 3) cout<<"   \tCantidad de postulantes: "<<_job->countApplicants()<<endl; // Show applicants amount when user is admin
+    if( user->accounttype == 3) cout<< (_same? "   \t":"") <<"Cantidad de postulantes: "<<_job->countApplicants()<<endl; // Show applicants amount when user is admin
     cout<<endl;
 
 
@@ -134,8 +134,9 @@ void myJobOffer(int _idjob){ // Print a specific job offer
         return;
     }
 
-    // Watch appliers (enterprise only)
-    if( !_same ) return; // Don't allow watch appliers if it is not the given enterprise
+    // Watch appliers (enterprise and admin only)
+    if( !_same && user->accounttype!=3 ) return; // Don't allow watch appliers if it is not the given enterprise or admin
+    if( _job->countApplicants() == 0 ) return; // Do not allow to watch if there is no applicant
     string _opc = "f";
     cout<<"Desea ver los postulantes? (y/n): "; cin>>_opc;
     if( !isString(_opc,1,1) || (_opc!="y" && _opc!="Y") ) return; // Enterprise do not want to watch appliers
@@ -237,7 +238,7 @@ void printJobOffers(int _entid, string **data, int _length){
     clear();
     cout<<"OFERTAS DE TRABAJO"<<endl;
     cout<<"Total ofertas: "<<_length<<endl;
-    cout<<" ID\t\tProfesion\tSalario\t\tEmpresa"<<endl;
+    cout<<" ID\t\tProfesion\t\tSalario\t\tEmpresa"<<endl;
     for(int i=0; i<_length; i++){
         // cout<<"i: "<<i<<endl;
         for(int j=0; j<4; j++){
@@ -298,7 +299,7 @@ bool mll_changeData(int _actype, string _code, string _value){
             user->contact.telf2 = _value;
 
         }else if(_code == "cad"){
-            if( !isString(_value,6) ) return false;
+            if( _value.length() < 6 ) return false;
             user->contact.address = _value;
 
         }else if(_code == "pnm"){
@@ -475,20 +476,20 @@ bool mll_getJobOffers(int _entid){
 
     string _rqinfo[_length][4]; // Request's info
     string* _pointerrq[_length]; // Pointer to request info
-    // cout<<"5"<<endl;
+    cout<<"5"<<endl;
 
     // ERROR //
     int _aux=0; // Auxiliar iterator for enterprise specific data store
-    // cout<<"length: "<<_length<<" - irq: "<<_irq<<endl;
+    cout<<"length: "<<_length<<" - irq: "<<_irq<<endl;
     for(int i=0; i<_irq; i++){ // ID, profession, salary, enterprise
         if( _entid != -1 ){ // If there is a specific enterprise
-            // cout<<requests[i].rEnterprise.one->id <<" - "<< _entid<<endl;
+            cout<<requests[i].rEnterprise->one->id <<" - "<< _entid<<endl;
             if( requests[i].rEnterprise->one->id != _entid ){ // If this requests is not from our specific enterprise
-                // cout<<"i: "<<i<<" - skip"<<endl;
+                cout<<"i: "<<i<<" - skip"<<endl;
                 continue; // Skip to next requests
             }
         }
-        // cout<<"i: "<<i<<" - aux:"<<_aux<<endl;
+        cout<<"i: "<<i<<" - aux:"<<_aux<<endl;
         _rqinfo[_aux][0] = to_string( requests[i].id ); // Get request's id
         _rqinfo[_aux][1] = requests[i].rProfession; // Get request's profession required
         _rqinfo[_aux][2] = to_string( requests[i].rSalary ); // Get request's salary offered
@@ -496,13 +497,13 @@ bool mll_getJobOffers(int _entid){
         _pointerrq[_aux] = _rqinfo[_aux]; // Pass data to requests pointer
         _aux++;
     }
-    // cout<<"res: "<<_rqinfo[0][0]<<endl;
-    // cout<<"res: "<<_rqinfo[0][1]<<endl;
-    // cout<<"res: "<<_rqinfo[0][2]<<endl;
-    // cout<<"res: "<<_rqinfo[0][3]<<endl;
-    // cout<<"_rqinfo[0]: "<<_rqinfo[0]<<endl;
-    // cout<<"_pointerrq: "<<_pointerrq<<endl;
-    // cout<<"7"<<endl;
+    cout<<"res: "<<_rqinfo[0][0]<<endl;
+    cout<<"res: "<<_rqinfo[0][1]<<endl;
+    cout<<"res: "<<_rqinfo[0][2]<<endl;
+    cout<<"res: "<<_rqinfo[0][3]<<endl;
+    cout<<"_rqinfo[0]: "<<_rqinfo[0]<<endl;
+    cout<<"_pointerrq: "<<_pointerrq<<endl;
+    cout<<"7"<<endl;
 
     printJobOffers( -1,_pointerrq,_length );
     return true;

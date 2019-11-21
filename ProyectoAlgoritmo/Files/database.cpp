@@ -51,7 +51,7 @@ bool preload(){
     Person _new = Person{0};
     // Add data
     _new.create(1111, "nelson", "agustin", "20/05/2000", "72112258", "neldoaf");
-    _new.contact.email="a@b.c";
+    _new.contact.email="asesino@trabajador.trb";
     _new.contact.telf1="977865134";
     _new.contact.address="mikaza";
     _new.setAccountType(1);
@@ -68,7 +68,7 @@ bool preload(){
     */
     Person _new1 = Person{0};
     _new1.create(2222, "kailen", "agustin falcon", "11/04/2000", "72112251", "kailen123");
-    _new1.contact.email="a@b.c";
+    _new1.contact.email="cocinero@trabajador.trb";
     _new1.contact.telf1="977865134";
     _new1.contact.address="mikaza";
     _new1.setAccountType(1);
@@ -79,14 +79,14 @@ bool preload(){
     _iac++;
     _iwk++;
     // workers[1].printData(true);
-    Person _new5 = Person{0};
-    _new5.create(6666, "carlos", "falcon", "11/04/2000", "72112252", "kailen123");
-    _new5.contact.email="a@b.c";
-    _new5.contact.telf1="977865134";
-    _new5.contact.address="mikaza";
-    _new5.setAccountType(1);
-    _new5.setWorker( &workers[_iwk] );
-    accounts[_iac] = _new5;
+    Person _new11 = Person{0};
+    _new11.create(3333, "carlos", "falcon", "11/04/2000", "72112252", "kailen123");
+    _new11.contact.email="barrendero@trabajador.trb";
+    _new11.contact.telf1="977865134";
+    _new11.contact.address="mikaza";
+    _new11.setAccountType(1);
+    _new11.setWorker( &workers[_iwk] );
+    accounts[_iac] = _new11;
     workers[_iwk].setPerson(&accounts[_iac]);
     workers[_iwk].profession = "barrendero";
     _iac++;
@@ -97,8 +97,8 @@ bool preload(){
     // PRE SET ENTERPRISE
     Person _new2 = Person{0};
     // Add data
-    _new2.create(3333, "jefe1", "boss", "18/07/2000", "12345673", "boos123");
-    _new2.contact.email="a@b.c";
+    _new2.create(4444, "jefe1", "boss", "18/07/2000", "12345673", "boos123");
+    _new2.contact.email="mibakita@empresa.etp";
     _new2.contact.telf1="987654321";
     _new2.contact.address="mikaza";
     _new2.setAccountType(2);
@@ -110,8 +110,8 @@ bool preload(){
     _iet++;
     // enterprises[0].printData(true);
     Person _new3 = Person{0};
-    _new3.create(4444, "jefe2", "boss", "22/05/1999", "12345674", "boos123");
-    _new3.contact.email="a@b.c";
+    _new3.create(5555, "jefe2", "boss", "22/05/1999", "12345674", "boos123");
+    _new3.contact.email="inkofamra@empresa.etp";
     _new3.contact.telf1="977865134";
     _new3.contact.address="mikaza";
     _new3.setAccountType(2);
@@ -121,20 +121,35 @@ bool preload(){
     enterprises[_iet].name = "inkofarma sac";
     _iac++;
     _iet++;
-    // cout<<"_new3.id: "<<_new3.id<<endl;
-    // cout<<"_new3.e_ma: "<<_new3.e_ma<<endl;
-    // cout<<"enterprises[1].one.id: "<<enterprises[1].one.id<<endl;
-    // cout<<"enterprises[1].one.e_ma: "<<enterprises[1].one.e_ma<<endl;
     // enterprises[1].printData(true);
 
 
     // PRE SET REQUEST
     Request _new4 = Request{0};
-    _new4.create(5555,&enterprises[0],"asesino",1200,8,1,20,28,"necesito alguien que mate los mosquitos de mi fabrica");
+    _new4.create(6666,&enterprises[0],"asesinador",1200,8,1,20,28,"necesito alguien que mate los mosquitos de mi fabrica");
     requests[_irq] = _new4;
     enterprises[0].addRequest( &requests[_irq] );
     // myJobOffer();
     _irq++;
+    Request _new5 = Request{0};
+    _new5.create(7777,&enterprises[0],"cocinero",900,8,3,18,48,"necesito alguien que sazone bien a mis pollos");
+    requests[_irq] = _new5;
+    enterprises[0].addRequest( &requests[_irq] );
+    // myJobOffer();
+    _irq++;
+    Request _new6 = Request{0};
+    _new6.create(8888,&enterprises[1],"soplavelas",850,1,3,18,20,"no puedo soplar las velas de mi pastel de cumpleanios");
+    requests[_irq] = _new6;
+    enterprises[1].addRequest( &requests[_irq] );
+    // myJobOffer();
+    _irq++;
+
+
+    // PRE SET APPLIES
+    requests[0].addApplicant(accounts[0].w_ma);
+    requests[0].addApplicant(accounts[1].w_ma);
+    requests[1].addApplicant(accounts[0].w_ma);
+    requests[1].addApplicant(accounts[1].w_ma);
 
 
     // PRE SET ADMIN

@@ -114,7 +114,7 @@ struct Worker{
         // applications auto sets to null
     };
     void printData(bool _code){
-        cout<<"Informacion del trabajador\n"<<endl;
+        cout<<"Informacion del trabajador"<<endl;
         this->one->printData(_code); // Person data && end _code
         cout<< (_code ? "wpf\t":"") <<"Profesion: "<<this->profession<<endl;
         cout<< (_code ? "wdc\t":"") <<"Descripcion del perfil: "<<this->description<<endl;
@@ -228,11 +228,11 @@ struct Enterprise{
         return true;
     };
     void printData(bool _code){
-        cout<<"\nInformacion de la empresa\n"<<endl;
+        cout<<"\nInformacion de la empresa"<<endl;
         cout<< (_code ? "enm\t":"") <<"Nombre: "<<this->name<<endl;
         cout<< (_code ? "edc\t":"") <<"Descripcion: "<<this->description<<endl;
         if( _code ){ // If it's the actual user
-            cout<<"Informacion del director\n"<<endl;
+            cout<<"\nInformacion del director"<<endl;
             this->one->printData(_code); // Print director data
         }else{ // Shown as enterprise information
             cout<<"Telefono: "<<this->one->contact.telf1<<endl;
@@ -280,7 +280,7 @@ void Worker::printApplications(){
     }
     // Print applications
     cout<<"\nTrabajos"<<endl;
-    cout<<" ID\t\tProfesion\tSalario\t\tEmpresa\t\t\tEstado\t\tFecha"<<endl;
+    cout<<" ID\t\tProfesion\t\tSalario\t\tEmpresa\t\t\tEstado\tFecha"<<endl;
     for(int i=0; i<countApplications(); i++){
         applications[i]->printApplication(1); // Print applications for worker
     }
@@ -294,7 +294,7 @@ void Request::printApplications(){
     }
     // Print applications
     cout<<"\nPostulantes"<<endl;
-    cout<<" ID\t\tNombre\t\tProfesion\tEmail\t\tEstado\t\tFecha"<<endl;
+    cout<<" ID\t\tNombre\t\tProfesion\tEmail\t\t\t\tEstado\t\t\tFecha"<<endl;
     for(int i=0; i<countApplicants(); i++){
         applicants[i].printApplication(2); // Print applications for worker
     }
@@ -311,11 +311,6 @@ void Application::printApplication(int _actype){
             cout<< this->request->rSalary;
             cout<<"\t\t";
             cout<< this->request->rEnterprise->name;
-            cout<<"\t\t";
-            cout<< this->status ? "contratado":"pendiente";
-            cout<<"\t\t";
-            cout<< this->joindate;
-            cout<<endl;
             break;
         case 2:
             cout<< this->one->one->id;
@@ -325,13 +320,13 @@ void Application::printApplication(int _actype){
             cout<< this->one->profession;
             cout<<"\t";
             cout<< this->one->one->contact.email;
-            cout<<"\t\t";
-            cout<< this->status;
-            cout<<"\t\t";
-            cout<< this->joindate;
-            cout<<endl;
             break;
     }
+    cout<<"\t\t";
+    cout<< (this->status ? "contratado":"pendiente");
+    cout<<"\t\t";
+    cout<< this->joindate;
+    cout<<endl;
 }
 
 #endif
