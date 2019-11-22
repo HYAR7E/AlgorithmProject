@@ -21,6 +21,9 @@ bool applyForJobOffer(int _idjob); // Apply to job offer prototype function
 bool applyForJobOffer(int _idjob){
     if( user->accounttype != 1 ) return false; // Check that logged in user is worker
     if( !jobOfferExists(_idjob) ) return false; // Check that job offer is available
+    // Check if job specifications fit with user's characteristics
+    // Check age
+    // Check profession
 
     Request* _r = NULL;
     _r = getRequestStructAddress(_idjob); // Pass request ma

@@ -32,6 +32,7 @@ bool applyForJobOffer(int _idjob); // Apply to job offer function
 /*** FUNCTIONS DECLARATION ***/
 /* ### USER LAYER ### */
 void myData(int _userid, int _printtype){ // _printtype is the acount type of the print
+    string x_opc = "f";
     // Get user struct
     // _user is memory address of Person structure
     Person* _user = NULL;
@@ -69,15 +70,19 @@ void myData(int _userid, int _printtype){ // _printtype is the acount type of th
     }
     cout<<endl;
 
+    // PRINT ENTERPRISE'S JOB OFFERS WHEN IT'S NOT THE SAME
+    if( !_same && user->accounttype!=2){
+        if( x_opc=="y" || x_opc=="Y" ) printJobOffers(_userid); // Print job offers
+        cout<<"Ver ofertas de trabajo? (y/n): "; cin>>x_opc;
+    }
 
     // CHANGE DATA
     if( !_same ) return; // Don't allow to change data if the given user is not the logged in user
     // pauseClear(); // Pause for watch printed data
 
-    string _opc = "f";
     string _code="",_value=""; // Empty code and value
-    cout<<"Desea realizar cambios en sus datos? (y/n): "; cin>>_opc;
-    if( !isString(_opc,1,1) || (_opc!="y" && _opc!="Y") ) return; // User don't want to change his data
+    cout<<"Desea realizar cambios en sus datos? (y/n): "; cin>>x_opc;
+    if( !isString(x_opc,1,1) || (x_opc!="y" && x_opc!="Y") ) return; // User don't want to change his data
 
     cout<<"Que dato desea cambiar? (code): "; cin>>_code; // Get only three characters
     pauseClear(); // Earse remaining stream data
@@ -238,13 +243,19 @@ void printJobOffers(int _entid, string **data, int _length){
     clear();
     cout<<"OFERTAS DE TRABAJO"<<endl;
     cout<<"Total ofertas: "<<_length<<endl;
-    cout<<" ID\t\tProfesion\t\tSalario\t\tEmpresa"<<endl;
+    cout<<" ID\t\tProfesion\t\tSalario\t\t";
+    // Enterprises can't see each other
+    cout<< (user->accounttype!=2 ?"Empresa":"Solicitantes") <<endl; // Show enterprise or applicants
     for(int i=0; i<_length; i++){
         // cout<<"i: "<<i<<endl;
-        for(int j=0; j<4; j++){
+        for(int j=0; j<4; j++){ // The last element is whether or enterprisename or applicantsamount
             // cout<<"j: "<<j<<endl;
             // cout<<"data: "<<data<<endl;
             // cout<<"*data: "<<*data<<endl;
+            // Print enterprise name(j=2) or amount of applicants
+            if( user->accounttype==2 && j==3 ){ // If account type is not worker show amount of applicants
+                (*data)++; // Pass to index=4 (applicants amount)
+            }
             cout<< **data <<"\t\t";
             (*data)++;
         }
@@ -342,7 +353,7 @@ bool mll_changeData(int _actype, string _code, string _value){
             _user->one->contact.telf2 = _value;
 
         }else if(_code == "cad"){
-            if( !isString(_value,6) ) return false;
+            if( _value.length() < 6 ) return false;
             _user->one->contact.address = _value;
 
         }else if(_code == "pnm"){
@@ -387,7 +398,7 @@ bool mll_changeData(int _actype, string _code, string _value){
             _user->one->contact.telf2 = _value;
 
         }else if(_code == "cad"){
-            if( !isString(_value,6) ) return false;
+            if( _value.length() < 6 ) return false;
             _user->one->contact.address = _value;
 
         }else if(_code == "pnm"){
@@ -474,36 +485,38 @@ bool mll_getJobOffers(int _entid){
         // cout<<"4"<<endl;
     }
 
-    string _rqinfo[_length][4]; // Request's info
+    string _rqinfo[_length][5]; // Request's info
     string* _pointerrq[_length]; // Pointer to request info
-    cout<<"5"<<endl;
+    // cout<<"5"<<endl;
 
     // ERROR //
     int _aux=0; // Auxiliar iterator for enterprise specific data store
-    cout<<"length: "<<_length<<" - irq: "<<_irq<<endl;
+    // cout<<"length: "<<_length<<" - irq: "<<_irq<<endl;
     for(int i=0; i<_irq; i++){ // ID, profession, salary, enterprise
         if( _entid != -1 ){ // If there is a specific enterprise
-            cout<<requests[i].rEnterprise->one->id <<" - "<< _entid<<endl;
+            // cout<<requests[i].rEnterprise->one->id <<" - "<< _entid<<endl;
             if( requests[i].rEnterprise->one->id != _entid ){ // If this requests is not from our specific enterprise
-                cout<<"i: "<<i<<" - skip"<<endl;
+                // cout<<"i: "<<i<<" - skip"<<endl;
                 continue; // Skip to next requests
             }
         }
-        cout<<"i: "<<i<<" - aux:"<<_aux<<endl;
+        // cout<<"i: "<<i<<" - aux:"<<_aux<<endl;
         _rqinfo[_aux][0] = to_string( requests[i].id ); // Get request's id
         _rqinfo[_aux][1] = requests[i].rProfession; // Get request's profession required
         _rqinfo[_aux][2] = to_string( requests[i].rSalary ); // Get request's salary offered
         _rqinfo[_aux][3] = requests[i].rEnterprise->name; // Get request's enterprise
+        _rqinfo[_aux][4] = to_string( requests[i].countApplicants() ); // Get request's enterprise
         _pointerrq[_aux] = _rqinfo[_aux]; // Pass data to requests pointer
         _aux++;
     }
-    cout<<"res: "<<_rqinfo[0][0]<<endl;
-    cout<<"res: "<<_rqinfo[0][1]<<endl;
-    cout<<"res: "<<_rqinfo[0][2]<<endl;
-    cout<<"res: "<<_rqinfo[0][3]<<endl;
-    cout<<"_rqinfo[0]: "<<_rqinfo[0]<<endl;
-    cout<<"_pointerrq: "<<_pointerrq<<endl;
-    cout<<"7"<<endl;
+    // cout<<"res: "<<_rqinfo[0][0]<<endl;
+    // cout<<"res: "<<_rqinfo[0][1]<<endl;
+    // cout<<"res: "<<_rqinfo[0][2]<<endl;
+    // cout<<"res: "<<_rqinfo[0][3]<<endl;
+    // cout<<"res: "<<_rqinfo[0][4]<<endl;
+    // cout<<"_rqinfo[0]: "<<_rqinfo[0]<<endl;
+    // cout<<"_pointerrq: "<<_pointerrq<<endl;
+    // cout<<"7"<<endl;
 
     printJobOffers( -1,_pointerrq,_length );
     return true;

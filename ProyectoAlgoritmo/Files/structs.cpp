@@ -82,13 +82,11 @@ struct Person{
     };
     bool setWorker(Worker *_w_ma){ // Parameter is worker array element memory address
         if( this->accounttype!=1 ) return false; // Only allow if Person account type is Worker
-        if( this->w_ma!=NULL ) return false; // Worker ma is already setted
         this->w_ma = _w_ma;
         return true;
     };
     bool setEnterprise(Enterprise *_e_ma){ // Parameter is enterprise array element memory address
         if( this->accounttype!=2 ) return false; // Only allow if Person account type is Enterprise
-        if( this->e_ma!=NULL ) return false; // Enterprise ma is already setted
         this->e_ma = _e_ma;
         return true;
     };
@@ -280,7 +278,7 @@ void Worker::printApplications(){
     }
     // Print applications
     cout<<"\nTrabajos"<<endl;
-    cout<<" ID\t\tProfesion\t\tSalario\t\tEmpresa\t\t\tEstado\tFecha"<<endl;
+    cout<<" ID\t\tProfesion\t\tSalario\t\tEmpresa\t\t\tEstado\t\tFecha"<<endl;
     for(int i=0; i<countApplications(); i++){
         applications[i]->printApplication(1); // Print applications for worker
     }

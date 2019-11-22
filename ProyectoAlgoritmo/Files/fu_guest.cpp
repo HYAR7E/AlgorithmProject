@@ -32,8 +32,8 @@ bool ac0_chooseAccountType(){
         cout<<"3. Regresar"<<endl;
         opc = getValidIntInput("Opc: ", "Introduzca una opcion valida");
     }while(opc<1||opc>3);
-    pauseClear(); // Ignore cin remaining data so the next pauseClear function will pause
     if( opc==3 ) return false; // Exit
+    pauseClear(); // Ignore cin remaining data so the next pauseClear function will pause
 
     bool _r = _chooseAccountType(opc);
     if( !_r ) cout<<"Un error ha ocurrido y los cambios no han podido ser realizados";
@@ -45,16 +45,37 @@ bool ac0_chooseAccountType(){
 
 /* ### LOGIC LAYER ### */
 bool _chooseAccountType(int _actype){
+    string _data = "";
     if( !user->setAccountType(_actype) ) return false; // Operation failed, maybe the user has already picked his account type
+    clear();
+    cout<<"\n\nDebe llenar los siguientes datos para cambiar el tipo de cuenta"<<endl;
     switch(_actype){ // Add to global array
         case 1:
             workers[_iwk].setPerson(user); // Send user value to 'setPerson' function
             if( !user->setWorker( &workers[_iwk] ) ) return false; // Send new worker element and return false if failed
+            // Fill worker data
+            cout<<"Profesion: "; getline(cin,_data);
+            if( !isString(_data,3) ){
+                cout<<"Formato incorrecto, la profesion debe tener al menos 3 letras. Abortando..."<<endl;
+                return false;
+            }
+            workers[_iwk].profession = _data;
+            cout<<"Descripcion: "; getline(cin,_data);
+            workers[_iwk].description = _data;
             _iwk++; // Iterate variable
             break;
         case 2:
             enterprises[_iet].setPerson(user); // Send user value to 'setPerson' function
             if( !user->setEnterprise( &enterprises[_iet] ) ) return false; // Send new enterprise element and return false if failed
+            // Fill enterprise data
+            cout<<"Nombre de la empresa: "; getline(cin,_data);
+            if( !isString(_data,3) ){
+                cout<<"Formato incorrecto, el nombre debe tener al menos 3 letras. Abortando..."<<endl;
+                return false;
+            }
+            enterprises[_iet].name = _data;
+            cout<<"Descripcion de la empresa: "; getline(cin,_data);
+            enterprises[_iet].description = _data;
             _iet++; // Iterate variable
             break;
     }

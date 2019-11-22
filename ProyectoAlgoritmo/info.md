@@ -149,6 +149,7 @@
         Do not allow to choose account type if there is empty user data
         Fixed pauseClear in user menu functions
         Restrict set function in Person to be called just once
+        Ask for worker data or enterprise data when set account type in chooseAccountType function in fu_guest.cpp
         --- GUEST MENU FINISHED ---
 
         Remove restriction for description in changeData function to allow characteres(, ' " + : ), etc
@@ -186,10 +187,12 @@
         Added Worker::printApplicants function for worker in structs.cpp
         Added Request::printApplicants function for enterprise in structs.cpp
         Added default applies in database.cpp
+        Print applicants amount in printJobOffers function in fu_global.cpp
+        Show job offers from enterprise profile
 
-        ->*(guest) Ask for worker data or enterprise data when set account type in chooseAccountType function in fu_guest.cpp
-        ->*Ver trabajos desde perfil de empresa
         ->*Verificar edad al postular a trabajo
+        ->*Verificar profesion al postular a trabajo
+        ->*Worker CV (show previous jobs)
         *Added hireWorker function for enterprise (Applicant::status, Request::rAmount)
         *Added print hired appliers in myJobOffer function in fu_global.cpp
         **Added deleteJobOffer function in fu_enterprise.cpp
