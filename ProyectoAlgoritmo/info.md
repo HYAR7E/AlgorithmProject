@@ -150,6 +150,7 @@
         Fixed pauseClear in user menu functions
         Restrict set function in Person to be called just once
         Ask for worker data or enterprise data when set account type in chooseAccountType function in fu_guest.cpp
+        Added default guest
         --- GUEST MENU FINISHED ---
 
         Remove restriction for description in changeData function to allow characteres(, ' " + : ), etc
@@ -235,6 +236,7 @@
         # BUGS:3 in Request::addApplicant function if structs.cpp
             Bug explanation: We were declaring applicants as Applicant structure variable pointer, and it only stored the ma but the value
             Solution: Change applicants type to Applicant variable
+        # VARIOUS BUGS: Double pause in chooseAccountType(); accountype setted even when there is error at chooseAccountType(); return accountype to guest when chooseAccountType() failed;
 
 
     v0.6 TOPICS EXPLANATION:

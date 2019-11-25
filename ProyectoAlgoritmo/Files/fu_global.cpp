@@ -46,7 +46,6 @@ void myData(int _userid, int _printtype){ // _printtype is the acount type of th
     bool _same = false;
     /* ERROR: The pointer parameter doesn't have the same memory address than the original pointer, so we can't compare 'em, instead we compare the user->id*/
     if( user->id == _user->id ) _same=true; // If logged in user is the given user
-    clear();
 
 
     if(_same) cout<<"cod\tDato: valor\n\n"; // Title (?)
@@ -70,10 +69,11 @@ void myData(int _userid, int _printtype){ // _printtype is the acount type of th
     }
     cout<<endl;
 
-    // PRINT ENTERPRISE'S JOB OFFERS WHEN IT'S NOT THE SAME
-    if( !_same && user->accounttype!=2){
+    // PRINT ENTERPRISE'S JOB OFFERS WHEN LOGGED USER IS NOT ENTERPRISE AND SPECIFIED USER IS ENTERPRISE
+    if( user->accounttype!=2 && _printtype==2){
+        cout<<"Ver ofertas de trabajo? (y/n): "; cin>>x_opc; pauseClear();
+        clear();
         if( x_opc=="y" || x_opc=="Y" ) printJobOffers(_userid); // Print job offers
-        cout<<"Ver ofertas de trabajo? (y/n): "; cin>>x_opc;
     }
 
     // CHANGE DATA
@@ -118,7 +118,6 @@ void myJobOffer(int _idjob){ // Print a specific job offer
             _same = true;
     }
     // cout<<"_same: "<<_same<<endl;
-    clear();
 
 
     if(_same) cout<<"cod\tDato: valor\n\n"; // Title (?)
@@ -145,6 +144,7 @@ void myJobOffer(int _idjob){ // Print a specific job offer
     string _opc = "f";
     cout<<"Desea ver los postulantes? (y/n): "; cin>>_opc;
     if( !isString(_opc,1,1) || (_opc!="y" && _opc!="Y") ) return; // Enterprise do not want to watch appliers
+    clear();
     pauseClear();
     _job->printApplications();
     /**/
@@ -169,6 +169,7 @@ void printWorkers(string **data, int _length){ // Print '_length' workers
                 cout<<"El ID indicado no existe"<<endl;
                 return;
             }
+            clear();
             myData(_id,1); // Print specific user's data
         }
         return; // In the second executation we will exit
@@ -176,7 +177,6 @@ void printWorkers(string **data, int _length){ // Print '_length' workers
     // data == &_pointerworker == &&workersinfo; // Print the memory address // iterate to change worker
     // *data == _pointerworker == &workersinfo; // Print each worker // iterate to change data
     // **data == *_pointerworker == workersinfo; // Print each data // never iterate
-    clear(); // Clear screen
     // Print the received data
     cout<<"TRABAJADORES REGISTRADOS"<<endl;
     cout<<" ID\t\tProfesion\t\tNombre\t\tApellido"<<endl;
@@ -195,7 +195,7 @@ void printEnterprises(string **data, int _length){
             cout<<"No hay empresas registradas"<<endl;
         }else{
             int _id;
-            cout<<"\nSeleccionar trabajador (0: salir)"<<endl;
+            cout<<"\nSeleccionar empresa (0: salir)"<<endl;
             _id = getValidIntInput("ID: ","Formato incorrecto");
 
             if( _id == 0 ) return; // Return before pause if 0 is selected
@@ -204,11 +204,11 @@ void printEnterprises(string **data, int _length){
                 cout<<"El ID indicado no existe"<<endl;
                 return;
             }
+            clear();
             myData(_id,2);
         }
         return;
     }
-    clear();
     cout<<"EMPRESAS REGISTRADAS"<<endl;
     cout<<" ID\t\tNombre\t\t\tTrabajos disponibles"<<endl;
     for(int i=0; i<_length; i++){
@@ -236,11 +236,11 @@ void printJobOffers(int _entid, string **data, int _length){
                 cout<<"El ID indicado no existe"<<endl;
                 return;
             }
+            clear(); // Clear before print
             myJobOffer(_id); // Print specific job offer's information
         }
         return;
     }
-    clear();
     cout<<"OFERTAS DE TRABAJO"<<endl;
     cout<<"Total ofertas: "<<_length<<endl;
     cout<<" ID\t\tProfesion\t\tSalario\t\t";

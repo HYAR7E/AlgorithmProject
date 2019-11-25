@@ -92,6 +92,14 @@ bool preload(){
     _iac++;
     _iwk++;
     // workers[2].printData(true);
+    _new1 = Person{0};
+    _new1.create(9999, "Homero", "Thompson", "15/04/2001", "12345698", "jay123");
+    _new1.contact.email="homero69@gmail.com";
+    _new1.contact.telf1="978645312";
+    _new1.contact.address="Springfield - Callefalsa N°123";
+    _new1.setAccountType(0);
+    accounts[_iac] = _new1;
+    _iac++;
 
 
     // PRE SET ENTERPRISE

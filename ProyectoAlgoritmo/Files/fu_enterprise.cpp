@@ -21,7 +21,6 @@ void ac2_postJobOffers(){
     int _maxerror = 2; // Maximous amount of error allowed
     string _msg=""; // Mensaje a ser modificado
 
-    clear();
 
     _ei=0;
     do{ // Profesion

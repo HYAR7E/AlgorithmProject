@@ -19,21 +19,20 @@ void printMMLog(int _case,int _res){
         switch(_res){
             case -2: cout<<"El usuario no existe."; break;
             case -1: cout<<"La informacion introducida no es valida."; break;
-            case 0: cout<<"Contrasena incorrecta\nMaximo numero de fallos permitidos, saliendo..."; break;
+            case 0: cout<<"Contraseña incorrecta\nMaximo numero de errores permitidos, saliendo..."; break;
             case 1: cout<<"Inicio de sesion exitoso."; break;
         }
     }
     if(_case==2){
         switch(_res){
             case -3: cout<<"Tercer error, intente registrarse nuevamente."; break;
-            case -2: cout<<"No tiene edad suficiente para usar nuestra plataforma."; break;
+            case -2: cout<<"Debe tener entre 18 y 65 años para usar nuestra plataforma."; break;
             case -1: cout<<"La informacion introducida no es valida."; break;
             case 0: cout<<"Usuario ya registrado."; break;
             case 1: cout<<"Cuenta creada exitosamente."; break;
         }
     }
     cout<<endl;
-    pauseClear(); // Clear remaining stream
     pauseClear(); // Pause
 }
 void printMenu(int _actype){ /**/
@@ -62,6 +61,7 @@ void printGuestMenu(){
             cout<<"3. Salir"<<endl;
             opc = getValidIntInput("Opc: ", "Introduzca una opcion valida");
         }while(opc<1||opc>3);
+        clear();
         pauseClear(); // Clear data stream remaining from previous cin input
         switch(opc){
             case 1: if( ac0_chooseAccountType() ) return; // If account type changed
@@ -80,22 +80,23 @@ void printWorkerMenu(){
             // cout<<"ID: "<<user->id<<endl;
             // cout<<"AC: "<<user->accounttype<<endl;
             // cout<<"MA: "<<user->w_ma<<endl;
-            cout<<"1. CV"<<endl;
-            cout<<"2. Ver anuncios"<<endl; // And apply
-            cout<<"3. Ver empresas"<<endl;
-            cout<<"4. Estado de postulaciones"<<endl;
-            cout<<"5. Mi cuenta"<<endl;
-            cout<<"6. Salir"<<endl;
+            // cout<<"1. CV"<<endl;
+            cout<<"1. Ver anuncios"<<endl; // And apply
+            cout<<"2. Ver empresas"<<endl;
+            cout<<"3. Estado de postulaciones"<<endl;
+            cout<<"4. Mi cuenta"<<endl;
+            cout<<"5. Salir"<<endl;
             opc = getValidIntInput("Opc: ", "Introduzca una opcion valida");
-        }while(opc<1||opc>6);
+        }while(opc<1||opc>5);
+        clear();
         pauseClear(); // Clear data stream remaining from previous cin input
         switch(opc){
             // case 1: ac1_cvStatus(); break; // CV is showing?
-            case 2: printJobOffers(); break; // Print all job offers
-            case 3: printEnterprises(); break;
-            case 4: printApplications(user->id); break;
-            case 5: myData(user->id, user->accounttype); break;
-            case 6: return; // Exit
+            case 1: printJobOffers(); break; // Print all job offers
+            case 2: printEnterprises(); break;
+            case 3: printApplications(user->id); break;
+            case 4: myData(user->id, user->accounttype); break;
+            case 5: return; // Exit
         }
     pauseClear();
     }while(true); // Infinite bucle
@@ -111,6 +112,7 @@ void printEnterpriseMenu(){
             cout<<"4. Salir"<<endl;
             opc = getValidIntInput("Opc: ", "Introduzca una opcion valida");
         }while(opc<1||opc>4);
+        clear();
         pauseClear(); // Clear data stream remaining from previous cin input
         switch(opc){
             case 1: ac2_postJobOffers(); break;
@@ -132,6 +134,7 @@ void printAdminMenu(){
             cout<<"4. Salir"<<endl;
             opc = getValidIntInput("Opc: ", "Introduzca una opcion valida");
         }while(opc<1||opc>4);
+        clear();
         pauseClear(); // Clear data stream remaining from previous cin input
         switch(opc){
             case 1: printJobOffers(); break; // Print all job offers

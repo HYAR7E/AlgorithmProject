@@ -20,14 +20,14 @@ bool storeUser(); // Send changes in user account to database
 int _login(){
     string _name, _dni, _password;
 
-    cout<<"DNI: "; cin>>_dni;
+    cout<<"DNI: "; cin>>_dni; pauseClear();
     if( !isNumber(_dni) || _dni.length() != 8 ) return -1;
 
     if( !userExists(_dni) ) return -2; // User don't exists
 
     int i_pass=1;
     inputpass:
-    cout<<"Contrasena: "; cin>>_password;
+    cout<<"Contraseña: "; cin>>_password; pauseClear();
     if( !userExists(_dni,_password) ){
         if(i_pass==3) return 0; // Password incorrect
         cout<<"Contraseña incorrecta"<<endl;
@@ -45,23 +45,20 @@ int _register(){
     string _name, _lastname, _dni, _password, _borndate;
 
     // Ask personal data
-    cout<<"Nombre: "; cin>>_name;
+    cout<<"Nombre: "; cin>>_name; pauseClear();
     if( !isString(_name,3) ) return -1;
-    pauseClear();
 
-    cout<<"Primer apellido: "; getline(cin,_lastname);
+    cout<<"Apellidos: "; getline(cin,_lastname);
     if( !isString(_lastname,4) ) return -1;
 
     // BornDate
-    cout<<"Fecha de nacimiento DD/MM/AAAA :"; cin>>_borndate;
+    cout<<"Fecha de nacimiento DD/MM/AAAA: "; cin>>_borndate; pauseClear();
     if( !isValidDate(_borndate) ) return -1; // Check date
     if( !isValidDate(_borndate, true) ) return -2; // Check age
-    pauseClear();
 
     // Ask and check dni
-    cout<<"DNI: "; cin>>_dni;
+    cout<<"DNI: "; cin>>_dni; pauseClear();
     if( !isNumber(_dni) || _dni.length() != 8 ) return -1;
-    pauseClear();
 
     // Verify dni already exist
     if( userExists(_dni) ) return 0; // User already exists
@@ -69,6 +66,7 @@ int _register(){
     int i_pass=1;
     inputpass:
     cout<<"Contraseña: "; cin>>_password; // We can't use isString or isInt function cuz this could be any character or number
+    pauseClear();
     if( _password.length()<6 || _password.length()>15 ){ // Amount of characters in password
         if( i_pass >= 3) return -3;
         cout<<"La contraseña debe tener entre 6 a 15 caracteres, y debe contener solo numeros o letras"<<endl;

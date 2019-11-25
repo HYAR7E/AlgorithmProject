@@ -23,7 +23,6 @@ bool ac0_chooseAccountType(){
 
     int opc=0;
     do{
-        clear();
         cout<<"Escoja el tipo de cuenta que desea"<<endl;
         cout<<"El tipo de cuenta no se puede cambiar una vez seleccionado \n";
         cout<<"Por favor verifique que todos sus datos sean correctos antes de seleccionar un tipo de cuenta \n\n";
@@ -36,27 +35,31 @@ bool ac0_chooseAccountType(){
     pauseClear(); // Ignore cin remaining data so the next pauseClear function will pause
 
     bool _r = _chooseAccountType(opc);
-    if( !_r ) cout<<"Un error ha ocurrido y los cambios no han podido ser realizados";
-    else cout<<"Se ha seleccionado el tipo de cuenta correctamente, por favor inicie sesion nuevamente";
-    cout<<endl;
-    pauseClear();
+    if( !_r ) cout<<"\nLos cambios no han podido ser realizados, la cuenta no se ha seleccionado\n"<<endl;
+    else{ cout<<"\nSe ha seleccionado el tipo de cuenta correctamente, por favor inicie sesion nuevamente"<<endl; pauseClear(); }
+
     return _r;
 }
 
 /* ### LOGIC LAYER ### */
 bool _chooseAccountType(int _actype){
     string _data = "";
+    // Store user  account type
     if( !user->setAccountType(_actype) ) return false; // Operation failed, maybe the user has already picked his account type
-    clear();
+
     cout<<"\n\nDebe llenar los siguientes datos para cambiar el tipo de cuenta"<<endl;
     switch(_actype){ // Add to global array
         case 1:
             workers[_iwk].setPerson(user); // Send user value to 'setPerson' function
-            if( !user->setWorker( &workers[_iwk] ) ) return false; // Send new worker element and return false if failed
+            if( !user->setWorker( &workers[_iwk] ) ){
+                user->accounttype = 0; // Return to guest
+                return false;// Send new worker element and return false if failed
+            }
             // Fill worker data
             cout<<"Profesion: "; getline(cin,_data);
             if( !isString(_data,3) ){
-                cout<<"Formato incorrecto, la profesion debe tener al menos 3 letras. Abortando..."<<endl;
+                cout<<"Formato incorrecto, la profesion debe tener solo y al menos 3 letras. Abortando..."<<endl;
+                user->accounttype = 0; // Return to guest
                 return false;
             }
             workers[_iwk].profession = _data;
@@ -66,11 +69,15 @@ bool _chooseAccountType(int _actype){
             break;
         case 2:
             enterprises[_iet].setPerson(user); // Send user value to 'setPerson' function
-            if( !user->setEnterprise( &enterprises[_iet] ) ) return false; // Send new enterprise element and return false if failed
+            if( !user->setEnterprise( &enterprises[_iet] ) ){
+                user->accounttype = 0; // Return to guest
+                return false; // Send new enterprise element and return false if failed
+            }
             // Fill enterprise data
             cout<<"Nombre de la empresa: "; getline(cin,_data);
             if( !isString(_data,3) ){
                 cout<<"Formato incorrecto, el nombre debe tener al menos 3 letras. Abortando..."<<endl;
+                user->accounttype = 0; // Return to guest
                 return false;
             }
             enterprises[_iet].name = _data;

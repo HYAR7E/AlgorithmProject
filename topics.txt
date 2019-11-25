@@ -1,0 +1,82 @@
+  KiwiIRC
+SmashTheStack0#wargames0WebVisitor681240
+WebVisitor96015
+Hi 
+could you pls explain to me about bandit lvl 13 
+WebVisitor68124
+first try then ask 
+this is not hard 
+WebVisitor96015
+I've already solved it 
+it's just i have a doubt 
+WebVisitor68124
+all bandit is only about linux using on semi-advanced level 
+so tell me your doubt 
+you have doubt tell me I will answer elaborate 
+WebVisitor96015
+Why do i have to use localhost in ssh conection instead of the real host (bandit.labs.overthewire.org) 
+WebVisitor68124
+I don't believe in Wishnu who knows you are from India and come to you in body of avatar to help you knowing what is your problem WAKE UP 
+ok, what is your knowledge about DNS 
+and routing? 
+WebVisitor96015
+i've setted a apache server before 
+WebVisitor68124
+how advanced are you in TCP/ID 
+it is apt-get install apache ; systemctl restart apache.service??? 
+it's not set up 
+and no, apache have nothing to do with DNS nor routing nor SSH 
+as you should know if you already make your hands dirty with working with it 
+Apache use which port? hmm? 
+which use dns queries i.e. from your browser? 
+and which ssh 
+how resolvhost works? 
+this is question you should put straght into google and read read read read read 
+WebVisitor96015
+I think a know the basis of dns 
+WebVisitor68124
+but TL;DR, services listen on ports, interfaces and loop back kernel interface is resolved this host by localhost and 127.0.0.0/24 or even 127.0.0.0/16 
+soo you know that you have IP and remote have one 
+WebVisitor96015
+yes 
+WebVisitor68124
+and service are listening on specific ports which is just sockets on one of OSI layers 
+and know that packet is going to them 
+so if you know that all I don't understand why you don't know that bandit.overthewire.org is not resolved from themselves 
+try to resolve and see that it cant 
+if you think it cant 
+read about it in man ssh 
+and turn -vvv to have verbosity from ssh 
+then you will understand... 
+and if I helped elaborate in channel that it's done 
+next time register the nick and become one of us 
+are you understand everything what I said? 
+WebVisitor96015
+not everything 
+but i think i got the idea 
+WebVisitor68124
+great 
+WebVisitor96015
+i'm gonna search about it 
+thanks! 
+WebVisitor68124
+best copy this log 
+and make notes of it 
+if you register that will be better for you 
+not bother about somebody blame you but always ask question, not yelll like a baby to plz help me whats going on 
+because it's not the way you will get anything 
+and you find me hypocrite about that I webvisitor but it's funny when I help webvisitors from that 
+you feel less comfortable bc I could be better than you think i.e. infiltrate your browser or sth 
+do you scary? good 
+now stop, and next time, go with strings attached, register and ask for help properly 
+with some contexts and so on 
+not like a baby girl/boy 
+I find you could be boy bc info sec girls are more concrete 
+WebVisitor96015
+idk what u mean with that last one 
+is there any information in my profile? 
+WebVisitor68124
+idk why you think sb care when you write this: "could you pls explain to me about bandit lvl 13 " 
+but I care 
+bye 
+

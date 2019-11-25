@@ -95,7 +95,7 @@ struct Person{
         if( _code ) cout<<"    \tID: "<<this->id<<endl; // Only if it's the actual user
         cout<< (_code ? "pnm\t":"") <<"Nombre: "<<this->name<<endl;
         cout<< (_code ? "pln\t":"") <<"Apellido: "<<this->lastname<<endl;
-        if( _code ) cout<<"pwd \tContrasena: "<<this->password<<endl; // Only if it's the actual user
+        if( _code ) cout<<"pwd \tContraseña: "<<this->password<<endl; // Only if it's the actual user
         cout<< (_code ? "   \t":"") <<"Fecha de nacimiento: "<<this->borndate<<endl;
         if( _code ) cout<<"    \tDNI: "<<this->dni<<endl; // Only if it's the actual user
         cout<< (_code ? "   \t":"") <<"Activo ahora: "<< ( this->online? "SI":"NO" ) <<endl;
