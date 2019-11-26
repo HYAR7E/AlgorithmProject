@@ -16,11 +16,12 @@ int convertToInt(string num); // Convert a string value to int value
 int getValidIntInput(string x_Ask, string x_Error, int i_min=-1, int i_max=-1, int maxerror=st_maxerror); // Avoid program error when introducing string values into int variable input
 int getCurrentTime(char f); // Gets current time _f: Y,M,D,h,m,s
 bool isDate(string date); // Is it a date value?
-bool isValidDate(string date, bool _checkage=false); // Is it a correct date value?
+bool isValidDate(string date, bool checkage=false); // Is it a correct date value?
 #ifndef PROTO_CURDATE
 #define PROTO_CURDATE
 string getCurrentDate(); // Returns a string with the current date (no time)
 #endif
+int getAge(string year); // Get age
 
 
 // Capa Servidor
@@ -154,7 +155,9 @@ bool isValidDate(string date, bool checkage){ // date = "11/22/3333"
     year = convertToInt( date.substr(6,4) );
     // Check year
     int now_year = getCurrentTime('Y');
-    if( checkage ) if( year < (now_year-65) || year > (now_year-18) ) return false; // Max age 65 and min age 18
+    // Max age 65 and min age 18
+    // if( checkage ) if( year < (now_year-65) || year > (now_year-18) ) return false;
+    if( checkage ) if( getAge(date) > st_maxage || getAge(date) < st_minage ) return false;
     // Check month
     if( month < 1 || month > 12 ) return false;
     // Calc max day
@@ -179,5 +182,11 @@ string getCurrentDate(){
     int _y = getCurrentTime('Y');
     _date += to_string(_y);
     return _date; // return date
+}
+int getAge(string date){
+    int now_year = getCurrentTime('Y');
+    int year = convertToInt( date.substr(6,4) );
+
+    return (now_year - year); // Return subtraction
 }
 #endif

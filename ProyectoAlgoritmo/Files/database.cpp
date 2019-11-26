@@ -134,19 +134,19 @@ bool preload(){
 
     // PRE SET REQUEST
     Request _new4 = Request{0};
-    _new4.create(6666,&enterprises[0],"asesinador",1200,8,1,20,28,"necesito alguien que mate los mosquitos de mi fabrica");
+    _new4.create(6666,&enterprises[0],"asesinador",1200,8,1,19,28,"necesito alguien que mate los mosquitos de mi fabrica");
     requests[_irq] = _new4;
     enterprises[0].addRequest( &requests[_irq] );
     // myJobOffer();
     _irq++;
     Request _new5 = Request{0};
-    _new5.create(7777,&enterprises[0],"cocinero",900,8,3,18,48,"necesito alguien que sazone bien a mis pollos");
+    _new5.create(7777,&enterprises[0],"cocinero",900,8,3,22,48,"necesito alguien que sazone bien a mis pollos");
     requests[_irq] = _new5;
     enterprises[0].addRequest( &requests[_irq] );
     // myJobOffer();
     _irq++;
     Request _new6 = Request{0};
-    _new6.create(8888,&enterprises[1],"soplavelas",850,1,3,18,20,"no puedo soplar las velas de mi pastel de cumpleanios");
+    _new6.create(8888,&enterprises[1],"soplavelas",850,1,3,18,20,"no puedo soplar las velas de mi pastel de cumpleaños");
     requests[_irq] = _new6;
     enterprises[1].addRequest( &requests[_irq] );
     // myJobOffer();
@@ -155,8 +155,6 @@ bool preload(){
 
     // PRE SET APPLIES
     requests[0].addApplicant(accounts[0].w_ma);
-    requests[0].addApplicant(accounts[1].w_ma);
-    requests[1].addApplicant(accounts[0].w_ma);
     requests[1].addApplicant(accounts[1].w_ma);
 
 

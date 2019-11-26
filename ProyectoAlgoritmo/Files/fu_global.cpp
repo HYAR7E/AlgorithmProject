@@ -97,12 +97,15 @@ void myData(int _userid, int _printtype){ // _printtype is the acount type of th
 
     // Why to send accounttype too? cuz 'mll_changeData' function is gonna be used by admin too, so if we don't send account type parameter he'll can not make changes
     if( !mll_changeData(_user->accounttype,_code,_value) ){ // Send account_type, code, value
+        if( _user->accounttype==1 && _code=="wpf" ){ // Worker want to change profession while having applied to job offers
+            cout<<"\nNo puede cambiar su profesion cuando esta postulando a un trabajo";
+        }
         cout<<"\nEl codigo o formato de dato no ha podido ser procesado."<<endl;
     }else{ // Changed correctly
         cout<<"\nSe ha modificado correctamente."<<endl;
     }
     // pauseClear(); // Pause to watch output
-    return;
+    /**/
 }
 void myJobOffer(int _idjob){ // Print a specific job offer
     // Get request struct
@@ -125,14 +128,14 @@ void myJobOffer(int _idjob){ // Print a specific job offer
     if( user->accounttype == 3) cout<< (_same? "   \t":"") <<"Cantidad de postulantes: "<<_job->countApplicants()<<endl; // Show applicants amount when user is admin
     cout<<endl;
 
-
     // APPLY FOR JOB OFFER
     if( user->accounttype == 1 ){ // User gotta be worker
         string _opc = "f";
         cout<<"Desea postular a este trabajo? (y/n): "; cin>>_opc;
         if( !(_opc!="y" && _opc!="Y") ){ // User want to apply for this job
             if( applyForJobOffer(_idjob) ) cout<<"Se ha postulado correctamente."<<endl;
-            else cout<<"Trabajador ya postulando o no vacantes disponibles."<<endl; // This could be cuz enterprise earse the job offer right before worker applies
+            // This could be cuz enterprise earse the job offer right before worker applies
+            else cout<<"Trabajador ya postulando o no cumple los requisitos."<<endl;
             pauseClear();
         }
         return;
@@ -147,6 +150,22 @@ void myJobOffer(int _idjob){ // Print a specific job offer
     clear();
     pauseClear();
     _job->printApplications();
+
+    // SELECT WORKER
+    int _id;
+    cout<<"\nAceptar trabajador (0: salir)"<<endl;
+    _id = getValidIntInput("ID: ","Formato incorrecto");
+
+    if( _id == 0 ) return; // Return before pause if 0 is selected
+    pauseClear(); // Clear remaining stream data
+
+    if( !jobOfferExists(_id) ){ // Job offer with id = _id exists
+        cout<<"El ID indicado no existe"<<endl;
+        return;
+    }
+    clear(); // Clear before print
+    myJobOffer(_id); // Print specific job offer's information
+
     /**/
 }
 void printWorkers(string **data, int _length){ // Print '_length' workers
@@ -232,9 +251,18 @@ void printJobOffers(int _entid, string **data, int _length){
 
             if( _id == 0 ) return; // Return before pause if 0 is selected
             pauseClear();
-            if( !jobOfferExists(_id) ){ // Job offer with id = _id exists
+            if( !jobOfferExists(_id) ){ // Job offer with id = _id exists?
                 cout<<"El ID indicado no existe"<<endl;
                 return;
+            }else{ // Job offer exists
+                // Job offer is owned by indicated enterprise?
+                Request* _r = NULL;
+                _r = getRequestStructAddress(_id);
+                // cout<<"eid: "<< _r->rEnterprise->one->id <<" || seid: "<< _entid <<endl;
+ 4                if( _r->rEnterprise->one->id != _entid ){ // If job offer is not owned by the indicated enterprise
+                    cout<<"El ID indicado no existe"<<endl;
+                    return;
+                }
             }
             clear(); // Clear before print
             myJobOffer(_id); // Print specific job offer's information
@@ -334,6 +362,8 @@ bool mll_changeData(int _actype, string _code, string _value){
 
         if(      _code == "wpf"){
             if( !isString(_value,4) ) return false;
+            // If worker is already applying to at least one job
+            if( _user->countApplications()!=0 ) return false;
             _user->profession = _value;
 
         }else if(_code == "wdc"){
@@ -577,16 +607,3 @@ int genUniqueRandId(int _idtype){
 /* ### SERVER LAYER ### */
 
 #endif
-
-
-
-
-
-
-
-
-
-
-
-
-

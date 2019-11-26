@@ -161,6 +161,10 @@
         Worker applies to job offers
         Added Worker::applications[5] element in structs.cpp
         Added Worker::printApplications function in structs.cpp
+        Added checkage utilitarie function in f_utilitaries.cpp
+        Verify age when applying to work
+        Verify profession when applying to work
+        Change profession when already applying to job offer
         --- WORKER MENU FINISHED ---
 
         printEnterprises in fu_global.cpp RECURSIVE FUNCTION
@@ -190,10 +194,10 @@
         Added default applies in database.cpp
         Print applicants amount in printJobOffers function in fu_global.cpp
         Show job offers from enterprise profile
+        Check if selected job is owned by indicated enterprise in printJobOffers() in fu_global.cpp
 
-        ->*Verificar edad al postular a trabajo
-        ->*Verificar profesion al postular a trabajo
-        ->*Worker CV (show previous jobs)
+        ->*Select worker in myJobOffer() in fu_global.cpp
+        *SEND MA OF USER WHOSE DATA WILL BE CHANGED
         *Added hireWorker function for enterprise (Applicant::status, Request::rAmount)
         *Added print hired appliers in myJobOffer function in fu_global.cpp
         **Added deleteJobOffer function in fu_enterprise.cpp

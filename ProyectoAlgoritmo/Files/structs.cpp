@@ -278,7 +278,7 @@ void Worker::printApplications(){
     }
     // Print applications
     cout<<"\nTrabajos"<<endl;
-    cout<<" ID\t\tProfesion\t\tSalario\t\tEmpresa\t\t\tEstado\t\tFecha"<<endl;
+    cout<<" ID\t\tProfesion\t\tSalario\t\tEmpresa\t\t\tEstado\t\t\tFecha"<<endl;
     for(int i=0; i<countApplications(); i++){
         applications[i]->printApplication(1); // Print applications for worker
     }
@@ -292,7 +292,7 @@ void Request::printApplications(){
     }
     // Print applications
     cout<<"\nPostulantes"<<endl;
-    cout<<" ID\t\tNombre\t\tProfesion\tEmail\t\t\t\tEstado\t\t\tFecha"<<endl;
+    cout<<" ID\t\tNombre\t\tProfesion\tEmail\t\t\t\tEstado\t\tFecha"<<endl;
     for(int i=0; i<countApplicants(); i++){
         applicants[i].printApplication(2); // Print applications for worker
     }
@@ -321,7 +321,7 @@ void Application::printApplication(int _actype){
             break;
     }
     cout<<"\t\t";
-    cout<< (this->status ? "contratado":"pendiente");
+    cout<< (this->status ? "selecto":"pendiente");
     cout<<"\t\t";
     cout<< this->joindate;
     cout<<endl;

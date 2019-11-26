@@ -6,6 +6,7 @@
 void ac2_postJobOffers(); // Post job offers
 // Capa Logica
 bool _postJobOffer(Enterprise *_e, string _p, int _s, int _d, int _a, int _minage, int _maxage, string _dsc);
+bool _selectWorker(int _idrequest, int _idworker);
 // Capa Servidor
 
 
