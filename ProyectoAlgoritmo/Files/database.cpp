@@ -51,7 +51,7 @@ bool preload(){
     Person _new = Person{0};
     // Add data
     _new.create(1111, "nelson", "agustin", "20/05/2000", "72112258", "neldoaf");
-    _new.contact.email="asesino@trabajador.trb";
+    _new.contact.email="asesino@gmail.trb";
     _new.contact.telf1="977865134";
     _new.contact.address="mikaza";
     _new.setAccountType(1);
@@ -68,7 +68,7 @@ bool preload(){
     */
     Person _new1 = Person{0};
     _new1.create(2222, "kailen", "agustin falcon", "11/04/2000", "72112251", "kailen123");
-    _new1.contact.email="cocinero@trabajador.trb";
+    _new1.contact.email="cocinero@gmail.trb";
     _new1.contact.telf1="977865134";
     _new1.contact.address="mikaza";
     _new1.setAccountType(1);
@@ -81,7 +81,7 @@ bool preload(){
     // workers[1].printData(true);
     Person _new11 = Person{0};
     _new11.create(3333, "carlos", "falcon", "11/04/2000", "72112252", "kailen123");
-    _new11.contact.email="barrendero@trabajador.trb";
+    _new11.contact.email="barrendero@gmail.trb";
     _new11.contact.telf1="977865134";
     _new11.contact.address="mikaza";
     _new11.setAccountType(1);
@@ -146,7 +146,7 @@ bool preload(){
     // myJobOffer();
     _irq++;
     Request _new6 = Request{0};
-    _new6.create(8888,&enterprises[1],"soplavelas",850,1,3,18,20,"no puedo soplar las velas de mi pastel de cumpleaños");
+    _new6.create(8888,&enterprises[1],"soplavelas",850,1,1,18,20,"no puedo soplar las velas de mi pastel de cumpleaños");
     requests[_irq] = _new6;
     enterprises[1].addRequest( &requests[_irq] );
     // myJobOffer();

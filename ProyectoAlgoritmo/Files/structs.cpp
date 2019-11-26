@@ -181,14 +181,23 @@ struct Request{ // Job offer
         }
         return st_maxapplicants; // All applicants spaces available ocupated
     };
+    bool isFull(){ // Check if request have all vacants occupated
+        int _amount = 0;
+        for(int _i=0; _i<st_maxapplicants; _i++){
+            if( this->applicants[_i].status == true ) _amount++;
+        }
+        return ( _amount < this->rAmount ? false : true );
+    };
     bool isApplying(Worker *_w_ma){
         for(int i=0; i< this->countApplicants() ; i++){
+            // cout<< this->applicants[i].one->one->id <<" - "<< _w_ma->one->id <<endl;
             if( this->applicants[i].one->one->id == _w_ma->one->id ) return true;
         }
         return false;
     }
     bool addApplicant(Worker *_w_ma){
         if( _w_ma == NULL ) return false;
+        if( this->isFull() ) return false; // All vacants ocupated
         if( this->countApplicants() < st_maxapplicants ){ // Add Aplicant
             int i = this->countApplicants();
             // Verify if worker is already applying
@@ -199,6 +208,18 @@ struct Request{ // Job offer
         }
         return false; // All spaces ocupated
     };
+    bool hireApplicant(Worker *_w_ma){
+        if( _w_ma == NULL ) return false; // w_ma empty
+        if( this->isFull() ) return false; // All vacants ocupated
+        for(int i=0; i< this->countApplicants() ; i++){
+            if( this->applicants[i].one->one->id == _w_ma->one->id ){ // Is the indicated worker
+                // status
+                this->applicants[i].status = true; // Change status of application
+                return true;
+            }
+        }
+        return false;
+    }
     void printApplications();
     void printRequest(bool _code){
         cout<<"\nInformacion de la solicitud\n"<<endl;
@@ -278,13 +299,14 @@ void Worker::printApplications(){
     }
     // Print applications
     cout<<"\nTrabajos"<<endl;
-    cout<<" ID\t\tProfesion\t\tSalario\t\tEmpresa\t\t\tEstado\t\t\tFecha"<<endl;
+    cout<<" ID\t\tPROFESION\t\tSALARIO\t\tEMPRESA\t\t\tESTADO\t\t\tFECHA"<<endl;
     for(int i=0; i<countApplications(); i++){
         applications[i]->printApplication(1); // Print applications for worker
+        if( applications[i]->request->isFull() ) cout<<"\tFINALIZADO"; // Print when job offer is already over
+        cout<<endl;
     }
     cout<<endl<<endl;
-}
-
+};
 void Request::printApplications(){
     if( countApplicants() == 0 ){ // There is no applications yet
         cout<<"Aun no hay postulantes al trabajo";
@@ -292,12 +314,15 @@ void Request::printApplications(){
     }
     // Print applications
     cout<<"\nPostulantes"<<endl;
-    cout<<" ID\t\tNombre\t\tProfesion\tEmail\t\t\t\tEstado\t\tFecha"<<endl;
+    cout<<" ID\t\tNOMBRE\t\tPROFESION\tEMAIL\t\t\t\tESTADO\t\t\tFECHA"<<endl;
     for(int i=0; i<countApplicants(); i++){
+        if( this->isFull() && !applicants[i].status ){ // Request is over so just print selected ones
+            continue;
+        }
         applicants[i].printApplication(2); // Print applications for worker
     }
     cout<<endl<<endl;
-}
+};
 
 void Application::printApplication(int _actype){
     switch(_actype){
@@ -324,7 +349,7 @@ void Application::printApplication(int _actype){
     cout<< (this->status ? "selecto":"pendiente");
     cout<<"\t\t";
     cout<< this->joindate;
-    cout<<endl;
-}
+    // cout<<endl;
+};
 
 #endif

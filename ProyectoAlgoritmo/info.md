@@ -195,8 +195,12 @@
         Print applicants amount in printJobOffers function in fu_global.cpp
         Show job offers from enterprise profile
         Check if selected job is owned by indicated enterprise in printJobOffers() in fu_global.cpp
+        Hire worker in myJobOffer() in fu_global.cpp
+        Show message when job vacancies are full
+        Select only hired workers when job vacancies are full
 
-        ->*Select worker in myJobOffer() in fu_global.cpp
+        estado de postulaciones / oferta termino => resultado
+
         *SEND MA OF USER WHOSE DATA WILL BE CHANGED
         *Added hireWorker function for enterprise (Applicant::status, Request::rAmount)
         *Added print hired appliers in myJobOffer function in fu_global.cpp

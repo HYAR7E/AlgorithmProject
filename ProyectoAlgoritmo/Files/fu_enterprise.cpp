@@ -6,7 +6,10 @@
 void ac2_postJobOffers(); // Post job offers
 // Capa Logica
 bool _postJobOffer(Enterprise *_e, string _p, int _s, int _d, int _a, int _minage, int _maxage, string _dsc);
-bool _selectWorker(int _idrequest, int _idworker);
+#ifndef PROTO_HIREWORKER
+#define PROTO_HIREWORKER
+bool _hireWorker(int idrequest, int idworker);
+#endif
 // Capa Servidor
 
 
@@ -109,6 +112,11 @@ bool _postJobOffer(Enterprise *_e, string _p, int _s, int _d, int _a, int _minag
     _irq++; // Iterate global requests iterator
 
     return true;
+}
+bool _hireWorker(int idrequest, int idworker){
+    Person* pw_ma = NULL;
+    pw_ma = getPersonStructAddress(idworker);
+    user->e_ma->getRequest(idrequest)->hireApplicant(pw_ma->w_ma);
 }
 
 /* ### SERVER LAYER ### */

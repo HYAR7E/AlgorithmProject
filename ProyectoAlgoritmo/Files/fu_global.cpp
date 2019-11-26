@@ -24,6 +24,10 @@ bool jobOfferExists(int _offerid); // Job offer exists?
 #define PROTO_APPLYOFFER // Define applyForJobOffer prototype function
 bool applyForJobOffer(int _idjob); // Apply to job offer function
 #endif
+#ifndef PROTO_HIREWORKER
+#define PROTO_HIREWORKER
+bool _hireWorker(int idrequest, int idworker);
+#endif
 
 // Capa Servidor
 // bool pullChangesInUser(int _userid);
@@ -130,6 +134,10 @@ void myJobOffer(int _idjob){ // Print a specific job offer
 
     // APPLY FOR JOB OFFER
     if( user->accounttype == 1 ){ // User gotta be worker
+        if( _job->isFull() ){ // Job offer is already full
+            cout<<"ESTA OFERTA DE TRABAJO YA HA FINALIZADO"<<endl;
+            return;
+        }
         string _opc = "f";
         cout<<"Desea postular a este trabajo? (y/n): "; cin>>_opc;
         if( !(_opc!="y" && _opc!="Y") ){ // User want to apply for this job
@@ -144,27 +152,49 @@ void myJobOffer(int _idjob){ // Print a specific job offer
     // Watch appliers (enterprise and admin only)
     if( !_same && user->accounttype!=3 ) return; // Don't allow watch appliers if it is not the given enterprise or admin
     if( _job->countApplicants() == 0 ) return; // Do not allow to watch if there is no applicant
+    if( _job->isFull() ){ // Show message when job vacancies are full
+        cout<<"\nESTA OFERTA DE TRABAJO YA HA FINALIZADO"<<endl;
+    }
     string _opc = "f";
-    cout<<"Desea ver los postulantes? (y/n): "; cin>>_opc;
+    if( _job->isFull() ) cout<<"Desea ver a los seleccionados? (y/n): ";
+    else cout<<"Desea ver los postulantes? (y/n): ";
+    cin>>_opc;
     if( !isString(_opc,1,1) || (_opc!="y" && _opc!="Y") ) return; // Enterprise do not want to watch appliers
     clear();
     pauseClear();
     _job->printApplications();
 
-    // SELECT WORKER
+    // SELECT HIRED WORKER
     int _id;
+    if( _job->isFull() ){ // When job offer is over, show selected workers
+        cout<<"\nVer perfil (0: salir)"<<endl;
+        _id = getValidIntInput("ID: ","Formato incorrecto");
+
+        if( _id == 0 ) return; // Return before pause if 0 is selected
+        pauseClear(); // Clear remaining stream data
+        clear(); // Clear screen to watch user's data
+        myData(_id,1); // Print specific user's data
+
+        return;
+    }
+
+    // HIRE WORKER
+    if(user->accounttype != 2) return; // Do not allow to hire worker if it is not the given enterprise
     cout<<"\nAceptar trabajador (0: salir)"<<endl;
     _id = getValidIntInput("ID: ","Formato incorrecto");
 
     if( _id == 0 ) return; // Return before pause if 0 is selected
     pauseClear(); // Clear remaining stream data
 
-    if( !jobOfferExists(_id) ){ // Job offer with id = _id exists
+    if( !_job->isApplying( getPersonStructAddress(_id)->w_ma ) ){
         cout<<"El ID indicado no existe"<<endl;
         return;
     }
-    clear(); // Clear before print
-    myJobOffer(_id); // Print specific job offer's information
+    if( _hireWorker(_idjob,_id) ){ // Worker hired
+        cout<<"Se ha aceptado la solicitud del trabajador"<<endl;
+    }else{ // Couldn't hire worker
+        cout<<"Todas las vacantes del trabajo están ocupadas"<<endl;
+    }
 
     /**/
 }
@@ -254,12 +284,12 @@ void printJobOffers(int _entid, string **data, int _length){
             if( !jobOfferExists(_id) ){ // Job offer with id = _id exists?
                 cout<<"El ID indicado no existe"<<endl;
                 return;
-            }else{ // Job offer exists
+            }else if( _entid!=-1 ){ // Job offer exists and enterprise is indicated
                 // Job offer is owned by indicated enterprise?
                 Request* _r = NULL;
                 _r = getRequestStructAddress(_id);
                 // cout<<"eid: "<< _r->rEnterprise->one->id <<" || seid: "<< _entid <<endl;
- 4                if( _r->rEnterprise->one->id != _entid ){ // If job offer is not owned by the indicated enterprise
+                if( _r->rEnterprise->one->id != _entid ){ // If job offer is not owned by the indicated enterprise
                     cout<<"El ID indicado no existe"<<endl;
                     return;
                 }
@@ -274,14 +304,19 @@ void printJobOffers(int _entid, string **data, int _length){
     cout<<" ID\t\tProfesion\t\tSalario\t\t";
     // Enterprises can't see each other
     cout<< (user->accounttype!=2 ?"Empresa":"Solicitantes") <<endl; // Show enterprise or applicants
-    for(int i=0; i<_length; i++){
+    for(int i=0; i<_length; i++){ // Print job offer
         // cout<<"i: "<<i<<endl;
-        for(int j=0; j<4; j++){ // The last element is whether or enterprisename or applicantsamount
+
+        // Check if job offer is not over
+        // id: **data
+        
+        for(int j=0; j<4; j++){ // Print element
+            // The last element is whether or enterprisename or applicantsamount
             // cout<<"j: "<<j<<endl;
             // cout<<"data: "<<data<<endl;
             // cout<<"*data: "<<*data<<endl;
             // Print enterprise name(j=2) or amount of applicants
-            if( user->accounttype==2 && j==3 ){ // If account type is not worker show amount of applicants
+            if( user->accounttype!=2 && j==3 ){ // If account type is not worker show amount of applicants
                 (*data)++; // Pass to index=4 (applicants amount)
             }
             cout<< **data <<"\t\t";
