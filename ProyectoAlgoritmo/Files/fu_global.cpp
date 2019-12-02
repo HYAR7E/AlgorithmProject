@@ -185,6 +185,10 @@ void myJobOffer(int _idjob){ // Print a specific job offer
 
     if( _id == 0 ) return; // Return before pause if 0 is selected
     pauseClear(); // Clear remaining stream data
+    if( !userIdExists(_id) ){
+        cout<<"El id indicado no existe"<<endl;
+        return;
+    }
 
     if( !_job->isApplying( getPersonStructAddress(_id)->w_ma ) ){
         cout<<"El ID indicado no existe"<<endl;
@@ -316,7 +320,7 @@ void printJobOffers(int _entid, string **data, int _length){
             // cout<<"data: "<<data<<endl;
             // cout<<"*data: "<<*data<<endl;
             // Print enterprise name(j=2) or amount of applicants
-            if( user->accounttype!=2 && j==3 ){ // If account type is not worker show amount of applicants
+            if( user->accounttype!=1 && j==3 ){ // If account type is not worker show amount of applicants
                 (*data)++; // Pass to index=4 (applicants amount)
             }
             cout<< **data <<"\t\t";

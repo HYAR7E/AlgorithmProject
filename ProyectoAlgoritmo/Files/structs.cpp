@@ -320,6 +320,7 @@ void Request::printApplications(){
             continue;
         }
         applicants[i].printApplication(2); // Print applications for worker
+        cout<<endl;
     }
     cout<<endl<<endl;
 };

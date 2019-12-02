@@ -28,7 +28,7 @@ void ac2_postJobOffers(){
 
     _ei=0;
     do{ // Profesion
-        cout<<"Profesion requerida: "; cin>>_profession; pauseClear();
+        cout<<"Profesion requerida: "; getline(cin,_profession);
         if( !isString(_profession) || _profession.length()<4 || _profession.length()>20 ){ // Is not string, contains special characters or is not long enough
             if( _ei == _maxerror ){
                 cout<<"Maxima cantidad de errores permitidos, abortando"<<endl;

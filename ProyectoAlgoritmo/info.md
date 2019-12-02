@@ -201,9 +201,9 @@
 
         estado de postulaciones / oferta termino => resultado
 
-        *SEND MA OF USER WHOSE DATA WILL BE CHANGED
-        *Added hireWorker function for enterprise (Applicant::status, Request::rAmount)
-        *Added print hired appliers in myJobOffer function in fu_global.cpp
+        SEND MA OF USER WHOSE DATA WILL BE CHANGED
+        Added hireWorker function for enterprise (Applicant::status, Request::rAmount)
+        Added print hired appliers in myJobOffer function in fu_global.cpp
         **Added deleteJobOffer function in fu_enterprise.cpp
         **MOVE BACK ARRAY INDEX WHEN DELETING STRUCTURE ARRAY ELEMENTS
         --- ENTERPRISE MENU FINISHED ---
@@ -214,8 +214,8 @@
         --- ADMIN MENU FINISHED ---
 
         *(Worker) Free applies after job is over
-        *Show applicants in job offer in fu_enterprise.cpp
-        *Enterprise accept worker applies fu_enterprise.cpp
+        Show applicants in job offer in fu_enterprise.cpp
+        Enterprise accept worker applies fu_enterprise.cpp
 
         **Worker can decline a job offer
         **Allow to erase data with condition of do not show their profiles
@@ -229,6 +229,10 @@
         *(admin) Add admin to Person structure function, add its own structure inherited from Person structure, add its print function to myData function in fu_global.cpp
         *(admin) Ban worker or enterprise
         **(user) Trim strings at input
+        Ver empresa en postulacion
+        Agregar rubro de empresa (empresa)
+        Agregar fecha de inicio/final (oferta)
+        Agregar lugar de trabajo (oferta)
 
     v0.6 ERRORS && BUGS
         # BUG:1 in changeData function in fu_global.cpp do not store changes when worker or enterprise, only works for guest
@@ -258,6 +262,7 @@
             Create a function to search the key in the array and returns its index, and use it as a numberic key value with switch
         In function printWorker or printEnterprises, myData will never print the logged user's data cuz worker can't see other workers, and enterprise can't see other enterprises, although the admin can watch himself and is the only one who can change his data through print function
         Enterprise structure only have 5 request spaces, make that dinamically by setting a variable cuz it also appear in addRequest and countRequests functions
+
 
     CHANGES MADE v0.7 ( Add database conection and related functions )
     CHANGES MADE v0.8 ( Migrate to database functions )

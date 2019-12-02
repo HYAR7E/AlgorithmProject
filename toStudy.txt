@@ -124,6 +124,15 @@ SSH SERVER
     ssh ${usuario_del_servidor_remoto}@${ip_del_servidor_remoto}
     # Transferir un archivo
     scp archivo.txt user@host:/path/
+
+    # Uso de llaves publicas y privadas
+    ssh-keygen
+    # Entrar a la carpeta donde se guardaron las llaves desde la carpeta de usuario
+    cd .ssh/
+    # La llave privada(id_rsa) debe dejarse oculta(no tocar), y la llave publica debe copiarse en el archivo .ssh/authorized_keys (debe ocupar solo 1 linea)
+    cat id_rsa.pub >> authorized_keys
+    ## Una vez la llave privada esté en la carpeta .ssh/ y la llave publica esté en una linea en el archivo .ssh/authorized_keys en el servidor, se tendrá acceso sin contraseña a el servidor
+
     # Salir del servidor / Exit from the server
     exit
 
